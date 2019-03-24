@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000">
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top">
+  
+  
+  <!--<title>grep用法解析(macos环境BSD shell) | Hexo</title>-->
+  <title>grep用法解析(macos环境BSD shell)</title>
+  <meta name="description" content="介绍 Linux系统中grep命令是一种强大的文本搜索工具，它能使用正则表达式搜索文本，并把匹 配的行打印出来。grep全称是Global Regular Expression Print，表示全局正则表达式版本，它的使用权限是所有用户。  主要参数1234567891011121314151617181920#格式grep [options][options]主要参数：        －c：只输">
+<meta name="keywords" content="grep">
+<meta property="og:type" content="article">
+<meta property="og:title" content="grep用法解析(macos环境BSD shell)">
+<meta property="og:url" content="http://pro.stonepark.fun/2018/02/16/grep用法解析-macos环境BSD-shell/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="介绍 Linux系统中grep命令是一种强大的文本搜索工具，它能使用正则表达式搜索文本，并把匹 配的行打印出来。grep全称是Global Regular Expression Print，表示全局正则表达式版本，它的使用权限是所有用户。  主要参数1234567891011121314151617181920#格式grep [options][options]主要参数：        －c：只输">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://pro.stonepark.fun/2018/02/16/grep用法解析-macos环境BSD-shell/download.png">
+<meta property="og:image" content="http://pro.stonepark.fun/2018/02/16/grep用法解析-macos环境BSD-shell/download-1.png">
+<meta property="og:image" content="http://pro.stonepark.fun/2018/02/16/grep用法解析-macos环境BSD-shell/download-2.png">
+<meta property="og:image" content="http://pro.stonepark.fun/2018/02/16/grep用法解析-macos环境BSD-shell/download-3.png">
+<meta property="og:image" content="http://pro.stonepark.fun/2018/02/16/grep用法解析-macos环境BSD-shell/download-4.png">
+<meta property="og:image" content="http://pro.stonepark.fun/2018/02/16/grep用法解析-macos环境BSD-shell/download-5.png">
+<meta property="og:updated_time" content="2018-02-16T09:34:02.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="grep用法解析(macos环境BSD shell)">
+<meta name="twitter:description" content="介绍 Linux系统中grep命令是一种强大的文本搜索工具，它能使用正则表达式搜索文本，并把匹 配的行打印出来。grep全称是Global Regular Expression Print，表示全局正则表达式版本，它的使用权限是所有用户。  主要参数1234567891011121314151617181920#格式grep [options][options]主要参数：        －c：只输">
+<meta name="twitter:image" content="http://pro.stonepark.fun/2018/02/16/grep用法解析-macos环境BSD-shell/download.png">
+  <!-- Canonical links -->
+  <link rel="canonical" href="http://pro.stonepark.fun/2018/02/16/grep用法解析-macos环境BSD-shell/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.jpg" type="image/x-icon">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+  
+  
+  
+</head>
+
+
+<body class="main-center theme-black" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/stone0117" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpeg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">StonePark</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">html node python iOS</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> Beijing, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索">
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech>
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-repository">
+          <a href="/repository">
+            
+            <i class="icon icon-project"></i>
+            
+            <span class="menu-title">项目</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books">
+            
+            <i class="icon icon-book-fill"></i>
+            
+            <span class="menu-title">书单</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links">
+            
+            <i class="icon icon-friendship"></i>
+            
+            <span class="menu-title">友链</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">关于</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/stone0117" target="_blank" title="Github" data-toggle="tooltip" data-placement="top"><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="http://weibo.com/cofess" target="_blank" title="Weibo" data-toggle="tooltip" data-placement="top"><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="https://twitter.com/iwebued" target="_blank" title="Twitter" data-toggle="tooltip" data-placement="top"><i class="icon icon-twitter"></i></a></li>
+        
+        <li><a href="https://www.behance.net/cofess" target="_blank" title="Behance" data-toggle="tooltip" data-placement="top"><i class="icon icon-behance"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle="tooltip" data-placement="top"><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>coding!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/IntelliJ-IDEA/">IntelliJ IDEA</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/apache/">apache</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/chrome/">chrome</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/freemarker/">freemarker</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/iOS/">iOS</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/javascript/">javascript</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/links/">links</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/macos/">macos</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/mysql/">mysql</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/node/">node</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/shell/">shell</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/其他/">其他</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/搜索/">搜索</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget-body">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ActiveMQ/">ActiveMQ</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AppCode/">AppCode</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/FastDFS/">FastDFS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IntelliJ-IDEA/">IntelliJ IDEA</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Redis/">Redis</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/apache/">apache</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/awk/">awk</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/chrome/">chrome</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/">docker</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dubbo/">dubbo</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/fastDFS-nginx综合/">fastDFS & nginx综合</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/find/">find</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/freemarker/">freemarker</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/google/">google</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/grep/">grep</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/idea坑/">idea坑</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/">javascript</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/links/">links</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nginx/">nginx</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/node/">node</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/regex/">regex</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sed/">sed</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/shell/">shell</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/solr/">solr</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sso/">sso</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/svn/">svn</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tomcat/">tomcat</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tr/">tr</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/xargs/">xargs</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/字符串操作/">字符串操作</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tags/ActiveMQ/" style="font-size: 13px;">ActiveMQ</a> <a href="/tags/AppCode/" style="font-size: 13px;">AppCode</a> <a href="/tags/FastDFS/" style="font-size: 13px;">FastDFS</a> <a href="/tags/IntelliJ-IDEA/" style="font-size: 13px;">IntelliJ IDEA</a> <a href="/tags/Linux/" style="font-size: 13.5px;">Linux</a> <a href="/tags/Redis/" style="font-size: 13px;">Redis</a> <a href="/tags/apache/" style="font-size: 13px;">apache</a> <a href="/tags/awk/" style="font-size: 13px;">awk</a> <a href="/tags/chrome/" style="font-size: 13px;">chrome</a> <a href="/tags/docker/" style="font-size: 13px;">docker</a> <a href="/tags/dubbo/" style="font-size: 13px;">dubbo</a> <a href="/tags/fastDFS-nginx综合/" style="font-size: 13px;">fastDFS & nginx综合</a> <a href="/tags/find/" style="font-size: 13px;">find</a> <a href="/tags/freemarker/" style="font-size: 13px;">freemarker</a> <a href="/tags/google/" style="font-size: 13px;">google</a> <a href="/tags/grep/" style="font-size: 13px;">grep</a> <a href="/tags/idea坑/" style="font-size: 13px;">idea坑</a> <a href="/tags/javascript/" style="font-size: 14px;">javascript</a> <a href="/tags/links/" style="font-size: 13px;">links</a> <a href="/tags/mysql/" style="font-size: 13px;">mysql</a> <a href="/tags/nginx/" style="font-size: 13px;">nginx</a> <a href="/tags/node/" style="font-size: 13px;">node</a> <a href="/tags/regex/" style="font-size: 13px;">regex</a> <a href="/tags/sed/" style="font-size: 14px;">sed</a> <a href="/tags/shell/" style="font-size: 13px;">shell</a> <a href="/tags/solr/" style="font-size: 13px;">solr</a> <a href="/tags/sso/" style="font-size: 13px;">sso</a> <a href="/tags/svn/" style="font-size: 13.5px;">svn</a> <a href="/tags/tomcat/" style="font-size: 13px;">tomcat</a> <a href="/tags/tr/" style="font-size: 13px;">tr</a> <a href="/tags/xargs/" style="font-size: 13px;">xargs</a> <a href="/tags/字符串操作/" style="font-size: 13px;">字符串操作</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">二月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">一月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">二月 2018</a><span class="archive-list-count">30</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">八月 2016</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">七月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">六月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">九月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/06/">六月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">三月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/12/">十二月 2014</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/javascript/">javascript</a>
+              </p>
+              <p class="item-title">
+                <a href="/2019/02/22/String-prototype-split/" class="title">String.prototype.split()</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2019-02-21T20:16:48.000Z" itemprop="datePublished">2019-02-22</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/node/">node</a>
+              </p>
+              <p class="item-title">
+                <a href="/2019/01/04/module-exports与exports，export与export-default之间的关系和区别/" class="title">module.exports与exports，export与export default之间的关系和区别</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2019-01-04T09:44:16.000Z" itemprop="datePublished">2019-01-04</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/javascript/">javascript</a>
+              </p>
+              <p class="item-title">
+                <a href="/2018/04/05/javascript-内存管理-循环引用处理/" class="title">javascript-内存管理-循环引用处理</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2018-04-05T02:18:29.000Z" itemprop="datePublished">2018-04-05</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/javascript/">javascript</a>
+              </p>
+              <p class="item-title">
+                <a href="/2018/04/04/javascript的命名代码块/" class="title">javascript的命名代码块</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2018-04-04T05:24:26.000Z" itemprop="datePublished">2018-04-04</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/shell/">shell</a>
+              </p>
+              <p class="item-title">
+                <a href="/2018/04/03/find用法解析-macos环境BSD-shell/" class="title">find用法解析(macos环境BSD shell)</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2018-04-03T08:44:33.000Z" itemprop="datePublished">2018-04-03</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-grep用法解析-macos环境BSD-shell" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      grep用法解析(macos环境BSD shell)
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2018/02/16/grep用法解析-macos环境BSD-shell/" class="article-date">
+	  <time datetime="2018-02-16T09:31:02.000Z" itemprop="datePublished">2018-02-16</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/shell/">shell</a>
+  </span>
+
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link" href="/tags/grep/">grep</a>
+  </span>
+
+
+        
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2018/02/16/grep用法解析-macos环境BSD-shell/#comments" class="article-comment-link">评论</a></span>
+        
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><blockquote>
+<p>Linux系统中grep命令是一种强大的文本搜索工具，它能使用正则表达式搜索文本，并把匹 配的行打印出来。grep全称是Global Regular Expression Print，表示全局正则表达式版本，它的使用权限是所有用户。</p>
+</blockquote>
+<h2 id="主要参数"><a href="#主要参数" class="headerlink" title="主要参数"></a>主要参数</h2><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#格式</span></span><br><span class="line">grep [options]</span><br><span class="line"></span><br><span class="line">[options]主要参数：</span><br><span class="line"></span><br><span class="line">        －c：只输出匹配行的计数。</span><br><span class="line"></span><br><span class="line">        －i：不区分大 小写(只适用于单字符)。</span><br><span class="line">		</span><br><span class="line">		－I：Ignore binary files.</span><br><span class="line">        </span><br><span class="line">        －h：查询多文件时不显示文件名。</span><br><span class="line"></span><br><span class="line">        －l：查询多文件时只输出包含匹配字符的文件名。</span><br><span class="line"></span><br><span class="line">        －n：显示匹配行及 行号。</span><br><span class="line"></span><br><span class="line">        －s：不显示不存在或无匹配文本的错误信息。</span><br><span class="line"></span><br><span class="line">        －v：显示不包含匹配文本的所有行。</span><br></pre></td></tr></table></figure>
+<p><strong><code>testfile</code></strong><br><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget -P ~/testfile/ <span class="string">"http://ou0y29lb2.bkt.clouddn.com/po.zip"</span></span><br></pre></td></tr></table></figure></p>
+<p>##<code>全局设置</code><br><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">grepc=<span class="string">"grep --color"</span></span><br><span class="line">cd <span class="variable">$HOME</span>/Documents/test_directory/pojo_test</span><br></pre></td></tr></table></figure></p>
+<p><strong><code>-c : 只输出匹配行的计数</code></strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$grepc -c &quot;\&lt;condition\&gt;&quot; ./po/* -d skip</span><br></pre></td></tr></table></figure>
+<p><img src="download.png" alt="Alt text"></p>
+<p><strong><code>－i：不区分大 小写(只适用于单字符)。</code></strong></p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$grepc</span> -i <span class="string">"value"</span> ./po/* -d skip</span><br></pre></td></tr></table></figure>
+<p><img src="download-1.png" alt="Alt text"></p>
+<p><strong><code>－h：查询多文件时不显示文件名。</code></strong><br><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$grepc</span> -h -i <span class="string">"value"</span> ./po/* -d skip</span><br></pre></td></tr></table></figure></p>
+<p><img src="download-2.png" alt="Alt text"></p>
+<p><strong><code>－l：查询多文件时只输出包含匹配字符的文件名。</code></strong></p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$grepc</span> -l -h -i <span class="string">"value"</span> ./po/* -d skip</span><br></pre></td></tr></table></figure>
+<p><img src="download-3.png" alt="Alt text"></p>
+<p><strong><code>－n：显示匹配行及 行号</code></strong></p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$grepc</span> -n -i <span class="string">"value"</span> ./po/* -d skip</span><br></pre></td></tr></table></figure>
+<p><img src="download-4.png" alt="Alt text"></p>
+<p><strong><code>－s：不显示不存在或无匹配文本的错误信息。</code></strong><br><img src="download-5.png" alt="Alt text"><br>照样报错 - - 不知道有啥用…</p>
+<p><strong><code>－v：显示不包含匹配文本的所有行。</code></strong></p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grep -h -E -v -i <span class="string">"value|string|return|Criteria|&#123;|&#125;|=|addCriterion|super"</span> ./po/* -d skip | grep [:space:]</span><br></pre></td></tr></table></figure>
+<hr>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">pattern正则表达式主要参数：</span><br><span class="line"></span><br><span class="line">        \： 忽略正则表达式中特殊字符的原有含义。</span><br><span class="line"></span><br><span class="line">        ^：匹配正则表达式的开始行。</span><br><span class="line"></span><br><span class="line">        $: 匹配正则表达式的结束行。</span><br><span class="line"></span><br><span class="line">        \&lt;：从匹配正则表达 式的行开始。</span><br><span class="line"></span><br><span class="line">        \&gt;：到匹配正则表达式的行结束。</span><br><span class="line"></span><br><span class="line">        [ ]：单个字符，如[A]即A符合要求 。</span><br><span class="line"></span><br><span class="line">        [ - ]：范围，如[A-Z]，即A、B、C一直到Z都符合要求 。</span><br><span class="line"></span><br><span class="line">        . ：所有的单个字符。</span><br><span class="line"></span><br><span class="line">        * ：有字符，长度可以为0。</span><br></pre></td></tr></table></figure>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#        \： 忽略正则表达式中特殊字符的原有含义。</span></span><br><span class="line"><span class="variable">$grepc</span> -n -i <span class="string">"\\$"</span> ./po/* -d skip</span><br><span class="line"><span class="comment">#        ^：匹配正则表达式的开始行。</span></span><br><span class="line"><span class="variable">$grepc</span> -h -i <span class="string">"^sed"</span> ./po/* -d skip</span><br><span class="line"><span class="comment">#        $: 匹配正则表达式的结束行。</span></span><br><span class="line"><span class="variable">$grepc</span> -E -h -i <span class="string">"class.*&#123;$"</span> ./po/* -d skip</span><br><span class="line"><span class="comment">#        \&lt;：从匹配正则表达 式的行开始。</span></span><br><span class="line"><span class="variable">$grepc</span> -E -h -i <span class="string">"\&lt;cond"</span> ./po/* -d skip</span><br><span class="line"><span class="comment">#        \&gt;：到匹配正则表达式的行结束。</span></span><br><span class="line"><span class="variable">$grepc</span> -E -h -i <span class="string">"tion\&gt;"</span> ./po/* -d skip</span><br><span class="line"><span class="comment">#        \&lt; 和 \&gt; 分别标注单词的开始与结尾。</span></span><br><span class="line"><span class="variable">$grepc</span> -E -h -i <span class="string">"\&lt;condition\&gt;"</span> ./po/* -d skip</span><br><span class="line"><span class="comment">#        [ ]：单个字符，如[A]即A符合要求 。</span></span><br><span class="line"><span class="variable">$grepc</span> -E -h <span class="string">"[A-Z]&#123;2,5&#125;"</span> ./po/* -d skip</span><br><span class="line"><span class="comment">#        [ - ]：范围，如[A-Z]，即A、B、C一直到Z都符合要求 。</span></span><br><span class="line"><span class="variable">$grepc</span> -E -h <span class="string">"[A-Z]&#123;2,5&#125;"</span> ./po/* -d skip</span><br><span class="line"><span class="comment">#        . ：所有的单个字符。</span></span><br><span class="line"><span class="variable">$grepc</span> -E -h <span class="string">"\b.&#123;5&#125;\b"</span> ./po/* -d skip</span><br><span class="line"><span class="comment">#        * ：有字符，长度可以为0。</span></span><br><span class="line"><span class="variable">$grepc</span> -E -h <span class="string">"\b[[:alnum:]]&#123;5&#125;\b"</span> ./po/* -d skip</span><br></pre></td></tr></table></figure>
+<h3 id="grep命令使用简单实例"><a href="#grep命令使用简单实例" class="headerlink" title="grep命令使用简单实例"></a>grep命令使用简单实例</h3><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 如果只有一个 txt文件 并且匹配到了 不会显示全路径, 只会显示行号和匹配行</span></span><br><span class="line"><span class="variable">$grepc</span> -E -i -n <span class="string">"value"</span> ./po/t* -d skip <span class="comment">#显示所有以d开头的文件中包含 test的行。</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$grepc</span> -E -n <span class="string">"value|one"</span> ./po/test001.txt ./po/test002.txt    <span class="comment">#显示在test001.txt，test002.txt 文件中匹配value或者one的行。-E 表示表达式扩展</span></span><br><span class="line"><span class="variable">$grepc</span> -E <span class="string">'\b[a-z]&#123;5&#125;\b'</span> ./po/test001.txt    <span class="comment">#显示所有包含每个字符串至少有5个连续小写字符的字符串的行。</span></span><br><span class="line"><span class="variable">$grepc</span> -E <span class="string">"'number (one)'.*\1"</span> ./po/test001.txt    <span class="comment">#如果number (one)被匹配，则one就被存储到内存中，并标记为1，然后搜索任意个字符(.*)，这些字符后面紧跟着 另外一个one(\1)，找到就显示该行。如果用egrep或grep -E，就不用”\”号进行转义.</span></span><br></pre></td></tr></table></figure>
+<h3 id="grep命令使用复杂实例"><a href="#grep命令使用复杂实例" class="headerlink" title="grep命令使用复杂实例"></a>grep命令使用复杂实例</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">#假设您正在&apos;./po/*&apos;目录下搜索带字符 串&apos;value&apos;的文件：</span><br><span class="line">$grepc &quot;value&quot; ./po/*.txt</span><br><span class="line">#./po/test001.txt:What is your value?</span><br><span class="line">#./po/test002.txt:What is your value?</span><br><span class="line"></span><br><span class="line">#默认情况下，&apos;grep&apos;只搜索当前目录。如果 此目录下有许多子目录，’grep’会以如下形式列出：</span><br><span class="line">#grep: sound: Is a directory</span><br><span class="line">#这可能会使’grep’ 的输出难于阅读。这里有两种解决的办法：</span><br><span class="line">#明确要求搜索子目录：</span><br><span class="line">grep -r</span><br><span class="line">#或忽略子目录：</span><br><span class="line">grep -d skip</span><br><span class="line">#如果有很多 输出时，您可以通过管道将其转到’less’上阅读：</span><br><span class="line">$grepc &quot;value&quot; ./po/*  | less</span><br><span class="line">#这样，您就可以更方便地阅读</span><br></pre></td></tr></table></figure>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#下面还有一些有意思的命令行参数：</span></span><br><span class="line">files=<span class="string">"./po/* -r"</span></span><br><span class="line"></span><br><span class="line"><span class="variable">$grepc</span> -i obj ./po/* <span class="comment">#：不区分大小写地搜索。默认情况区分大小写，</span></span><br><span class="line"></span><br><span class="line"><span class="variable">$grepc</span> -l obj <span class="variable">$files</span> <span class="comment">#：只列出匹配的文件名，</span></span><br><span class="line"></span><br><span class="line"><span class="variable">$grepc</span> -L obj <span class="variable">$files</span> <span class="comment">#：列出不匹配的文件名，</span></span><br><span class="line"></span><br><span class="line"><span class="variable">$grepc</span> -w obj <span class="variable">$files</span> <span class="comment">#：只匹配整个单词，而不是字符串的一部分(如匹配’magic’，而不是’magical’)，</span></span><br><span class="line"></span><br><span class="line"><span class="variable">$grepc</span> -C <span class="number">2</span> obj <span class="variable">$files</span> <span class="comment">#：匹配的上下文分别显示[number]行，</span></span><br><span class="line"></span><br><span class="line"><span class="variable">$grepc</span> -E -i <span class="string">"address|value"</span> <span class="variable">$files</span> <span class="comment">#：显示匹配 pattern1 或 pattern2 的行，</span></span><br><span class="line"></span><br><span class="line"><span class="variable">$grepc</span> -ie address <span class="variable">$files</span> | <span class="variable">$grepc</span> -ie value <span class="comment">#：显示既匹配 pattern1 又匹配 pattern2 的行。</span></span><br><span class="line"></span><br><span class="line"><span class="variable">$grepc</span> -n -ie address <span class="variable">$files</span>  <span class="comment">#即可显示行号信息</span></span><br><span class="line"></span><br><span class="line"><span class="variable">$grepc</span> -c -ie address <span class="variable">$files</span>  <span class="comment">#即可查找总行数</span></span><br></pre></td></tr></table></figure>
+<h3 id="可以使用国际模式匹配的类名："><a href="#可以使用国际模式匹配的类名：" class="headerlink" title="可以使用国际模式匹配的类名："></a>可以使用国际模式匹配的类名：</h3><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">[[:upper:]]   [A-Z]</span><br><span class="line"></span><br><span class="line">[[:lower:]]   [a-z]</span><br><span class="line"></span><br><span class="line">[[:digit:]]   [<span class="number">0</span>-<span class="number">9</span>]</span><br><span class="line"></span><br><span class="line">[[:alnum:]]   [<span class="number">0</span>-<span class="number">9</span>a-zA-Z]</span><br><span class="line"></span><br><span class="line">[[:space:]]   空格或tab</span><br><span class="line"></span><br><span class="line">[[:alpha:]]   [a-zA-Z]</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <span>link：</span>
+      <a href="http://pro.stonepark.fun/2018/02/16/grep用法解析-macos环境BSD-shell/" title="grep用法解析(macos环境BSD shell)" target="_blank" rel="external">http://pro.stonepark.fun/2018/02/16/grep用法解析-macos环境BSD-shell/</a>
+    </li>
+    
+  </ul>
+</blockquote>
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+      <div id="vcomments"></div>
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2018/02/16/awk用法解析-macos环境BSD-shell/" title="awk用法解析(macos环境BSD shell)"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2018/02/15/sed用法解析-macos环境BSD-shell/" title="sed用法解析(macos环境BSD shell)"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+  </ul>
+  
+  
+  
+  <div class="bar-right">
+    
+  </div>
+  </div>
+</nav>
+  
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/stone0117" target="_blank" title="Github" data-toggle="tooltip" data-placement="top"><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="http://weibo.com/cofess" target="_blank" title="Weibo" data-toggle="tooltip" data-placement="top"><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="https://twitter.com/iwebued" target="_blank" title="Twitter" data-toggle="tooltip" data-placement="top"><i class="icon icon-twitter"></i></a></li>
+        
+        <li><a href="https://www.behance.net/cofess" target="_blank" title="Behance" data-toggle="tooltip" data-placement="top"><i class="icon icon-behance"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle="tooltip" data-placement="top"><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+<script src="/js/plugin.min.js"></script>
+<script src="/js/application.js"></script>
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+
+
+
+
+   
+
+
+
+
+   
+    
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/valine"></script>
+  <script type="text/javascript">
+  var GUEST = ['nick', 'mail', 'link'];
+  var meta = 'nick,mail,link';
+  meta = meta.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#vcomments',
+    verify: false,
+    notify: false,
+    appId: '',
+    appKey: '',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: meta,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+  </script>
+
+     
+
+
+
+
+
+
+
+</body>
+</html>

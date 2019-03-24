@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000">
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top">
+  
+  
+  <!--<title>tr用法解析(macos环境BSD shell) | Hexo</title>-->
+  <title>tr用法解析(macos环境BSD shell)</title>
+  <meta name="description" content="参考:http://fyan.iteye.com/blog/1172279 简介 tr是translate的简写，亦即翻译，但是遗憾的是，它不能翻译句子，只能翻译单个字符。   tr的工作原理是什么?先记住一点，tr命令不接受指定的文件参数，而只是对标准输入进行翻译。好了，记住这点后，我们继续。  tr的命令格式是tr SET1 SET2，凡是在SET1中的字符，都会被替换为SET2中相应位置上的">
+<meta name="keywords" content="tr">
+<meta property="og:type" content="article">
+<meta property="og:title" content="tr用法解析(macos环境BSD shell)">
+<meta property="og:url" content="http://pro.stonepark.fun/2018/02/17/tr用法解析-macos环境BSD-shell/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="参考:http://fyan.iteye.com/blog/1172279 简介 tr是translate的简写，亦即翻译，但是遗憾的是，它不能翻译句子，只能翻译单个字符。   tr的工作原理是什么?先记住一点，tr命令不接受指定的文件参数，而只是对标准输入进行翻译。好了，记住这点后，我们继续。  tr的命令格式是tr SET1 SET2，凡是在SET1中的字符，都会被替换为SET2中相应位置上的">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-02-17T07:34:40.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="tr用法解析(macos环境BSD shell)">
+<meta name="twitter:description" content="参考:http://fyan.iteye.com/blog/1172279 简介 tr是translate的简写，亦即翻译，但是遗憾的是，它不能翻译句子，只能翻译单个字符。   tr的工作原理是什么?先记住一点，tr命令不接受指定的文件参数，而只是对标准输入进行翻译。好了，记住这点后，我们继续。  tr的命令格式是tr SET1 SET2，凡是在SET1中的字符，都会被替换为SET2中相应位置上的">
+  <!-- Canonical links -->
+  <link rel="canonical" href="http://pro.stonepark.fun/2018/02/17/tr用法解析-macos环境BSD-shell/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.jpg" type="image/x-icon">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+  
+  
+  
+</head>
+
+
+<body class="main-center theme-black" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/stone0117" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpeg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">StonePark</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">html node python iOS</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> Beijing, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索">
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech>
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-repository">
+          <a href="/repository">
+            
+            <i class="icon icon-project"></i>
+            
+            <span class="menu-title">项目</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books">
+            
+            <i class="icon icon-book-fill"></i>
+            
+            <span class="menu-title">书单</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links">
+            
+            <i class="icon icon-friendship"></i>
+            
+            <span class="menu-title">友链</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">关于</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/stone0117" target="_blank" title="Github" data-toggle="tooltip" data-placement="top"><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="http://weibo.com/cofess" target="_blank" title="Weibo" data-toggle="tooltip" data-placement="top"><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="https://twitter.com/iwebued" target="_blank" title="Twitter" data-toggle="tooltip" data-placement="top"><i class="icon icon-twitter"></i></a></li>
+        
+        <li><a href="https://www.behance.net/cofess" target="_blank" title="Behance" data-toggle="tooltip" data-placement="top"><i class="icon icon-behance"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle="tooltip" data-placement="top"><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>coding!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/IntelliJ-IDEA/">IntelliJ IDEA</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/apache/">apache</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/chrome/">chrome</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/freemarker/">freemarker</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/iOS/">iOS</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/javascript/">javascript</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/links/">links</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/macos/">macos</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/mysql/">mysql</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/node/">node</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/shell/">shell</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/其他/">其他</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/搜索/">搜索</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget-body">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ActiveMQ/">ActiveMQ</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AppCode/">AppCode</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/FastDFS/">FastDFS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IntelliJ-IDEA/">IntelliJ IDEA</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Redis/">Redis</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/apache/">apache</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/awk/">awk</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/chrome/">chrome</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/">docker</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dubbo/">dubbo</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/fastDFS-nginx综合/">fastDFS & nginx综合</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/find/">find</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/freemarker/">freemarker</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/google/">google</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/grep/">grep</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/idea坑/">idea坑</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/">javascript</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/links/">links</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nginx/">nginx</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/node/">node</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/regex/">regex</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sed/">sed</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/shell/">shell</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/solr/">solr</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sso/">sso</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/svn/">svn</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tomcat/">tomcat</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tr/">tr</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/xargs/">xargs</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/字符串操作/">字符串操作</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tags/ActiveMQ/" style="font-size: 13px;">ActiveMQ</a> <a href="/tags/AppCode/" style="font-size: 13px;">AppCode</a> <a href="/tags/FastDFS/" style="font-size: 13px;">FastDFS</a> <a href="/tags/IntelliJ-IDEA/" style="font-size: 13px;">IntelliJ IDEA</a> <a href="/tags/Linux/" style="font-size: 13.5px;">Linux</a> <a href="/tags/Redis/" style="font-size: 13px;">Redis</a> <a href="/tags/apache/" style="font-size: 13px;">apache</a> <a href="/tags/awk/" style="font-size: 13px;">awk</a> <a href="/tags/chrome/" style="font-size: 13px;">chrome</a> <a href="/tags/docker/" style="font-size: 13px;">docker</a> <a href="/tags/dubbo/" style="font-size: 13px;">dubbo</a> <a href="/tags/fastDFS-nginx综合/" style="font-size: 13px;">fastDFS & nginx综合</a> <a href="/tags/find/" style="font-size: 13px;">find</a> <a href="/tags/freemarker/" style="font-size: 13px;">freemarker</a> <a href="/tags/google/" style="font-size: 13px;">google</a> <a href="/tags/grep/" style="font-size: 13px;">grep</a> <a href="/tags/idea坑/" style="font-size: 13px;">idea坑</a> <a href="/tags/javascript/" style="font-size: 14px;">javascript</a> <a href="/tags/links/" style="font-size: 13px;">links</a> <a href="/tags/mysql/" style="font-size: 13px;">mysql</a> <a href="/tags/nginx/" style="font-size: 13px;">nginx</a> <a href="/tags/node/" style="font-size: 13px;">node</a> <a href="/tags/regex/" style="font-size: 13px;">regex</a> <a href="/tags/sed/" style="font-size: 14px;">sed</a> <a href="/tags/shell/" style="font-size: 13px;">shell</a> <a href="/tags/solr/" style="font-size: 13px;">solr</a> <a href="/tags/sso/" style="font-size: 13px;">sso</a> <a href="/tags/svn/" style="font-size: 13.5px;">svn</a> <a href="/tags/tomcat/" style="font-size: 13px;">tomcat</a> <a href="/tags/tr/" style="font-size: 13px;">tr</a> <a href="/tags/xargs/" style="font-size: 13px;">xargs</a> <a href="/tags/字符串操作/" style="font-size: 13px;">字符串操作</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">二月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">一月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">二月 2018</a><span class="archive-list-count">30</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">八月 2016</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">七月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">六月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">九月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/06/">六月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">三月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/12/">十二月 2014</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/javascript/">javascript</a>
+              </p>
+              <p class="item-title">
+                <a href="/2019/02/22/String-prototype-split/" class="title">String.prototype.split()</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2019-02-21T20:16:48.000Z" itemprop="datePublished">2019-02-22</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/node/">node</a>
+              </p>
+              <p class="item-title">
+                <a href="/2019/01/04/module-exports与exports，export与export-default之间的关系和区别/" class="title">module.exports与exports，export与export default之间的关系和区别</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2019-01-04T09:44:16.000Z" itemprop="datePublished">2019-01-04</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/javascript/">javascript</a>
+              </p>
+              <p class="item-title">
+                <a href="/2018/04/05/javascript-内存管理-循环引用处理/" class="title">javascript-内存管理-循环引用处理</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2018-04-05T02:18:29.000Z" itemprop="datePublished">2018-04-05</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/javascript/">javascript</a>
+              </p>
+              <p class="item-title">
+                <a href="/2018/04/04/javascript的命名代码块/" class="title">javascript的命名代码块</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2018-04-04T05:24:26.000Z" itemprop="datePublished">2018-04-04</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/shell/">shell</a>
+              </p>
+              <p class="item-title">
+                <a href="/2018/04/03/find用法解析-macos环境BSD-shell/" class="title">find用法解析(macos环境BSD shell)</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2018-04-03T08:44:33.000Z" itemprop="datePublished">2018-04-03</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-tr用法解析-macos环境BSD-shell" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      tr用法解析(macos环境BSD shell)
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2018/02/17/tr用法解析-macos环境BSD-shell/" class="article-date">
+	  <time datetime="2018-02-17T07:29:32.000Z" itemprop="datePublished">2018-02-17</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/shell/">shell</a>
+  </span>
+
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link" href="/tags/tr/">tr</a>
+  </span>
+
+
+        
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2018/02/17/tr用法解析-macos环境BSD-shell/#comments" class="article-comment-link">评论</a></span>
+        
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <p>参考:<br><a href="http://fyan.iteye.com/blog/1172279" target="_blank" rel="noopener">http://fyan.iteye.com/blog/1172279</a></p>
+<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><blockquote>
+<p>tr是translate的简写，亦即翻译，但是遗憾的是，它不能翻译句子，只能翻译单个字符。 </p>
+</blockquote>
+<h3 id="tr的工作原理是什么"><a href="#tr的工作原理是什么" class="headerlink" title="tr的工作原理是什么?"></a>tr的工作原理是什么?</h3><p>先记住一点，tr命令不接受指定的文件参数，而只是对标准输入进行翻译。好了，记住这点后，我们继续。 </p>
+<p>tr的命令格式是tr SET1 SET2，凡是在SET1中的字符，都会被替换为SET2中相应位置上的字符，简单吧! </p>
+<p>举个例子吧! </p>
+<p>tr的例子其实都大同小异，看一个最简单的例子： </p>
+<p>我们有一个包含了四个人身高的数据文件，名字叫height.txt，它的内容是这样的： </p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">printf <span class="string">'1.79 1.83</span></span><br><span class="line"><span class="string">1.65 1.59'</span> &gt; height.txt</span><br></pre></td></tr></table></figure>
+<p>我们想搞一个恶作剧，将所有人的身高从1米级别都提高到2米级别，呵呵，一个tr就可以搞定。<br><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">tr <span class="number">1</span> <span class="number">2</span> &lt; height.txt</span><br><span class="line"></span><br><span class="line"><span class="number">2.79</span> <span class="number">2.83</span> </span><br><span class="line"><span class="number">2.65</span> <span class="number">2.59</span></span><br></pre></td></tr></table></figure></p>
+<p>希望你没有忘记，tr只处理标准输入，所以我们需要将height.txt通过重定向指到tr的标准输入才可以。</p>
+<p>我们可以用tr来修改文件中的间隔符么？ </p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">tr <span class="string">' '</span> <span class="string">'\11'</span> &lt; height.txt | sed -n l</span><br><span class="line"></span><br><span class="line"><span class="number">1.79</span>\t1.<span class="number">83</span>$</span><br><span class="line"><span class="number">1.65</span>\t1.<span class="number">59</span>$</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>这里有一个小知识点，像制表符、换行符这些字符不好表示，我们可以考虑使用ASCII的八进制形式来表示，制表符的八进制形式是11，回车是15，换行是12。而在tr命令中，可以使用\nnn形式表示八进制形式的字符。如果你实在记不住这些编号，那么用\t表示制表符你总该可以记住吧！（\n代表新行, \r代表回车)</p>
+</blockquote>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sed -n l <span class="comment"># l 是什么意思?</span></span><br></pre></td></tr></table></figure>
+<p>参考:<br><a href="https://www.cnblogs.com/ctaixw/p/5860221.html" target="_blank" rel="noopener">https://www.cnblogs.com/ctaixw/p/5860221.html</a></p>
+<p>l 显示与八进制ACSII代码等价的控制符</p>
+<h3 id="使用tr能把文章中的小写都转换成大写"><a href="#使用tr能把文章中的小写都转换成大写" class="headerlink" title="使用tr能把文章中的小写都转换成大写"></a>使用tr能把文章中的小写都转换成大写</h3><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">echo AbcdE | tr <span class="string">'a-z'</span> <span class="string">'A-Z'</span></span><br><span class="line"></span><br><span class="line">ABCDE</span><br></pre></td></tr></table></figure>
+<h3 id="CHAR-怎么用？"><a href="#CHAR-怎么用？" class="headerlink" title="[CHAR*]怎么用？"></a>[CHAR*]怎么用？</h3><p>这是 SET2 专用的设定，功能是重复指定的字符到与 SET1 相同长度为止 </p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">echo <span class="number">1234567890</span> | tr <span class="string">'[:digit:]'</span> <span class="string">'[A*]'</span></span><br><span class="line"></span><br><span class="line">AAAAAAAAAA</span><br></pre></td></tr></table></figure>
+<h3 id="CHAR-REPEAT-怎么用？"><a href="#CHAR-REPEAT-怎么用？" class="headerlink" title="[CHAR*REPEAT]怎么用？"></a>[CHAR*REPEAT]怎么用？</h3><p>这也是SET2专用的设定，功能是将CHAR重复REPEAT次数。其中REPEAT次数可以用八进制数表示，但记得要以0开头表示八进制数。 </p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">echo <span class="number">1</span>你<span class="number">2</span>好<span class="number">3</span>吗<span class="number">4</span>世<span class="number">5</span>界<span class="number">67890</span> | tr <span class="string">'1-9'</span> <span class="string">'[A*5]BCDE'</span></span><br><span class="line"></span><br><span class="line">A你A好A吗B世C界DEEEA</span><br></pre></td></tr></table></figure>
+<h3 id="在tr中还有哪些表示集合的符号呢"><a href="#在tr中还有哪些表示集合的符号呢" class="headerlink" title="在tr中还有哪些表示集合的符号呢?"></a>在tr中还有哪些表示集合的符号呢?</h3><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">[:alnum:] ：所有字母字符与数字 </span><br><span class="line">[:alpha:] ：所有字母字符 </span><br><span class="line">[:blank:] ：所有水平空格 </span><br><span class="line">[:cntrl:] ：所有控制字符 </span><br><span class="line">[:digit:] ：所有数字 </span><br><span class="line">[:graph:] ：所有可打印的字符(不包含空格符) </span><br><span class="line">[:lower:] ：所有小写字母 </span><br><span class="line">[:print:] ：所有可打印的字符(包含空格符) </span><br><span class="line">[:punct:] ：所有标点字符 </span><br><span class="line">[:space:] ：所有水平与垂直空格符 </span><br><span class="line">[:upper:] ：所有大写字母 </span><br><span class="line">[:xdigit:] ：所有 <span class="number">16</span> 进位制的数字</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#将所有的数字都转换为字符x。</span><br><span class="line">echo 1你2好3吗4世5界67890 | tr [:alnum:] &apos;[x*]&apos;</span><br><span class="line"></span><br><span class="line">x你x好x吗x世x界xxxxx</span><br></pre></td></tr></table></figure>
+<h3 id="tr里面包含SET1和SET2，那如果出现两个集合的大小不同的情况，tr如何处理呢？"><a href="#tr里面包含SET1和SET2，那如果出现两个集合的大小不同的情况，tr如何处理呢？" class="headerlink" title="tr里面包含SET1和SET2，那如果出现两个集合的大小不同的情况，tr如何处理呢？"></a>tr里面包含SET1和SET2，那如果出现两个集合的大小不同的情况，tr如何处理呢？</h3><p><code>第一种情况是SET1&gt;SET2：</code> </p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">echo <span class="number">0</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>,<span class="number">8</span>,<span class="number">9</span> | tr <span class="string">'1-5'</span> <span class="string">'AB'</span></span><br><span class="line"></span><br><span class="line"><span class="number">0</span>,A,B,B,B,B,<span class="number">6</span>,<span class="number">7</span>,<span class="number">8</span>,<span class="number">9</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">结论一下子就出来了，SET1中多出来的字符都会和SET2中最后一个字符相对应。</span><br></pre></td></tr></table></figure>
+<p><code>第二种情况SET1&lt;SET2：</code></p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">echo <span class="number">0</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>,<span class="number">8</span>,<span class="number">9</span> | tr <span class="string">'1-3'</span> <span class="string">'ABCDE'</span></span><br><span class="line"></span><br><span class="line"><span class="number">0</span>,A,B,C,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>,<span class="number">8</span>,<span class="number">9</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">很明了，SET2中多余的部分将被抛弃。</span><br></pre></td></tr></table></figure>
+<h3 id="S参数用法"><a href="#S参数用法" class="headerlink" title="-S参数用法"></a>-S参数用法</h3><p>这个-s选项，是专门针对SET1起作用的，意思是如果发现有连续的SET1里的字符，就把它们缩减为1个。 </p>
+<p>一个很经典的应用就是把不规律的空格缩减为一个空格： </p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">printf <span class="string">'How   are               you? </span></span><br><span class="line"><span class="string">Fine! Thank    you! '</span> &gt; spaces.txt</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">tr -s &apos; &apos; &apos; &apos; &lt; spaces.txt </span><br><span class="line"></span><br><span class="line">How are you? </span><br><span class="line">Fine! Thank you!</span><br></pre></td></tr></table></figure>
+<h3 id="d选项咋用？"><a href="#d选项咋用？" class="headerlink" title="-d选项咋用？"></a>-d选项咋用？</h3><p>-d选项是用来删除字符用的。格式是这样的：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tr -d charset</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">tr -d <span class="string">' '</span> &lt; spaces.txt </span><br><span class="line"></span><br><span class="line">Howareyou? </span><br><span class="line">Fine!Thankyou!</span><br></pre></td></tr></table></figure>
+<p>看，该有的空格都没了…这就是-d的作用，把空格都删除了! </p>
+<p>如果你想把文章中的数字都删除，就<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tr -d [0-9] &lt; filename</span><br></pre></td></tr></table></figure></p>
+<p>就可以了。</p>
+<hr>
+<h3 id="语法："><a href="#语法：" class="headerlink" title="语法："></a>语法：</h3><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tr [options] [source-char-list] [replace-char-list] &lt; filename</span><br></pre></td></tr></table></figure>
+<p>用途：<br>    转换字符，例如：将大写字符转换成小写字符。选项可以让你指定所要删除的字符，以及将一串重复出现的字符浓缩成一个。<br>常用选项：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">－c：   取source-char-list的反义，所有不在source-char-list中的字符。常与-d , -s配合使用。</span><br></pre></td></tr></table></figure></p>
+<p>－d：   删除source-char-list中所定义的字符。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">－s：   浓缩重复的字符。如果标准输入中连续重复出现source-char-list里所列的字符，则将其浓缩成一个。或者将其浓缩成replace-char-list中的字符。</span><br></pre></td></tr></table></figure></p>
+<p>tr ‘X’ ‘x’ 把所有大写X转换成小写x<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tr &apos;()&apos; &apos;&#123;&#125;&apos; 把( )替换成&#123; &#125;</span><br></pre></td></tr></table></figure></p>
+<p>tr ‘[a-z]’ ‘[A-Z]’ 把所有小写字母变成大写字母<br>tr ‘[A-Z]’ ‘[N-ZA-M]’ 把字符A-M分别转换成N-Z，而N-Z转换成A-M<br>tr -s ‘ ‘ ‘ ‘ 把多个空格转换成单个空格<br>tr -d ‘[0-9]’ 删除所有数字 </p>
+<p>引用:[a-z] a-z内的字符组成的字符串。<br>[A-Z] A-Z内的字符组成的字符串。<br>[0-9] 数字串。 </p>
+<h3 id="代码"><a href="#代码" class="headerlink" title="代码:"></a>代码:</h3><p>速记符含义八进制方式<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">\a Ctrl-G 铃声 \007</span><br><span class="line">\b Ctrl-H 退格符 \010</span><br><span class="line">\f Ctrl-L 走行换页 \014</span><br><span class="line">\n Ctrl-J 新行 \012 </span><br><span class="line">\r Ctrl-M 回车 \015</span><br><span class="line">\t Ctrl-I tab键 \011</span><br><span class="line">\v Ctrl-X  \030</span><br></pre></td></tr></table></figure></p>
+<p>如果要去除重复字母或将其压缩在一起，使用-s选项。因为都是字母，故使用<code>[a-z][A-Z]</code>。输入文件重定向到tr命令。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">echo &apos;success different</span><br><span class="line">And the cowwwwws went homeeeeeeeeeeeee </span><br><span class="line">Or did theyyyyyyyyyyyyy&apos; | tr -s &quot;[a-zA-Z]&quot;</span><br><span class="line"></span><br><span class="line">suces diferent</span><br><span class="line">And the cows went home </span><br><span class="line">Or did they</span><br></pre></td></tr></table></figure></p>
+<p><code>注: 小心使用 success 会变成 suces</code></p>
+<h3 id="删除空行"><a href="#删除空行" class="headerlink" title="删除空行"></a>删除空行</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">echo &apos;9879932 Spitfire </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">190992 Lancaster </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">238991 Typhoon </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&apos; | tr -s &quot;\012&quot;</span><br></pre></td></tr></table></figure>
+<h3 id="大写到小写"><a href="#大写到小写" class="headerlink" title="大写到小写"></a>大写到小写</h3><p>除了删除控制字符，转换大小写是tr最常用的功能。为此需指定即将转换的小写字符[a-z]和转换结果[A-Z]。<br>第一个例子，tr从一个包含大小写字母的字符串中接受输入。</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#tr "[a-z]" "[A-Z]" 或者 tr "[:lower:]" "[:upper:]" </span></span><br><span class="line">echo <span class="string">"May Day,May Day,Going Down.."</span> | tr <span class="string">"[a-z]"</span> <span class="string">"[A-Z]"</span></span><br><span class="line"> </span><br><span class="line">MAY DAY,MAY DAY,GOING DOWN..</span><br></pre></td></tr></table></figure>
+<h3 id="删除指定字符"><a href="#删除指定字符" class="headerlink" title="删除指定字符"></a>删除指定字符</h3><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">偶尔会从下载文件中删除只包含字母或数字的列。需要结合使用-c和-s选项完成此功能。 </span><br><span class="line">下面的文件包含一个星期的日程表。任务是从其中删除所有数字，只保留日期。日期有大写，也有小写格式。因此需指定两个字符范围[a-z]和[A-Z]，命令tr -cs <span class="string">"[a-z][A-Z]"</span> <span class="string">"\n"</span>将文件每行所有不包含在[a-z]或[A-Z]（所有希腊字母）的字符串放在字符串replace-char-list中并转换为一新行。</span><br><span class="line"></span><br><span class="line">-s 选项表明压缩所有新行， </span><br><span class="line">-c 表明取source-char-list的反义。</span><br></pre></td></tr></table></figure>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">echo <span class="string">'success different</span></span><br><span class="line"><span class="string">mondy 1all0:5b0 </span></span><br><span class="line"><span class="string">Tuesday 15:00 </span></span><br><span class="line"><span class="string">wednesday 15:30 </span></span><br><span class="line"><span class="string">thurday 10:30 </span></span><br><span class="line"><span class="string">Fridya 09:20 </span></span><br><span class="line"><span class="string">'</span> | tr -cs <span class="string">"[a-z][A-Z]"</span> <span class="string">"[\n*]"</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># [\n*] 自动匹配 SET1的长度</span></span><br><span class="line"></span><br><span class="line">success</span><br><span class="line">different</span><br><span class="line">mondy</span><br><span class="line">all</span><br><span class="line">b</span><br><span class="line">Tuesday</span><br><span class="line">wednesday</span><br><span class="line">thurday</span><br><span class="line">Fridya</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <span>link：</span>
+      <a href="http://pro.stonepark.fun/2018/02/17/tr用法解析-macos环境BSD-shell/" title="tr用法解析(macos环境BSD shell)" target="_blank" rel="external">http://pro.stonepark.fun/2018/02/17/tr用法解析-macos环境BSD-shell/</a>
+    </li>
+    
+  </ul>
+</blockquote>
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+      <div id="vcomments"></div>
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2018/02/18/sed-grep-awk-正则表达式/" title="sed grep awk 正则表达式"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2018/02/16/awk用法解析-macos环境BSD-shell/" title="awk用法解析(macos环境BSD shell)"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+  </ul>
+  
+  
+  
+  <div class="bar-right">
+    
+  </div>
+  </div>
+</nav>
+  
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/stone0117" target="_blank" title="Github" data-toggle="tooltip" data-placement="top"><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="http://weibo.com/cofess" target="_blank" title="Weibo" data-toggle="tooltip" data-placement="top"><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="https://twitter.com/iwebued" target="_blank" title="Twitter" data-toggle="tooltip" data-placement="top"><i class="icon icon-twitter"></i></a></li>
+        
+        <li><a href="https://www.behance.net/cofess" target="_blank" title="Behance" data-toggle="tooltip" data-placement="top"><i class="icon icon-behance"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle="tooltip" data-placement="top"><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+<script src="/js/plugin.min.js"></script>
+<script src="/js/application.js"></script>
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+
+
+
+
+   
+
+
+
+
+   
+    
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/valine"></script>
+  <script type="text/javascript">
+  var GUEST = ['nick', 'mail', 'link'];
+  var meta = 'nick,mail,link';
+  meta = meta.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#vcomments',
+    verify: false,
+    notify: false,
+    appId: '',
+    appKey: '',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: meta,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+  </script>
+
+     
+
+
+
+
+
+
+
+</body>
+</html>

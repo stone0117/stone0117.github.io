@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000">
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top">
+  
+  
+  <!--<title>sed高级用法(GHDNPD) | Hexo</title>-->
+  <title>sed高级用法(GHDNPD)</title>
+  <meta name="description" content="##How does the command sed ‘1!G;h;$!d’ reverse the contents of a file?参考:https://unix.stackexchange.com/questions/233014/how-does-the-command-sed-1ghd-reverse-the-contents-of-a-filehttp://blog.csdn.ne">
+<meta name="keywords" content="sed">
+<meta property="og:type" content="article">
+<meta property="og:title" content="sed高级用法(GHDNPD)">
+<meta property="og:url" content="http://pro.stonepark.fun/2018/02/20/sed高级用法-GHDNPD/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="##How does the command sed ‘1!G;h;$!d’ reverse the contents of a file?参考:https://unix.stackexchange.com/questions/233014/how-does-the-command-sed-1ghd-reverse-the-contents-of-a-filehttp://blog.csdn.ne">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-02-20T06:40:57.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="sed高级用法(GHDNPD)">
+<meta name="twitter:description" content="##How does the command sed ‘1!G;h;$!d’ reverse the contents of a file?参考:https://unix.stackexchange.com/questions/233014/how-does-the-command-sed-1ghd-reverse-the-contents-of-a-filehttp://blog.csdn.ne">
+  <!-- Canonical links -->
+  <link rel="canonical" href="http://pro.stonepark.fun/2018/02/20/sed高级用法-GHDNPD/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.jpg" type="image/x-icon">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+  
+  
+  
+</head>
+
+
+<body class="main-center theme-black" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/stone0117" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpeg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">StonePark</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">html node python iOS</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> Beijing, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索">
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech>
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-repository">
+          <a href="/repository">
+            
+            <i class="icon icon-project"></i>
+            
+            <span class="menu-title">项目</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books">
+            
+            <i class="icon icon-book-fill"></i>
+            
+            <span class="menu-title">书单</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links">
+            
+            <i class="icon icon-friendship"></i>
+            
+            <span class="menu-title">友链</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">关于</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/stone0117" target="_blank" title="Github" data-toggle="tooltip" data-placement="top"><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="http://weibo.com/cofess" target="_blank" title="Weibo" data-toggle="tooltip" data-placement="top"><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="https://twitter.com/iwebued" target="_blank" title="Twitter" data-toggle="tooltip" data-placement="top"><i class="icon icon-twitter"></i></a></li>
+        
+        <li><a href="https://www.behance.net/cofess" target="_blank" title="Behance" data-toggle="tooltip" data-placement="top"><i class="icon icon-behance"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle="tooltip" data-placement="top"><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>coding!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/IntelliJ-IDEA/">IntelliJ IDEA</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/apache/">apache</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/chrome/">chrome</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/freemarker/">freemarker</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/iOS/">iOS</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/javascript/">javascript</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/links/">links</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/macos/">macos</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/mysql/">mysql</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/node/">node</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/shell/">shell</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/其他/">其他</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/搜索/">搜索</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget-body">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ActiveMQ/">ActiveMQ</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AppCode/">AppCode</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/FastDFS/">FastDFS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IntelliJ-IDEA/">IntelliJ IDEA</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Redis/">Redis</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/apache/">apache</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/awk/">awk</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/chrome/">chrome</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/">docker</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dubbo/">dubbo</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/fastDFS-nginx综合/">fastDFS & nginx综合</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/find/">find</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/freemarker/">freemarker</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/google/">google</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/grep/">grep</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/idea坑/">idea坑</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/">javascript</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/links/">links</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nginx/">nginx</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/node/">node</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/regex/">regex</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sed/">sed</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/shell/">shell</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/solr/">solr</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sso/">sso</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/svn/">svn</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tomcat/">tomcat</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tr/">tr</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/xargs/">xargs</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/字符串操作/">字符串操作</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tags/ActiveMQ/" style="font-size: 13px;">ActiveMQ</a> <a href="/tags/AppCode/" style="font-size: 13px;">AppCode</a> <a href="/tags/FastDFS/" style="font-size: 13px;">FastDFS</a> <a href="/tags/IntelliJ-IDEA/" style="font-size: 13px;">IntelliJ IDEA</a> <a href="/tags/Linux/" style="font-size: 13.5px;">Linux</a> <a href="/tags/Redis/" style="font-size: 13px;">Redis</a> <a href="/tags/apache/" style="font-size: 13px;">apache</a> <a href="/tags/awk/" style="font-size: 13px;">awk</a> <a href="/tags/chrome/" style="font-size: 13px;">chrome</a> <a href="/tags/docker/" style="font-size: 13px;">docker</a> <a href="/tags/dubbo/" style="font-size: 13px;">dubbo</a> <a href="/tags/fastDFS-nginx综合/" style="font-size: 13px;">fastDFS & nginx综合</a> <a href="/tags/find/" style="font-size: 13px;">find</a> <a href="/tags/freemarker/" style="font-size: 13px;">freemarker</a> <a href="/tags/google/" style="font-size: 13px;">google</a> <a href="/tags/grep/" style="font-size: 13px;">grep</a> <a href="/tags/idea坑/" style="font-size: 13px;">idea坑</a> <a href="/tags/javascript/" style="font-size: 14px;">javascript</a> <a href="/tags/links/" style="font-size: 13px;">links</a> <a href="/tags/mysql/" style="font-size: 13px;">mysql</a> <a href="/tags/nginx/" style="font-size: 13px;">nginx</a> <a href="/tags/node/" style="font-size: 13px;">node</a> <a href="/tags/regex/" style="font-size: 13px;">regex</a> <a href="/tags/sed/" style="font-size: 14px;">sed</a> <a href="/tags/shell/" style="font-size: 13px;">shell</a> <a href="/tags/solr/" style="font-size: 13px;">solr</a> <a href="/tags/sso/" style="font-size: 13px;">sso</a> <a href="/tags/svn/" style="font-size: 13.5px;">svn</a> <a href="/tags/tomcat/" style="font-size: 13px;">tomcat</a> <a href="/tags/tr/" style="font-size: 13px;">tr</a> <a href="/tags/xargs/" style="font-size: 13px;">xargs</a> <a href="/tags/字符串操作/" style="font-size: 13px;">字符串操作</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">二月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">一月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">二月 2018</a><span class="archive-list-count">30</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">八月 2016</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">七月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">六月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">九月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/06/">六月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">三月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/12/">十二月 2014</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/javascript/">javascript</a>
+              </p>
+              <p class="item-title">
+                <a href="/2019/02/22/String-prototype-split/" class="title">String.prototype.split()</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2019-02-21T20:16:48.000Z" itemprop="datePublished">2019-02-22</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/node/">node</a>
+              </p>
+              <p class="item-title">
+                <a href="/2019/01/04/module-exports与exports，export与export-default之间的关系和区别/" class="title">module.exports与exports，export与export default之间的关系和区别</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2019-01-04T09:44:16.000Z" itemprop="datePublished">2019-01-04</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/javascript/">javascript</a>
+              </p>
+              <p class="item-title">
+                <a href="/2018/04/05/javascript-内存管理-循环引用处理/" class="title">javascript-内存管理-循环引用处理</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2018-04-05T02:18:29.000Z" itemprop="datePublished">2018-04-05</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/javascript/">javascript</a>
+              </p>
+              <p class="item-title">
+                <a href="/2018/04/04/javascript的命名代码块/" class="title">javascript的命名代码块</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2018-04-04T05:24:26.000Z" itemprop="datePublished">2018-04-04</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/shell/">shell</a>
+              </p>
+              <p class="item-title">
+                <a href="/2018/04/03/find用法解析-macos环境BSD-shell/" class="title">find用法解析(macos环境BSD shell)</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2018-04-03T08:44:33.000Z" itemprop="datePublished">2018-04-03</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-sed高级用法-GHDNPD" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      sed高级用法(GHDNPD)
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2018/02/20/sed高级用法-GHDNPD/" class="article-date">
+	  <time datetime="2018-02-20T06:40:33.000Z" itemprop="datePublished">2018-02-20</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/shell/">shell</a>
+  </span>
+
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link" href="/tags/sed/">sed</a>
+  </span>
+
+
+        
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2018/02/20/sed高级用法-GHDNPD/#comments" class="article-comment-link">评论</a></span>
+        
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <p>##How does the command sed ‘1!G;h;$!d’ reverse the contents of a file?<br>参考:<br><a href="https://unix.stackexchange.com/questions/233014/how-does-the-command-sed-1ghd-reverse-the-contents-of-a-file" target="_blank" rel="noopener">https://unix.stackexchange.com/questions/233014/how-does-the-command-sed-1ghd-reverse-the-contents-of-a-file</a><br><a href="http://blog.csdn.net/itsenlin/article/details/21129405" target="_blank" rel="noopener">http://blog.csdn.net/itsenlin/article/details/21129405</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">#test.txt</span><br><span class="line"></span><br><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td></tr></table></figure>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sed <span class="string">'1!G;h;$!d'</span> test.txt</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">d     	Delete pattern space.  Start next cycle.    删除pattern space的内容，开始下一个循环.</span><br><span class="line">h、 H   Copy/append pattern space to hold space.   复制/追加pattern space的内容到hold space.</span><br><span class="line">g、 G   Copy/append hold space to pattern space.   复制/追加hold space的内容到pattern space.</span><br><span class="line">x       Exchange the contents of the hold and pattern spaces.    交换hold space和pattern space的内容.</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">sed&apos;1！G; h; $！d&apos; 文件</span><br><span class="line">首先，sed拥有一个占有空间和一个模式空间。在专注于特定的命令之前，我们必须区分它们。</span><br><span class="line"></span><br><span class="line">当sed读取新行时，它被加载到模式空间中。因此，每次处理新行时都会覆盖该空间。另一方面，在整个处理过程中保持空间是一致的，并且值可以存储在那里供以后使用。</span><br><span class="line"></span><br><span class="line">以下命令：</span><br><span class="line"></span><br><span class="line">在这个语句中有3个命令：1!G，h和$!d</span><br><span class="line"></span><br><span class="line">1!G意味着该G命令在除第一行之外的每一行执行（!否定1）。G意味着将保存空间中的内容追加到模式空间中。</span><br><span class="line"></span><br><span class="line">h适用于每一行。它将模式空间复制到保留空间（并覆盖它）。</span><br><span class="line"></span><br><span class="line">$!d适用于除最后一行之外的每一行（$表示最后一行，!否定它）。d是删除行（模式空间）的命令。</span><br><span class="line"></span><br><span class="line">现在，读取第一行时，sed执行该h命令。第一行被复制到保存空间中。然后它被删除，因为它符合$!条件。sed继续第二行。</span><br><span class="line">第二行符合条件1!（不是第一行），因此保留空间（具有第一行）被附加到模式空间（具有第二行）。之后，在模式空间中，现在是第二行，后面跟着第一行，由换行符分隔。现在，该h命令适用（如在每行中）; 模式空间中的所有内容都被复制到保存空间。第三条语句（$!d）适用：该行将从模式空间中删除。</span><br><span class="line">第2步现在完成所有行。我们跳到最后一行。</span><br><span class="line">在最后一行（$）中，几乎全部步骤2完成，但不是删除部分（d）。sed，如果没有调用-n，则在每个输入行的处理结束时自动打印模式空间。所以，不删除时，模式空间打印。它现在包含所有倒行顺序的行。</span><br></pre></td></tr></table></figure>
+<p>sed’1!G; h; $!d’ 文件</p>
+<p>1!G : 第一行不从保持空间中拿数据, 因为是空的<br>h: 模式空间的数据 拷贝到 保持空间 , 是覆盖操作<br>$!d: 不是最后一行就删除模式空间的内容, 因为读完一行 模式空间有内容sed就会输出</p>
+<p>第一行操作 : 模式空间读入行数据, 1!G(满足);不从保持空间拿数据, h(满足) 模式空间内容拷贝到保持空间, $!d(满足)删除模式空间的内容 | 模式空间没数据 sed就不打印</p>
+<p>第二行操作 : 模式空间读入行数据, 1!G(不满足,所以执行G);从保持空间拿数据(变成第二行\n第一行), h(满足) 模式空间内容拷贝到保持空间, $!d(满足)删除模式空间的内容 | 模式空间没数据 sed就不打印</p>
+<p>第三行操作 : 模式空间读入行数据, 1!G(不满足,所以执行G);从保持空间拿数据(变成第三行\n第二行\n第一行), h(满足) 模式空间内容拷贝到保持空间, $!d(满足)删除模式空间的内容 | 模式空间没数据 sed就不打印</p>
+<p>…</p>
+<p>最后一行操作: 模式空间读入行数据, 1!G(不满足,所以执行G);从保持空间拿数据(变成最后一行\n…第三行\n第二行\n第一行), h(满足) 模式空间内容拷贝到保持空间, $!d(最后一行就不执行d)保留模式空间的内容 | 模式空间有数据 sed打印模式空间的数据</p>
+<h2 id="NPD命令"><a href="#NPD命令" class="headerlink" title="NPD命令"></a>NPD命令</h2><p>参考:<br><a href="http://blog.csdn.net/heihuifeng/article/details/7943982" target="_blank" rel="noopener">http://blog.csdn.net/heihuifeng/article/details/7943982</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">再贴上N P D的解释：</span><br><span class="line"></span><br><span class="line">P：Print up to the first embedded newline of the current pattern space.</span><br><span class="line">(就是输出模式空间开头到第一个\n之间的内容)</span><br><span class="line"></span><br><span class="line">D：If pattern space contains no newline, start a normal new cycle as if the d command was issued. Otherwise, delete text in the pattern space up to the first newline, and restart cycle with the resultant pattern space, without reading a new line of input.</span><br><span class="line">(是删除模式空间开头到第一个\n(含)之间的内容，并且控制流跳到脚本的第一条语句。这里一定要注意这句话“and restart cycle with the resultant pattern space, without reading a new line of input.”，即它是在不改变当前行号的情况下，从头执行的。)</span><br><span class="line">这句话也充分的说明了，为什么很多人不愿意读中文翻译版书籍的原因。:-)</span><br><span class="line"></span><br><span class="line">N：Add a newline to the pattern space, then append the next line of input to the pattern space. If there is no more input then sed exits without processing any more commands.</span><br><span class="line">(追加下一个输入行到模板块后面并在二者间嵌入一个新行，改变当前行号码。如果没有下一个可处理的行，则退出)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">d  删除资料。</span><br><span class="line">D  删除 pattern space 内第一个 newline 字母 / 前的资料。</span><br><span class="line"></span><br><span class="line">n  读入下一笔资料。</span><br><span class="line">N  添加下一笔资料到 pattern space。</span><br><span class="line"></span><br><span class="line">p  印出资料。</span><br><span class="line">P  印出 pattern space 内第一个 newline 字母 / 前的资料。</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">test.txt</span><br><span class="line">#</span><br><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td></tr></table></figure>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sed -E <span class="nomarkup">-ne</span> <span class="string">'/#/!p'</span>  test.txt</span><br></pre></td></tr></table></figure>
+<p>打印:<br>1<br>2<br>3</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 在mac os ; -r 和 mac里的-E 一样 , mac中没有-r</span></span><br><span class="line">sed -E -e :a -e <span class="string">'$!N;/#/!s/\n//;ta'</span> -e <span class="string">'P;D'</span> test.txt</span><br></pre></td></tr></table></figure>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 在Linux ; -r 和 mac里的-E 一样 , mac中没有-r</span></span><br><span class="line">sed -r <span class="string">':a;$!N;/#/!s/\n/ /;ta;P;D'</span> urfile</span><br></pre></td></tr></table></figure>
+<hr>
+<h3 id="n-的作用"><a href="#n-的作用" class="headerlink" title="-n 的作用"></a>-n 的作用</h3><p>By default, each line of input is echoed to the standard output<br>             after all of the commands have been applied to it.  The -n option<br>             suppresses this behavior.</p>
+<p>默认情况下，每一行输入都回显到标准输出。<br>在所有的命令都被应用到它之后。-n选项<br>抑制这种行为。</p>
+<blockquote>
+<p>默认情况加 每一行都打印 只要模式空间中有数据 都打印,<br>-n的作用是 取消这种行为, -n和p命令结合 选择性的打印…</p>
+</blockquote>
+<h3 id="sed-打印行号"><a href="#sed-打印行号" class="headerlink" title="sed 打印行号"></a>sed 打印行号</h3><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sed <span class="nomarkup">-ne</span> <span class="string">'&#123;=;p;&#125;'</span> web.xml | sed -E -e <span class="string">'$!N;s/\n/	/'</span></span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <span>link：</span>
+      <a href="http://pro.stonepark.fun/2018/02/20/sed高级用法-GHDNPD/" title="sed高级用法(GHDNPD)" target="_blank" rel="external">http://pro.stonepark.fun/2018/02/20/sed高级用法-GHDNPD/</a>
+    </li>
+    
+  </ul>
+</blockquote>
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+      <div id="vcomments"></div>
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2018/02/21/solr/" title="solr"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2018/02/19/sed-删除空行/" title="sed 删除空行"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+  </ul>
+  
+  
+  
+  <div class="bar-right">
+    
+  </div>
+  </div>
+</nav>
+  
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/stone0117" target="_blank" title="Github" data-toggle="tooltip" data-placement="top"><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="http://weibo.com/cofess" target="_blank" title="Weibo" data-toggle="tooltip" data-placement="top"><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="https://twitter.com/iwebued" target="_blank" title="Twitter" data-toggle="tooltip" data-placement="top"><i class="icon icon-twitter"></i></a></li>
+        
+        <li><a href="https://www.behance.net/cofess" target="_blank" title="Behance" data-toggle="tooltip" data-placement="top"><i class="icon icon-behance"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle="tooltip" data-placement="top"><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+<script src="/js/plugin.min.js"></script>
+<script src="/js/application.js"></script>
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+
+
+
+
+   
+
+
+
+
+   
+    
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/valine"></script>
+  <script type="text/javascript">
+  var GUEST = ['nick', 'mail', 'link'];
+  var meta = 'nick,mail,link';
+  meta = meta.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#vcomments',
+    verify: false,
+    notify: false,
+    appId: '',
+    appKey: '',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: meta,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+  </script>
+
+     
+
+
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000">
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top">
+  
+  
+  <!--<title>FastDFS | Hexo</title>-->
+  <title>FastDFS</title>
+  <meta name="description" content="安装123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172737475767778798081828384858687888990919293949596979899100101102">
+<meta name="keywords" content="FastDFS">
+<meta property="og:type" content="article">
+<meta property="og:title" content="FastDFS">
+<meta property="og:url" content="http://pro.stonepark.fun/2018/02/10/FastDFS/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="安装123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172737475767778798081828384858687888990919293949596979899100101102">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://pro.stonepark.fun/2018/02/10/FastDFS/download.png">
+<meta property="og:updated_time" content="2018-03-01T17:13:26.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="FastDFS">
+<meta name="twitter:description" content="安装123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172737475767778798081828384858687888990919293949596979899100101102">
+<meta name="twitter:image" content="http://pro.stonepark.fun/2018/02/10/FastDFS/download.png">
+  <!-- Canonical links -->
+  <link rel="canonical" href="http://pro.stonepark.fun/2018/02/10/FastDFS/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.jpg" type="image/x-icon">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+  
+  
+  
+</head>
+
+
+<body class="main-center theme-black" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/stone0117" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpeg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">StonePark</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">html node python iOS</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> Beijing, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索">
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech>
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-repository">
+          <a href="/repository">
+            
+            <i class="icon icon-project"></i>
+            
+            <span class="menu-title">项目</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books">
+            
+            <i class="icon icon-book-fill"></i>
+            
+            <span class="menu-title">书单</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links">
+            
+            <i class="icon icon-friendship"></i>
+            
+            <span class="menu-title">友链</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">关于</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/stone0117" target="_blank" title="Github" data-toggle="tooltip" data-placement="top"><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="http://weibo.com/cofess" target="_blank" title="Weibo" data-toggle="tooltip" data-placement="top"><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="https://twitter.com/iwebued" target="_blank" title="Twitter" data-toggle="tooltip" data-placement="top"><i class="icon icon-twitter"></i></a></li>
+        
+        <li><a href="https://www.behance.net/cofess" target="_blank" title="Behance" data-toggle="tooltip" data-placement="top"><i class="icon icon-behance"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle="tooltip" data-placement="top"><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>coding!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/IntelliJ-IDEA/">IntelliJ IDEA</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/apache/">apache</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/chrome/">chrome</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/freemarker/">freemarker</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/iOS/">iOS</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/javascript/">javascript</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/links/">links</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/macos/">macos</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/mysql/">mysql</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/node/">node</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/shell/">shell</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/其他/">其他</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/搜索/">搜索</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget-body">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ActiveMQ/">ActiveMQ</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AppCode/">AppCode</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/FastDFS/">FastDFS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IntelliJ-IDEA/">IntelliJ IDEA</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Redis/">Redis</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/apache/">apache</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/awk/">awk</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/chrome/">chrome</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/">docker</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dubbo/">dubbo</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/fastDFS-nginx综合/">fastDFS & nginx综合</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/find/">find</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/freemarker/">freemarker</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/google/">google</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/grep/">grep</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/idea坑/">idea坑</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/">javascript</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/links/">links</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nginx/">nginx</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/node/">node</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/regex/">regex</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sed/">sed</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/shell/">shell</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/solr/">solr</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sso/">sso</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/svn/">svn</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tomcat/">tomcat</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tr/">tr</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/xargs/">xargs</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/字符串操作/">字符串操作</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tags/ActiveMQ/" style="font-size: 13px;">ActiveMQ</a> <a href="/tags/AppCode/" style="font-size: 13px;">AppCode</a> <a href="/tags/FastDFS/" style="font-size: 13px;">FastDFS</a> <a href="/tags/IntelliJ-IDEA/" style="font-size: 13px;">IntelliJ IDEA</a> <a href="/tags/Linux/" style="font-size: 13.5px;">Linux</a> <a href="/tags/Redis/" style="font-size: 13px;">Redis</a> <a href="/tags/apache/" style="font-size: 13px;">apache</a> <a href="/tags/awk/" style="font-size: 13px;">awk</a> <a href="/tags/chrome/" style="font-size: 13px;">chrome</a> <a href="/tags/docker/" style="font-size: 13px;">docker</a> <a href="/tags/dubbo/" style="font-size: 13px;">dubbo</a> <a href="/tags/fastDFS-nginx综合/" style="font-size: 13px;">fastDFS & nginx综合</a> <a href="/tags/find/" style="font-size: 13px;">find</a> <a href="/tags/freemarker/" style="font-size: 13px;">freemarker</a> <a href="/tags/google/" style="font-size: 13px;">google</a> <a href="/tags/grep/" style="font-size: 13px;">grep</a> <a href="/tags/idea坑/" style="font-size: 13px;">idea坑</a> <a href="/tags/javascript/" style="font-size: 14px;">javascript</a> <a href="/tags/links/" style="font-size: 13px;">links</a> <a href="/tags/mysql/" style="font-size: 13px;">mysql</a> <a href="/tags/nginx/" style="font-size: 13px;">nginx</a> <a href="/tags/node/" style="font-size: 13px;">node</a> <a href="/tags/regex/" style="font-size: 13px;">regex</a> <a href="/tags/sed/" style="font-size: 14px;">sed</a> <a href="/tags/shell/" style="font-size: 13px;">shell</a> <a href="/tags/solr/" style="font-size: 13px;">solr</a> <a href="/tags/sso/" style="font-size: 13px;">sso</a> <a href="/tags/svn/" style="font-size: 13.5px;">svn</a> <a href="/tags/tomcat/" style="font-size: 13px;">tomcat</a> <a href="/tags/tr/" style="font-size: 13px;">tr</a> <a href="/tags/xargs/" style="font-size: 13px;">xargs</a> <a href="/tags/字符串操作/" style="font-size: 13px;">字符串操作</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">二月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">一月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">二月 2018</a><span class="archive-list-count">30</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">八月 2016</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">七月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">六月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">九月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/06/">六月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">三月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/12/">十二月 2014</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/javascript/">javascript</a>
+              </p>
+              <p class="item-title">
+                <a href="/2019/02/22/String-prototype-split/" class="title">String.prototype.split()</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2019-02-21T20:16:48.000Z" itemprop="datePublished">2019-02-22</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/node/">node</a>
+              </p>
+              <p class="item-title">
+                <a href="/2019/01/04/module-exports与exports，export与export-default之间的关系和区别/" class="title">module.exports与exports，export与export default之间的关系和区别</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2019-01-04T09:44:16.000Z" itemprop="datePublished">2019-01-04</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/javascript/">javascript</a>
+              </p>
+              <p class="item-title">
+                <a href="/2018/04/05/javascript-内存管理-循环引用处理/" class="title">javascript-内存管理-循环引用处理</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2018-04-05T02:18:29.000Z" itemprop="datePublished">2018-04-05</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/javascript/">javascript</a>
+              </p>
+              <p class="item-title">
+                <a href="/2018/04/04/javascript的命名代码块/" class="title">javascript的命名代码块</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2018-04-04T05:24:26.000Z" itemprop="datePublished">2018-04-04</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/shell/">shell</a>
+              </p>
+              <p class="item-title">
+                <a href="/2018/04/03/find用法解析-macos环境BSD-shell/" class="title">find用法解析(macos环境BSD shell)</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2018-04-03T08:44:33.000Z" itemprop="datePublished">2018-04-03</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-FastDFS" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      FastDFS
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2018/02/10/FastDFS/" class="article-date">
+	  <time datetime="2018-02-10T02:16:39.000Z" itemprop="datePublished">2018-02-10</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/其他/">其他</a>
+  </span>
+
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link" href="/tags/FastDFS/">FastDFS</a>
+  </span>
+
+
+        
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2018/02/10/FastDFS/#comments" class="article-comment-link">评论</a></span>
+        
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 第一步：安装gcc环境</span></span><br><span class="line">yum install -y gcc-c++</span><br><span class="line"></span><br><span class="line"><span class="comment"># 第二步：安装libevent，FastDFS依赖libevent库</span></span><br><span class="line"></span><br><span class="line">yum install -y libevent</span><br><span class="line"></span><br><span class="line"><span class="comment"># 第三步：安装libfastcommon，libfastcommon是FastDFS官方提供的包，包含了FastDFS运行所需要的一些基础库</span></span><br><span class="line"></span><br><span class="line">wget -P ~/soft/ <span class="string">"http://ou0y29lb2.bkt.clouddn.com/libfastcommonV1.0.7.tar.gz"</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 下载fastdfs #最新版可从github上下载 https://github.com/happyfish100/fastdfs</span></span><br><span class="line">wget -P ~/soft/ <span class="string">"http://ou0y29lb2.bkt.clouddn.com/fastdfs-5.05.tar.gz"</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> [ ! -d <span class="string">"/usr/local/fastdfs"</span> ]; then</span><br><span class="line">        mkdir /usr/local/fastdfs</span><br><span class="line">fi</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">cp ~/soft/libfastcommonV1.<span class="number">0.7</span>.tar.gz /usr/local/fastdfs</span><br><span class="line">cp ~/soft/fastdfs-<span class="number">5.05</span>.tar.gz /usr/local/fastdfs</span><br><span class="line"></span><br><span class="line">cd /usr/local/fastdfs</span><br><span class="line"></span><br><span class="line">tar -zxvf libfastcommonV1.<span class="number">0.7</span>.tar.gz</span><br><span class="line"></span><br><span class="line">tar -zxvf fastdfs-<span class="number">5.05</span>.tar.gz</span><br><span class="line"></span><br><span class="line">cd libfastcommon-<span class="number">1.0</span>.<span class="number">7</span></span><br><span class="line"></span><br><span class="line">./make.sh &amp;&amp; ./make.sh install</span><br><span class="line"></span><br><span class="line"><span class="comment"># libfastcommon安装好后会自动将库文件拷贝至/usr/lib64下，由于FastDFS程序引用usr/lib目录，所以需要将/usr/lib64下的库文件拷贝至/usr/lib下</span></span><br><span class="line">cp /usr/lib64/libfastcommon.so /usr/lib/</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">cd /usr/local/fastdfs/fastdfs-<span class="number">5.05</span></span><br><span class="line"></span><br><span class="line">./make.sh &amp;&amp; ./make.sh install</span><br><span class="line"></span><br><span class="line"><span class="comment"># --- 配置 ------</span></span><br><span class="line"><span class="comment"># 拷贝/usr/local/fastdfs/fastdfs-5.05/conf 目录下的文件到/etc/fdfs 目录下</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> [ ! -d <span class="string">"/etc/fdfs"</span> ]; then</span><br><span class="line">        mkdir /etc/fdfs</span><br><span class="line">fi</span><br><span class="line"></span><br><span class="line">cp /usr/local/fastdfs/fastdfs-<span class="number">5.05</span>/conf/* /etc/fdfs/</span><br><span class="line"></span><br><span class="line">cd /etc/fdfs</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># ★ Tracker配置</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># in mac os </span></span><br><span class="line"><span class="comment">#sed -i '' '/^base_path/s/^/#/' tracker.conf</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#sed -i '' '/^#base_path/a\</span></span><br><span class="line"><span class="comment">#base_path=/usr/local/fastdfs/tracker</span></span><br><span class="line"><span class="comment">#' tracker.conf</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># in linux</span></span><br><span class="line"></span><br><span class="line">sed -i <span class="string">'/^base_path/s/^/#/'</span> /etc/fdfs/tracker.conf</span><br><span class="line"></span><br><span class="line">sed -i <span class="string">'/^#base_path/a\\base_path=\/usr\/local\/fastdfs\/tracker'</span> /etc/fdfs/tracker.conf</span><br><span class="line"></span><br><span class="line"><span class="comment"># ★ Storage配置</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#指定storage的组名</span></span><br><span class="line"><span class="comment">#group_name=group1</span></span><br><span class="line"><span class="comment">#base_path=/usr/local/fastdfs/storage</span></span><br><span class="line"><span class="comment">#store_path0=/usr/local/fastdfs/storage</span></span><br><span class="line"><span class="comment">#如果有多个挂载磁盘则定义多个store_path，如下</span></span><br><span class="line"><span class="comment">#store_path1=.....</span></span><br><span class="line"><span class="comment">#store_path2=......</span></span><br><span class="line"><span class="comment">#配置tracker服务器IP和端口</span></span><br><span class="line"><span class="comment">#tracker_server=192.168.242.140:22122   </span></span><br><span class="line"><span class="comment">#如果有多个则配置多个tracker</span></span><br><span class="line"><span class="comment">#tracker_server=192.168.101.4:22122</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">filepath=<span class="string">"/etc/fdfs/storage.conf"</span></span><br><span class="line"></span><br><span class="line">ipaddr=`ifconfig -a|grep inet|grep -v <span class="number">127.0</span>.<span class="number">0.1</span>|grep -v inet6|awk <span class="string">'&#123;print $2&#125;'</span>|tr -d <span class="string">"addr:"</span>`</span><br><span class="line"></span><br><span class="line">names=(<span class="string">"group_name"</span> <span class="string">"base_path"</span> <span class="string">"store_path0"</span> <span class="string">"tracker_server"</span>)</span><br><span class="line"></span><br><span class="line">replace_names=(<span class="string">"group_name=group1"</span> <span class="string">"base_path=\/usr\/local\/fastdfs\/storage"</span> <span class="string">"store_path0=\/usr\/local\/fastdfs\/storage"</span> <span class="string">"tracker_server=<span class="variable">$ipaddr:22122</span>"</span>)</span><br><span class="line"></span><br><span class="line">count=$&#123;<span class="comment">#names[*]&#125;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (( i=<span class="number">0</span>; i&lt;<span class="string">"<span class="variable">$count</span>"</span>; i=i+<span class="number">1</span> ))</span><br><span class="line"></span><br><span class="line"><span class="keyword">do</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">#sed -i "" "/^$&#123;names[$i]&#125;/s/^/#/" $filepath</span></span><br><span class="line">	sed -i <span class="string">"/^$&#123;names[<span class="variable">$i</span>]&#125;/s/^/#/"</span> <span class="variable">$filepath</span></span><br><span class="line">	<span class="comment">#sed -i "" "/^#$&#123;names[$i]&#125;/a\ </span></span><br><span class="line">	<span class="comment">#$&#123;replace_names[$i]&#125;" $filepath</span></span><br><span class="line">	sed -i <span class="string">"/^#$&#123;names[<span class="variable">$i</span>]&#125;/a\\$&#123;replace_names[<span class="variable">$i</span>]&#125;"</span> <span class="variable">$filepath</span></span><br><span class="line">	</span><br><span class="line">done</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建目录</span></span><br><span class="line"><span class="comment">#mkdir /usr/local/fastdfs/tracker –p</span></span><br><span class="line"><span class="comment">#mkdir /usr/local/fastdfs/storage –p</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> [ ! -d <span class="string">"/usr/local/fastdfs/tracker"</span> ]; then</span><br><span class="line">        mkdir /usr/local/fastdfs/tracker –p</span><br><span class="line">fi</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> [ ! -d <span class="string">"/usr/local/fastdfs/storage"</span> ]; then</span><br><span class="line">        mkdir /usr/local/fastdfs/storage –p</span><br><span class="line">fi</span><br><span class="line"></span><br><span class="line">ps -ef | grep tracker | awk -F <span class="string">" "</span> <span class="string">'&#123;if($8!="grep")print $2&#125;'</span> | xargs kill -<span class="number">9</span></span><br><span class="line">ps -ef | grep storage | awk -F <span class="string">" "</span> <span class="string">'&#123;if($8!="grep")print $2&#125;'</span> | xargs kill -<span class="number">9</span></span><br><span class="line"><span class="comment"># --- 启动 ------</span></span><br><span class="line"><span class="comment">#Tracker启动命令：</span></span><br><span class="line">/usr/bin/fdfs_trackerd /etc/fdfs/tracker.conf</span><br><span class="line"><span class="comment">#Storage启动命令：</span></span><br><span class="line">/usr/bin/fdfs_storaged /etc/fdfs/storage.conf</span><br><span class="line"></span><br><span class="line"><span class="comment">##############################################</span></span><br><span class="line"><span class="comment"># This script will be executed *after* all the other init scripts.</span></span><br><span class="line"><span class="comment"># You can put your own initialization stuff in here if you don't</span></span><br><span class="line"><span class="comment"># want to do the full Sys V style init stuff.</span></span><br><span class="line"><span class="comment">#设置开机自动启动：</span></span><br><span class="line"><span class="comment">#vim /etc/rc.d/rc.local</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#将运行命令行添加进文件：</span></span><br><span class="line"><span class="comment">#/usr/bin/fdfs_trackerd /etc/fdfs/tracker.conf</span></span><br><span class="line"><span class="comment">#/usr/bin/fdfs_storaged /etc/fdfs/storage.conf</span></span><br><span class="line"><span class="comment">##############################################</span></span><br></pre></td></tr></table></figure>
+<h2 id="上传图片测试"><a href="#上传图片测试" class="headerlink" title="上传图片测试"></a>上传图片测试</h2><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">#第一步：进入/etc/fdfs/ 目录，拷贝一份client.conf文件</span></span><br><span class="line">cd /etc/fdfs</span><br><span class="line">cp client.conf.sample client.conf</span><br><span class="line"></span><br><span class="line"><span class="comment"># 第二步：修改client.conf</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#base_path=/usr/local/fastdfs/client</span></span><br><span class="line"><span class="comment">#tracker_server=192.168.242.140:22122</span></span><br><span class="line"></span><br><span class="line">ipaddr=`ifconfig -a|grep inet|grep -v <span class="number">127.0</span>.<span class="number">0.1</span>|grep -v inet6|awk <span class="string">'&#123;print $2&#125;'</span>|tr -d <span class="string">"addr:"</span>`</span><br><span class="line"></span><br><span class="line">sed -i <span class="string">'/^base_path/s/^/#/'</span> /etc/fdfs/client.conf</span><br><span class="line">sed -i <span class="string">'/^#base_path/a\\base_path=\/usr\/local\/fastdfs\/client'</span> /etc/fdfs/client.conf</span><br><span class="line"></span><br><span class="line">sed -i <span class="string">'/^tracker_server/s/^/#/'</span> /etc/fdfs/client.conf</span><br><span class="line">sed -i <span class="string">"/^#tracker_server/a\\tracker_server=<span class="variable">$ipaddr:22122</span>"</span> /etc/fdfs/client.conf</span><br><span class="line"></span><br><span class="line">mkdir -p /usr/local/fastdfs/client</span><br><span class="line"></span><br><span class="line"><span class="comment">###############################################</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#home目录下得有tomcat.png图片...</span></span><br><span class="line">/usr/bin/fdfs_test /etc/fdfs/client.conf upload /home/tomcat.jpg</span><br><span class="line"></span><br><span class="line"><span class="comment"># 上传成功的话 返回图片下载路径</span></span><br><span class="line"><span class="comment"># 由于现在还没有和nginx整合无法使用http下载</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#http://192.168.101.3/group1/M00/00/00/wKhlBVVY2M-AM_9DAAAT7-0xdqM485_big.png就是文件的下载访问路径。</span></span><br><span class="line"><span class="comment">#对应storage服务器上的磁盘路径：</span></span><br><span class="line"><span class="comment">#/usr/local/fastdfs/storage/data/00/00/wKhlBVVY2M-AM_9DAAAT7-0xdqM485_big.png文件</span></span><br></pre></td></tr></table></figure>
+<hr>
+<h1 id="FastDFS-和nginx整合"><a href="#FastDFS-和nginx整合" class="headerlink" title="FastDFS 和nginx整合"></a>FastDFS 和nginx整合</h1><h2 id="在tracker服务器上安装nginx"><a href="#在tracker服务器上安装nginx" class="headerlink" title="在tracker服务器上安装nginx"></a>在tracker服务器上安装nginx</h2><p>在每个tracker上安装nginx，的主要目的是做负载均衡及实现高可用。如果只有一台tracker服务器可以不配置nginx。</p>
+<h2 id="在storage服务器上安装nginx"><a href="#在storage服务器上安装nginx" class="headerlink" title="在storage服务器上安装nginx"></a>在storage服务器上安装nginx</h2><h3 id="安装fastdfs-nginx-module"><a href="#安装fastdfs-nginx-module" class="headerlink" title="安装fastdfs-nginx-module"></a>安装fastdfs-nginx-module</h3><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line">wget -P ~/soft/ <span class="string">"http://ou0y29lb2.bkt.clouddn.com/fastdfs-nginx-module_v1.16.tar.gz"</span></span><br><span class="line"></span><br><span class="line">cp ~/soft/fastdfs-nginx-module_v1.<span class="number">16</span>.tar.gz /usr/local/fastdfs/</span><br><span class="line"></span><br><span class="line">cd /usr/local/fastdfs</span><br><span class="line"></span><br><span class="line">tar -zxvf fastdfs-nginx-module_v1.<span class="number">16</span>.tar.gz</span><br><span class="line"></span><br><span class="line">filepath=<span class="string">"/usr/local/fastdfs/fastdfs-nginx-module/src/config"</span></span><br><span class="line"></span><br><span class="line">sed -i <span class="string">"s/\/usr\/local\/include\/fastdfs/\/usr\/include\/fastdfs/g"</span> <span class="variable">$filepath</span></span><br><span class="line">sed -i <span class="string">"s/\/usr\/local\/include\/fastcommon/\/usr\/include\/fastcommon/g"</span> <span class="variable">$filepath</span></span><br><span class="line">sed -i <span class="string">"s/\/usr\/local\/lib/\/usr\/lib/g"</span> <span class="variable">$filepath</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#将fastdfs-nginx-module/src下的mod_fastdfs.conf拷贝至/etc/fdfs/下</span></span><br><span class="line">cp /usr/local/fastdfs/fastdfs-nginx-module/src/mod_fastdfs.conf /etc/fdfs/</span><br><span class="line"></span><br><span class="line"><span class="comment"># 修改mod_FastDFS.conf文件</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#base_path=/usr/local/fastdfs/storage</span></span><br><span class="line"><span class="comment">#tracker_server=192.168.242.140:22122</span></span><br><span class="line"><span class="comment">#url中是否包含group名称</span></span><br><span class="line"><span class="comment">#url_have_group_name=true</span></span><br><span class="line"><span class="comment">#指定文件存储路径，访问时使用该路径</span></span><br><span class="line"><span class="comment">#store_path0=/usr/local/fastdfs/storage</span></span><br><span class="line"></span><br><span class="line">modfilepath=<span class="string">"mod_fastdfs.conf"</span></span><br><span class="line"></span><br><span class="line">ipaddr=`ifconfig -a|grep inet|grep -v <span class="number">127.0</span>.<span class="number">0.1</span>|grep -v inet6|awk <span class="string">'&#123;print $2&#125;'</span>|tr -d <span class="string">"addr:"</span>`</span><br><span class="line"></span><br><span class="line"><span class="comment">#ipaddr='192.168.1.101'</span></span><br><span class="line"></span><br><span class="line">names=(<span class="string">"base_path"</span> <span class="string">"tracker_server"</span> <span class="string">"url_have_group_name"</span>)</span><br><span class="line"></span><br><span class="line">replace_names=(<span class="string">"base_path=\/usr\/local\/fastdfs\/storage"</span> <span class="string">"tracker_server=<span class="variable">$ipaddr:22122</span>"</span> <span class="string">"url_have_group_name=true"</span>)</span><br><span class="line"></span><br><span class="line">count=$&#123;<span class="comment">#names[*]&#125;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (( i=<span class="number">0</span>; i&lt;<span class="string">"<span class="variable">$count</span>"</span>; i=i+<span class="number">1</span> ))</span><br><span class="line"></span><br><span class="line"><span class="keyword">do</span></span><br><span class="line"></span><br><span class="line">	sed -i <span class="string">"/^$&#123;names[<span class="variable">$i</span>]&#125;/s/^/#/"</span> <span class="variable">$modfilepath</span></span><br><span class="line">	</span><br><span class="line">	sed -i <span class="string">"/^#$&#123;names[<span class="variable">$i</span>]&#125;/a\\$&#123;replace_names[<span class="variable">$i</span>]&#125;"</span> <span class="variable">$modfilepath</span></span><br><span class="line">	</span><br><span class="line">done</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#"#[group1]"</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#"store_path0=\/usr\/local\/fastdfs\/storage"</span></span><br><span class="line"></span><br><span class="line"><span class="comment">## linux不能使用/r/n</span></span><br><span class="line"><span class="comment">#sed -i "s/^#\\[group1\\]/#\\[group1\\]`echo -e '\r\n'`store_path0=\/usr\/local\/fastdfs\/storage/g" $modfilepath</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 考虑到可能重复执行该脚本, 把之前设置的 注释掉</span></span><br><span class="line">sed -ie <span class="string">"/^store_path0/s/^/#/"</span> <span class="variable">$modfilepath</span></span><br><span class="line">sed -E -ie <span class="string">"/^#\[group1\]/a\\store_path0=\/usr\/local\/fastdfs\/storage"</span> <span class="variable">$modfilepath</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 将libfdfsclient.so拷贝至/usr/lib下</span></span><br><span class="line">cp /usr/lib64/libfdfsclient.so /usr/lib/</span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建nginx/client目录</span></span><br><span class="line"><span class="keyword">if</span> [ ! -d <span class="string">"/var/temp/nginx/client"</span> ]; then</span><br><span class="line">	mkdir -p /var/temp/nginx/client</span><br><span class="line">fi</span><br></pre></td></tr></table></figure>
+<h2 id="安装nginx"><a href="#安装nginx" class="headerlink" title="安装nginx"></a>安装nginx</h2><p>参考 Linux 安装nginx</p>
+<p>唯一不一样的地方是 configure配置</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">./configure \</span><br><span class="line">--prefix=/usr/local/nginx \</span><br><span class="line">--pid-path=/var/run/nginx/nginx.pid \</span><br><span class="line">--lock-path=/var/lock/nginx.lock \</span><br><span class="line">--error-log-path=/var/log/nginx/error.log \</span><br><span class="line">--http-log-path=/var/log/nginx/access.log \</span><br><span class="line">--with-http_gzip_static_module \</span><br><span class="line">--http-client-body-temp-path=/var/temp/nginx/client \</span><br><span class="line">--http-proxy-temp-path=/var/temp/nginx/proxy \</span><br><span class="line">--http-fastcgi-temp-path=/var/temp/nginx/fastcgi \</span><br><span class="line">--http-uwsgi-temp-path=/var/temp/nginx/uwsgi \</span><br><span class="line">--http-scgi-temp-path=/var/temp/nginx/scgi \</span><br><span class="line">--add-module=/usr/local/fastdfs/fastdfs-nginx-module/src</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>如果之前安装了nginx也没事, 重新编译会生成新的nginx可执行文件, 老的会自动修改成nginx.old</p>
+</blockquote>
+<p> <img src="download.png" alt="Alt text"></p>
+<h3 id="编译安装"><a href="#编译安装" class="headerlink" title="编译安装"></a>编译安装</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">make</span><br><span class="line">make install</span><br></pre></td></tr></table></figure>
+<h3 id="修改nginx-conf配置文件-有坑"><a href="#修改nginx-conf配置文件-有坑" class="headerlink" title="修改nginx.conf配置文件(有坑)"></a>修改nginx.conf配置文件(有坑)</h3><p>/usr/local/nginx 有conf文件夹, 里面的nginx.conf 才起作用</p>
+<p>/usr/local/nginx/nginx-1.8.0/ 也有conf文件夹, 修改这个不起作用</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">        listen       80;</span><br><span class="line">        server_name  localhost;</span><br><span class="line"></span><br><span class="line">        location /group1/M00/&#123;</span><br><span class="line">                #root /usr/local/fastdfs/storage/data;</span><br><span class="line">                ngx_fastdfs_module;</span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <span>link：</span>
+      <a href="http://pro.stonepark.fun/2018/02/10/FastDFS/" title="FastDFS" target="_blank" rel="external">http://pro.stonepark.fun/2018/02/10/FastDFS/</a>
+    </li>
+    
+  </ul>
+</blockquote>
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+      <div id="vcomments"></div>
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2018/02/10/mac一键开启svn/" title="mac一键开启svn"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2018/02/10/nginx/" title="nginx"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+  </ul>
+  
+  
+  
+  <div class="bar-right">
+    
+  </div>
+  </div>
+</nav>
+  
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/stone0117" target="_blank" title="Github" data-toggle="tooltip" data-placement="top"><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="http://weibo.com/cofess" target="_blank" title="Weibo" data-toggle="tooltip" data-placement="top"><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="https://twitter.com/iwebued" target="_blank" title="Twitter" data-toggle="tooltip" data-placement="top"><i class="icon icon-twitter"></i></a></li>
+        
+        <li><a href="https://www.behance.net/cofess" target="_blank" title="Behance" data-toggle="tooltip" data-placement="top"><i class="icon icon-behance"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle="tooltip" data-placement="top"><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+<script src="/js/plugin.min.js"></script>
+<script src="/js/application.js"></script>
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+
+
+
+
+   
+
+
+
+
+   
+    
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/valine"></script>
+  <script type="text/javascript">
+  var GUEST = ['nick', 'mail', 'link'];
+  var meta = 'nick,mail,link';
+  meta = meta.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#vcomments',
+    verify: false,
+    notify: false,
+    appId: '',
+    appKey: '',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: meta,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+  </script>
+
+     
+
+
+
+
+
+
+
+</body>
+</html>

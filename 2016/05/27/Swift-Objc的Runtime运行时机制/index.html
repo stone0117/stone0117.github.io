@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000">
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top">
+  
+  
+  <!--<title>Swift/Objc的Runtime运行时机制 | Hexo</title>-->
+  <title>Swift/Objc的Runtime运行时机制</title>
+  <meta name="description" content="引言相信很多同学都听过运行时，但是我相信还是有很多同学不了解什么是运行时，到底在项目开发中怎么用？什么时候适合使用？想想我们的项目中，到底在哪里使用过运行时呢？还能想起来吗？另外，在面试的时候，是否经常有笔试中要求运用运行时或者在面试时面试官会问是否使用过运行时，又是如何使用的？ 回想自己，曾经在面试中被面试官拿运行时刁难过，也在笔试中遇到过。因此，后来就深入地学习了Runtime机制，学习里面的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Swift&#x2F;Objc的Runtime运行时机制">
+<meta property="og:url" content="http://pro.stonepark.fun/2016/05/27/Swift-Objc的Runtime运行时机制/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="引言相信很多同学都听过运行时，但是我相信还是有很多同学不了解什么是运行时，到底在项目开发中怎么用？什么时候适合使用？想想我们的项目中，到底在哪里使用过运行时呢？还能想起来吗？另外，在面试的时候，是否经常有笔试中要求运用运行时或者在面试时面试官会问是否使用过运行时，又是如何使用的？ 回想自己，曾经在面试中被面试官拿运行时刁难过，也在笔试中遇到过。因此，后来就深入地学习了Runtime机制，学习里面的">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://7xugrt.com1.z0.glb.clouddn.com/70.jpg">
+<meta property="og:updated_time" content="2016-05-28T17:48:16.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Swift&#x2F;Objc的Runtime运行时机制">
+<meta name="twitter:description" content="引言相信很多同学都听过运行时，但是我相信还是有很多同学不了解什么是运行时，到底在项目开发中怎么用？什么时候适合使用？想想我们的项目中，到底在哪里使用过运行时呢？还能想起来吗？另外，在面试的时候，是否经常有笔试中要求运用运行时或者在面试时面试官会问是否使用过运行时，又是如何使用的？ 回想自己，曾经在面试中被面试官拿运行时刁难过，也在笔试中遇到过。因此，后来就深入地学习了Runtime机制，学习里面的">
+<meta name="twitter:image" content="http://7xugrt.com1.z0.glb.clouddn.com/70.jpg">
+  <!-- Canonical links -->
+  <link rel="canonical" href="http://pro.stonepark.fun/2016/05/27/Swift-Objc的Runtime运行时机制/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.jpg" type="image/x-icon">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+  
+  
+  
+</head>
+
+
+<body class="main-center theme-black" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/stone0117" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpeg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">StonePark</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">html node python iOS</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> Beijing, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索">
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech>
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-repository">
+          <a href="/repository">
+            
+            <i class="icon icon-project"></i>
+            
+            <span class="menu-title">项目</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books">
+            
+            <i class="icon icon-book-fill"></i>
+            
+            <span class="menu-title">书单</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links">
+            
+            <i class="icon icon-friendship"></i>
+            
+            <span class="menu-title">友链</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">关于</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/stone0117" target="_blank" title="Github" data-toggle="tooltip" data-placement="top"><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="http://weibo.com/cofess" target="_blank" title="Weibo" data-toggle="tooltip" data-placement="top"><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="https://twitter.com/iwebued" target="_blank" title="Twitter" data-toggle="tooltip" data-placement="top"><i class="icon icon-twitter"></i></a></li>
+        
+        <li><a href="https://www.behance.net/cofess" target="_blank" title="Behance" data-toggle="tooltip" data-placement="top"><i class="icon icon-behance"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle="tooltip" data-placement="top"><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>coding!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/IntelliJ-IDEA/">IntelliJ IDEA</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/apache/">apache</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/chrome/">chrome</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/freemarker/">freemarker</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/iOS/">iOS</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/javascript/">javascript</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/links/">links</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/macos/">macos</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/mysql/">mysql</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/node/">node</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/shell/">shell</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/其他/">其他</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/搜索/">搜索</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget-body">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ActiveMQ/">ActiveMQ</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AppCode/">AppCode</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/FastDFS/">FastDFS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IntelliJ-IDEA/">IntelliJ IDEA</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Redis/">Redis</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/apache/">apache</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/awk/">awk</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/chrome/">chrome</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/">docker</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dubbo/">dubbo</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/fastDFS-nginx综合/">fastDFS & nginx综合</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/find/">find</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/freemarker/">freemarker</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/google/">google</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/grep/">grep</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/idea坑/">idea坑</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/">javascript</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/links/">links</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nginx/">nginx</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/node/">node</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/regex/">regex</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sed/">sed</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/shell/">shell</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/solr/">solr</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sso/">sso</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/svn/">svn</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tomcat/">tomcat</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tr/">tr</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/xargs/">xargs</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/字符串操作/">字符串操作</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tags/ActiveMQ/" style="font-size: 13px;">ActiveMQ</a> <a href="/tags/AppCode/" style="font-size: 13px;">AppCode</a> <a href="/tags/FastDFS/" style="font-size: 13px;">FastDFS</a> <a href="/tags/IntelliJ-IDEA/" style="font-size: 13px;">IntelliJ IDEA</a> <a href="/tags/Linux/" style="font-size: 13.5px;">Linux</a> <a href="/tags/Redis/" style="font-size: 13px;">Redis</a> <a href="/tags/apache/" style="font-size: 13px;">apache</a> <a href="/tags/awk/" style="font-size: 13px;">awk</a> <a href="/tags/chrome/" style="font-size: 13px;">chrome</a> <a href="/tags/docker/" style="font-size: 13px;">docker</a> <a href="/tags/dubbo/" style="font-size: 13px;">dubbo</a> <a href="/tags/fastDFS-nginx综合/" style="font-size: 13px;">fastDFS & nginx综合</a> <a href="/tags/find/" style="font-size: 13px;">find</a> <a href="/tags/freemarker/" style="font-size: 13px;">freemarker</a> <a href="/tags/google/" style="font-size: 13px;">google</a> <a href="/tags/grep/" style="font-size: 13px;">grep</a> <a href="/tags/idea坑/" style="font-size: 13px;">idea坑</a> <a href="/tags/javascript/" style="font-size: 14px;">javascript</a> <a href="/tags/links/" style="font-size: 13px;">links</a> <a href="/tags/mysql/" style="font-size: 13px;">mysql</a> <a href="/tags/nginx/" style="font-size: 13px;">nginx</a> <a href="/tags/node/" style="font-size: 13px;">node</a> <a href="/tags/regex/" style="font-size: 13px;">regex</a> <a href="/tags/sed/" style="font-size: 14px;">sed</a> <a href="/tags/shell/" style="font-size: 13px;">shell</a> <a href="/tags/solr/" style="font-size: 13px;">solr</a> <a href="/tags/sso/" style="font-size: 13px;">sso</a> <a href="/tags/svn/" style="font-size: 13.5px;">svn</a> <a href="/tags/tomcat/" style="font-size: 13px;">tomcat</a> <a href="/tags/tr/" style="font-size: 13px;">tr</a> <a href="/tags/xargs/" style="font-size: 13px;">xargs</a> <a href="/tags/字符串操作/" style="font-size: 13px;">字符串操作</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">二月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">一月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">二月 2018</a><span class="archive-list-count">30</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">八月 2016</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">七月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">六月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">九月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/06/">六月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">三月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/12/">十二月 2014</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/javascript/">javascript</a>
+              </p>
+              <p class="item-title">
+                <a href="/2019/02/22/String-prototype-split/" class="title">String.prototype.split()</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2019-02-21T20:16:48.000Z" itemprop="datePublished">2019-02-22</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/node/">node</a>
+              </p>
+              <p class="item-title">
+                <a href="/2019/01/04/module-exports与exports，export与export-default之间的关系和区别/" class="title">module.exports与exports，export与export default之间的关系和区别</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2019-01-04T09:44:16.000Z" itemprop="datePublished">2019-01-04</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/javascript/">javascript</a>
+              </p>
+              <p class="item-title">
+                <a href="/2018/04/05/javascript-内存管理-循环引用处理/" class="title">javascript-内存管理-循环引用处理</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2018-04-05T02:18:29.000Z" itemprop="datePublished">2018-04-05</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/javascript/">javascript</a>
+              </p>
+              <p class="item-title">
+                <a href="/2018/04/04/javascript的命名代码块/" class="title">javascript的命名代码块</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2018-04-04T05:24:26.000Z" itemprop="datePublished">2018-04-04</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/shell/">shell</a>
+              </p>
+              <p class="item-title">
+                <a href="/2018/04/03/find用法解析-macos环境BSD-shell/" class="title">find用法解析(macos环境BSD shell)</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2018-04-03T08:44:33.000Z" itemprop="datePublished">2018-04-03</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-Swift-Objc的Runtime运行时机制" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Swift/Objc的Runtime运行时机制
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2016/05/27/Swift-Objc的Runtime运行时机制/" class="article-date">
+	  <time datetime="2016-05-27T08:46:10.000Z" itemprop="datePublished">2016-05-27</time>
+	</a>
+</span>
+        
+        
+
+        
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2016/05/27/Swift-Objc的Runtime运行时机制/#comments" class="article-comment-link">评论</a></span>
+        
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <h1 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h1><p>相信很多同学都听过运行时，但是我相信还是有很多同学不了解什么是运行时，到底在项目开发中怎么用？什么时候适合使用？想想我们的项目中，到底在哪里使用过运行时呢？还能想起来吗？另外，在面试的时候，是否经常有笔试中要求运用运行时或者在面试时面试官会问是否使用过运行时，又是如何使用的？</p>
+<p>回想自己，曾经在面试中被面试官拿运行时刁难过，也在笔试中遇到过。因此，后来就深入地学习了Runtime机制，学习里面的API。所以才有了后来的组件封装中使用运行时。</p>
+<p>相信我们都遇到过这样一个问题：我想在扩展（category）中添加一个属性，如果iOS是不允许给扩展类扩展属性的，那怎么办呢？答案就是使用运行时机制</p>
+<a id="more"></a>
+<h1 id="运行时机制"><a href="#运行时机制" class="headerlink" title="运行时机制"></a>运行时机制</h1><p>Runtime是一套比较底层的纯C语言的API, 属于C语言库, 包含了很多底层的C语言API。<br>在我们平时编写的iOS代码中, 最终都是转成了runtime的C语言代码。</p>
+<p>所谓运行时，也就是在编译时是不存在的，只是在运行过程中才去确定对象的类型、方法等。利用Runtime机制可以在程序运行时动态修改类、对象中的所有属性、方法等。</p>
+<p>还记得我们在网络请求数据处理时，调用了-setValuesForKeysWithDictionary:方法来设置模型的值。这里什么原理呢？为什么能这么做？其实就是通过Runtime机制来完成的，内部会遍历模型类的所有属性名，然后设置与key对应的属性名的值。</p>
+<p>我们在使用运行时的地方，都需要包含头文件：#import &lt;objc/runtime.h&gt;。如果是Swift就不需要包含头文件，就可以直接使用了。</p>
+<h1 id="获取对象所有属性名"><a href="#获取对象所有属性名" class="headerlink" title="获取对象所有属性名"></a>获取对象所有属性名</h1><p>利用运行时获取对象的所有属性名是可以的，但是变量名获取就得用另外的方法了。我们可以通过class_copyPropertyList方法获取所有的属性名称。</p>
+<p>下面我们通过一个Person类来学习，这里的方法没有写成扩展，只是为了简化，将获取属性名的方法直接作为类的实例方法：</p>
+<blockquote>
+<p>Objective-C版<br><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">Person</span> : <span class="title">NSObject</span> </span>&#123;</span><br><span class="line">  <span class="built_in">NSString</span> *_variableString;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 默认会是什么呢？</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">copy</span>) <span class="built_in">NSString</span> *name;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 默认是strong类型</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">strong</span>) <span class="built_in">NSMutableArray</span> *array;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 获取所有的属性名</span></span><br><span class="line">- (<span class="built_in">NSArray</span> *)allProperties;</span><br><span class="line"></span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<p>下面主要是写如何获取类的所有属性名的方法。注意，这里的objc_property_t是一个结构体指针objc_property *，因此我们声明的properties就是二维指针。在使用完成后，我们一定要记得释放内存，否则会造成内存泄露。这里是使用的是C语言的API，因此我们也需要使用C语言的释放内存的方法free。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">/// An opaque type that represents an Objective-C declared property.</span><br><span class="line">typedef struct objc_property *objc_property_t;</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="built_in">NSArray</span> *)allProperties &#123;</span><br><span class="line">  <span class="keyword">unsigned</span> <span class="keyword">int</span> count;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 获取类的所有属性</span></span><br><span class="line">  <span class="comment">// 如果没有属性，则count为0，properties为nil</span></span><br><span class="line">  objc_property_t *properties = class_copyPropertyList([<span class="keyword">self</span> <span class="keyword">class</span>], &amp;count);</span><br><span class="line">  <span class="built_in">NSMutableArray</span> *propertiesArray = [<span class="built_in">NSMutableArray</span> arrayWithCapacity:count];</span><br><span class="line"></span><br><span class="line">  <span class="keyword">for</span> (<span class="built_in">NSUInteger</span> i = <span class="number">0</span>; i &lt; count; i++) &#123;</span><br><span class="line">    <span class="comment">// 获取属性名称</span></span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">char</span> *propertyName = property_getName(properties[i]);</span><br><span class="line">    <span class="built_in">NSString</span> *name = [<span class="built_in">NSString</span> stringWithUTF8String:propertyName];</span><br><span class="line"></span><br><span class="line">    [propertiesArray addObject:name];</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 注意，这里properties是一个数组指针，是C的语法，</span></span><br><span class="line">  <span class="comment">// 我们需要使用free函数来释放内存，否则会造成内存泄露</span></span><br><span class="line">  free(properties);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> propertiesArray;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>现在，我们来测试一下，我们的方法是否正确获取到了呢？看下面的打印结果就明白了吧！<br><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">Person *p = [[Person alloc] init];</span><br><span class="line">p.name = <span class="string">@"Lili"</span>;</span><br><span class="line"></span><br><span class="line">size_t size = class_getInstanceSize(p.class);</span><br><span class="line"><span class="built_in">NSLog</span>(<span class="string">@"size=%ld"</span>, size);</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (<span class="built_in">NSString</span> *propertyName <span class="keyword">in</span> p.allProperties) &#123;</span><br><span class="line">  <span class="built_in">NSLog</span>(<span class="string">@"%@"</span>, propertyName);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 打印结果：</span></span><br><span class="line"><span class="comment">// 2015-10-23 17:28:38.098 PropertiesDemo[1120:361130] size=48</span></span><br><span class="line"><span class="comment">// 2015-10-23 17:28:38.098 PropertiesDemo[1120:361130] copiedString</span></span><br><span class="line"><span class="comment">// 2015-10-23 17:28:38.098 PropertiesDemo[1120:361130] name</span></span><br><span class="line"><span class="comment">// 2015-10-23 17:28:38.098 PropertiesDemo[1120:361130] unsafeName</span></span><br><span class="line"><span class="comment">// 2015-10-23 17:28:38.099 PropertiesDemo[1120:361130] array</span></span><br></pre></td></tr></table></figure></p>
+<blockquote>
+<p>Swift版</p>
+</blockquote>
+<p>对于Swift版，使用C语言的指针就不容易了，因为Swift希望尽可能减少C语言的指针的直接使用，因此在Swift中已经提供了相应的结构体封装了C语言的指针。但是看起来好复杂，使用起来好麻烦。看看Swift版的获取类的属性名称如何做：<br><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span>: <span class="title">NSObject</span> </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> name: <span class="type">String</span> = <span class="string">""</span></span><br><span class="line">  <span class="keyword">var</span> hasBMW = <span class="literal">false</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">override</span> <span class="keyword">init</span>() &#123;</span><br><span class="line">    <span class="keyword">super</span>.<span class="keyword">init</span>()</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">func</span> <span class="title">allProperties</span><span class="params">()</span></span> -&gt;[<span class="type">String</span>] &#123;</span><br><span class="line">    <span class="comment">// 这个类型可以使用CUnsignedInt,对应Swift中的UInt32</span></span><br><span class="line">    <span class="keyword">var</span> <span class="built_in">count</span>: <span class="type">UInt32</span> = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> properties = class_copyPropertyList(<span class="type">Person</span>.<span class="keyword">self</span>, &amp;<span class="built_in">count</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> propertyNames: [<span class="type">String</span>] = []</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Swift中类型是严格检查的，必须转换成同一类型</span></span><br><span class="line">    <span class="keyword">for</span> <span class="keyword">var</span> i = <span class="number">0</span>; i &lt; <span class="type">Int</span>(<span class="built_in">count</span>); ++i &#123;</span><br><span class="line">      <span class="comment">// UnsafeMutablePointer&lt;objc_property_t&gt;是</span></span><br><span class="line">      <span class="comment">// 可变指针，因此properties就是类似数组一样，可以</span></span><br><span class="line">      <span class="comment">// 通过下标获取</span></span><br><span class="line">      <span class="keyword">let</span> property = properties[i]</span><br><span class="line">      <span class="keyword">let</span> name = property_getName(property)</span><br><span class="line"></span><br><span class="line">      <span class="comment">// 这里还得转换成字符串</span></span><br><span class="line">      <span class="keyword">let</span> strName = <span class="type">String</span>.fromCString(name);</span><br><span class="line">      propertyNames.append(strName!);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 不要忘记释放内存，否则C语言的指针很容易成野指针的</span></span><br><span class="line">    free(properties)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> propertyNames;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>关于Swift中如何C语言的指针问题，这里不细说，如果需要了解，请查阅相关文章。<br>测试一下是否获取正确：<br><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> p = <span class="type">Person</span>()</span><br><span class="line">p.name = <span class="string">"Lili"</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 打印结果：["name", "hasBMW"]，说明成功</span></span><br><span class="line">p.allProperties()</span><br></pre></td></tr></table></figure></p>
+<h1 id="获取对象的所有属性名和属性值"><a href="#获取对象的所有属性名和属性值" class="headerlink" title="获取对象的所有属性名和属性值"></a>获取对象的所有属性名和属性值</h1><p>对于获取对象的所有属性名，在上面的-allProperties方法已经可以拿到了，但是并没有处理获取属性值，下面的方法就是可以获取属性名和属性值，将属性名作为key，属性值作为value。</p>
+<blockquote>
+<p>Objective-C版<br><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="built_in">NSDictionary</span> *)allPropertyNamesAndValues &#123;</span><br><span class="line">  <span class="built_in">NSMutableDictionary</span> *resultDict = [<span class="built_in">NSMutableDictionary</span> dictionary];</span><br><span class="line"></span><br><span class="line">  <span class="keyword">unsigned</span> <span class="keyword">int</span> outCount;</span><br><span class="line">  objc_property_t *properties = class_copyPropertyList([<span class="keyword">self</span> <span class="keyword">class</span>], &amp;outCount);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; outCount; i++) &#123;</span><br><span class="line">    objc_property_t property = properties[i];</span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">char</span> *name = property_getName(property);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 得到属性名</span></span><br><span class="line">    <span class="built_in">NSString</span> *propertyName = [<span class="built_in">NSString</span> stringWithUTF8String:name];</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 获取属性值</span></span><br><span class="line">    <span class="keyword">id</span> propertyValue = [<span class="keyword">self</span> valueForKey:propertyName];</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (propertyValue &amp;&amp; propertyValue != <span class="literal">nil</span>) &#123;</span><br><span class="line">      [resultDict setObject:propertyValue forKey:propertyName];</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 记得释放</span></span><br><span class="line">  free(properties);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> resultDict;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<p>测试一下：<br><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 此方法返回的只有属性值不为空的属性</span></span><br><span class="line"><span class="type">NSDictionary</span> *dict = p.allPropertyNamesAndValues;</span><br><span class="line"><span class="keyword">for</span> (<span class="type">NSString</span> *propertyName <span class="keyword">in</span> dict.allKeys) &#123;</span><br><span class="line">  <span class="type">NSLog</span>(@<span class="string">"propertyName: %@ propertyValue: %@"</span>,</span><br><span class="line">        propertyName,</span><br><span class="line">        dict[propertyName]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>看下打印结果，属性值为空的属性并没有打印出来，因此字典的key对应的value不能为nil：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">propertyName: name propertyValue: Lili</span><br></pre></td></tr></table></figure></p>
+<blockquote>
+<p>Swift版<br><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">allPropertyNamesAndValues</span><span class="params">()</span></span> -&gt;[<span class="type">String</span>: <span class="type">AnyObject</span>] &#123;</span><br><span class="line">    <span class="keyword">var</span> <span class="built_in">count</span>: <span class="type">UInt32</span> = <span class="number">0</span></span><br><span class="line">    <span class="keyword">let</span> properties = class_copyPropertyList(<span class="type">Person</span>.<span class="keyword">self</span>, &amp;<span class="built_in">count</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> resultDict: [<span class="type">String</span>: <span class="type">AnyObject</span>] = [:]</span><br><span class="line">    <span class="keyword">for</span> <span class="keyword">var</span> i = <span class="number">0</span>; i &lt; <span class="type">Int</span>(<span class="built_in">count</span>); ++i &#123;</span><br><span class="line">      <span class="keyword">let</span> property = properties[i]</span><br><span class="line"></span><br><span class="line">      <span class="comment">// 取得属性名</span></span><br><span class="line">      <span class="keyword">let</span> name = property_getName(property)</span><br><span class="line">      <span class="keyword">if</span> <span class="keyword">let</span> propertyName = <span class="type">String</span>.fromCString(name) &#123;</span><br><span class="line">        <span class="comment">// 取得属性值</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">let</span> propertyValue = <span class="keyword">self</span>.valueForKey(propertyName) &#123;</span><br><span class="line">          resultDict[propertyName] = propertyValue</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> resultDict</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<p>测试一下：<br><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> dict = p.allPropertyNamesAndValues()</span><br><span class="line"><span class="keyword">for</span> (propertyName, propertyValue) <span class="keyword">in</span> dict.<span class="built_in">enumerate</span>() &#123;</span><br><span class="line">  <span class="built_in">print</span>(<span class="string">"propertyName: (propertyName), propertyValue: (propertyValue)"</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>打印结果与上面的一样，由于array属性的值为nil，因此不会处理。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">propertyName: 0, propertyValue: (&quot;name&quot;, Lili)</span><br></pre></td></tr></table></figure></p>
+<h1 id="获取对象的所有方法名"><a href="#获取对象的所有方法名" class="headerlink" title="获取对象的所有方法名"></a>获取对象的所有方法名</h1><p>通过<code>class_copyMethodList</code>方法就可以获取所有的方法。</p>
+<blockquote>
+<p>Objective-C版<br><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">void</span>)allMethods &#123;</span><br><span class="line">  <span class="keyword">unsigned</span> <span class="keyword">int</span> outCount = <span class="number">0</span>;</span><br><span class="line">  Method *methods = class_copyMethodList([<span class="keyword">self</span> <span class="keyword">class</span>], &amp;outCount);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; outCount; ++i) &#123;</span><br><span class="line">    Method method = methods[i];</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 获取方法名称，但是类型是一个SEL选择器类型</span></span><br><span class="line">    SEL methodSEL = method_getName(method);</span><br><span class="line">    <span class="comment">// 需要获取C字符串</span></span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">char</span> *name = sel_getName(methodSEL);</span><br><span class="line">  <span class="comment">// 将方法名转换成OC字符串</span></span><br><span class="line">    <span class="built_in">NSString</span> *methodName = [<span class="built_in">NSString</span> stringWithUTF8String:name];</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 获取方法的参数列表</span></span><br><span class="line">    <span class="keyword">int</span> arguments = method_getNumberOfArguments(method);</span><br><span class="line">    <span class="built_in">NSLog</span>(<span class="string">@"方法名：%@, 参数个数：%d"</span>, methodName, arguments);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 记得释放</span></span><br><span class="line">  free(methods);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<p>测试一下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[p allMethods];</span><br></pre></td></tr></table></figure></p>
+<p>调用打印结果如下，为什么参数个数看起来不匹配呢？比如-allProperties方法，其参数个数为0才对，但是打印结果为2。根据打印结果可知，无参数时，值就已经是2了。：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">方法名：allProperties, 参数个数：2</span><br><span class="line">方法名：allPropertyNamesAndValues, 参数个数：2</span><br><span class="line">方法名：allMethods, 参数个数：2</span><br><span class="line">方法名：setArray:, 参数个数：3</span><br><span class="line">方法名：.cxx_destruct, 参数个数：2</span><br><span class="line">方法名：name, 参数个数：2</span><br><span class="line">方法名：array, 参数个数：2</span><br><span class="line">方法名：setName:, 参数个数：3</span><br></pre></td></tr></table></figure></p>
+<blockquote>
+<p>Swift版<br><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">allMethods</span><span class="params">()</span></span> &#123;</span><br><span class="line">  <span class="keyword">var</span> <span class="built_in">count</span>: <span class="type">UInt32</span> = <span class="number">0</span></span><br><span class="line">  <span class="keyword">let</span> methods = class_copyMethodList(<span class="type">Person</span>.<span class="keyword">self</span>, &amp;<span class="built_in">count</span>)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">for</span> <span class="keyword">var</span> i = <span class="number">0</span>; i &lt; <span class="type">Int</span>(<span class="built_in">count</span>); ++i &#123;</span><br><span class="line">    <span class="keyword">let</span> method = methods[i]</span><br><span class="line">    <span class="keyword">let</span> sel = method_getName(method)</span><br><span class="line">    <span class="keyword">let</span> methodName = sel_getName(sel)</span><br><span class="line">    <span class="keyword">let</span> argument = method_getNumberOfArguments(method)</span><br><span class="line"></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"name: (methodName), arguemtns: (argument)"</span>)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<p>测试一下调用：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">p.allMethods()</span><br></pre></td></tr></table></figure></p>
+<p>打印结果与上面的Objective-C版的一样。</p>
+<h1 id="获取对象的成员变量名称"><a href="#获取对象的成员变量名称" class="headerlink" title="获取对象的成员变量名称"></a>获取对象的成员变量名称</h1><p>要获取对象的成员变量，可以通过class_copyIvarList方法来获取，通过ivar_getName来获取成员变量的名称。对于属性，会自动生成一个成员变量。</p>
+<blockquote>
+<p>Objective-C版<br><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="type">NSArray</span> *)allMemberVariables &#123;</span><br><span class="line">  unsigned int <span class="built_in">count</span> = <span class="number">0</span>;</span><br><span class="line">  <span class="type">Ivar</span> *ivars = class_copyIvarList([<span class="keyword">self</span> <span class="class"><span class="keyword">class</span>], &amp;<span class="title">count</span>);</span></span><br><span class="line"><span class="class"></span></span><br><span class="line"><span class="class">  <span class="title">NSMutableArray</span> *<span class="title">results</span> = [[<span class="title">NSMutableArray</span> <span class="title">alloc</span>] <span class="title">init</span>];</span></span><br><span class="line"><span class="class">  <span class="title">for</span> (<span class="title">NSUInteger</span> <span class="title">i</span> = 0; <span class="title">i</span> &lt; <span class="title">count</span>; ++<span class="title">i</span>) </span>&#123;</span><br><span class="line">    <span class="type">Ivar</span> variable = ivars[i];</span><br><span class="line"></span><br><span class="line">    const char *name = ivar_getName(variable);</span><br><span class="line">    <span class="type">NSString</span> *varName = [<span class="type">NSString</span> stringWithUTF8String:name];</span><br><span class="line"></span><br><span class="line">    [results addObject:varName];</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> results;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<p>测试一下：<br><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="type">NSString</span> *varName <span class="keyword">in</span> p.allMemberVariables) &#123;</span><br><span class="line">  <span class="type">NSLog</span>(@<span class="string">"%@"</span>, varName);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>打印结果说明属性也会自动生成一个成员变量：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">2015-10-23 23:54:00.896 PropertiesDemo[46966:3856655] _variableString</span><br><span class="line">2015-10-23 23:54:00.897 PropertiesDemo[46966:3856655] _name</span><br><span class="line">2015-10-23 23:54:00.897 PropertiesDemo[46966:3856655] _array</span><br></pre></td></tr></table></figure></p>
+<blockquote>
+<p>Swift版</p>
+</blockquote>
+<p>Swift的成员变量名与属性名是一样的，不会生成下划线的成员变量名，这一点与Oc是有区别的。<br><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">allMemberVariables</span><span class="params">()</span></span> -&gt;[<span class="type">String</span>] &#123;</span><br><span class="line">  <span class="keyword">var</span> <span class="built_in">count</span>:<span class="type">UInt32</span> = <span class="number">0</span></span><br><span class="line">  <span class="keyword">let</span> ivars = class_copyIvarList(<span class="type">Person</span>.<span class="keyword">self</span>, &amp;<span class="built_in">count</span>)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">var</span> result: [<span class="type">String</span>] = []</span><br><span class="line">  <span class="keyword">for</span> <span class="keyword">var</span> i = <span class="number">0</span>; i &lt; <span class="type">Int</span>(<span class="built_in">count</span>); ++i &#123;</span><br><span class="line">    <span class="keyword">let</span> ivar = ivars[i]</span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> name = ivar_getName(ivar)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">let</span> varName = <span class="type">String</span>.fromCString(name) &#123;</span><br><span class="line">      result.append(varName)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> result</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>测试一下：<br><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> array = p.allMemberVariables()</span><br><span class="line"><span class="keyword">for</span> varName <span class="keyword">in</span> array &#123;</span><br><span class="line">  <span class="built_in">print</span>(varName)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>打印结果，说明Swift的属性不会自动加下划线，属性名就是变量名：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">name</span><br><span class="line">array</span><br></pre></td></tr></table></figure></p>
+<h1 id="运行时发消息"><a href="#运行时发消息" class="headerlink" title="运行时发消息"></a>运行时发消息</h1><p>iOS中，可以在运行时发送消息，让接收消息者执行对应的动作。可以使用objc_msgSend方法，发送消息。</p>
+<blockquote>
+<p>Objective-C版<br><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Person</span> *p = [[<span class="type">Person</span> alloc] <span class="keyword">init</span>];</span><br><span class="line">p.name = @<span class="string">"Lili"</span>;</span><br><span class="line">objc_msgSend(p, @selector(allMethods));</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<p>这样就相当于手动调用[p allMethods];。但是编译器会抱错，问题提示期望的参数为0，但是实际上有两个参数。解决办法是，关闭严格检查：</p>
+<p><img src="http://7xugrt.com1.z0.glb.clouddn.com/70.jpg" alt></p>
+<blockquote>
+<p>Swift版</p>
+</blockquote>
+<p>很抱歉，似乎在Swift中已经没有这种写法了。如果有，请告诉我。</p>
+<h1 id="Category扩展”属性”"><a href="#Category扩展”属性”" class="headerlink" title="Category扩展”属性”"></a>Category扩展”属性”</h1><p>iOS的category是不能扩展存储属性的，但是我们可以通过运行时关联来扩展“属性”。</p>
+<blockquote>
+<p>Objective-C版</p>
+</blockquote>
+<p>假设扩展下面的“属性”：<br><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 由于扩展不能扩展属性，因此我们这里在实现文件中需要利用运行时实现。</span></span><br><span class="line">typedef void(^<span class="type">HYBCallBack</span>)();</span><br><span class="line">@property (nonatomic, copy) <span class="type">HYBCallBack</span> callback;</span><br></pre></td></tr></table></figure></p>
+<p>在实现文件中，我们用一个静态变量作为key：</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="keyword">void</span> *s_HYBCallbackKey = <span class="string">"s_HYBCallbackKey"</span>;</span><br><span class="line"></span><br><span class="line">- (<span class="keyword">void</span>)setCallback:(HYBCallBack)callback &#123;</span><br><span class="line">  objc_setAssociatedObject(<span class="keyword">self</span>, s_HYBCallbackKey, callback, OBJC_ASSOCIATION_COPY_NONATOMIC);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (HYBCallBack)callback &#123;</span><br><span class="line">  <span class="keyword">return</span> objc_getAssociatedObject(<span class="keyword">self</span>, s_HYBCallbackKey);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>其实就是通过objc_getAssociatedObject取得关联的值，通过objc_setAssociatedObject设置关联。</p>
+<blockquote>
+<p>Swift版</p>
+</blockquote>
+<p>Swift版的要想扩展闭包，就比OC版的要复杂得多了。这里只是例子，写了一个简单的存储属性扩展。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> s_HYBFullnameKey = <span class="string">"s_HYBFullnameKey"</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">extension</span> <span class="title">Person</span> </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> fullName: <span class="type">String?</span> &#123;</span><br><span class="line">    <span class="keyword">get</span> &#123; <span class="keyword">return</span> objc_getAssociatedObject(<span class="keyword">self</span>, s_HYBFullnameKey) <span class="keyword">as</span>? <span class="type">String</span> &#125;</span><br><span class="line">    <span class="keyword">set</span> &#123;</span><br><span class="line">      objc_setAssociatedObject(<span class="keyword">self</span>, s_HYBFullnameKey, newValue, .<span class="type">OBJC_ASSOCIATION_COPY_NONATOMIC</span>)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>在开发中，我们比较常用的是使用关联属性的方式来扩展我们的“属性”，以便在开发中简单代码。我们在开发中使用关联属性扩展所有响应事件、将代理转换成block版等。比如，我们可以将所有继承于UIControl的控件，都拥有block版的点击响应，那么我们就可以给UIControl扩展一个TouchUp、TouchDown、TouchOut的block等。</p>
+<p>对于动态获取属性的名称、属性值使用较多的地方一般是在使用第三方库中，比如MJExtension等。这些三方库都是通过这种方式将Model转换成字典，或者将字典转换成Model。</p>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <span>link：</span>
+      <a href="http://pro.stonepark.fun/2016/05/27/Swift-Objc的Runtime运行时机制/" title="Swift/Objc的Runtime运行时机制" target="_blank" rel="external">http://pro.stonepark.fun/2016/05/27/Swift-Objc的Runtime运行时机制/</a>
+    </li>
+    
+  </ul>
+</blockquote>
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+      <div id="vcomments"></div>
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2016/05/27/MVVM-0/" title="MVVM"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2016/05/08/Swift-Runtime分析：还像OC-Runtime一样吗？/" title="Swift Runtime分析：还像OC Runtime一样吗？"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+  </ul>
+  
+  
+  
+  <div class="bar-right">
+    
+  </div>
+  </div>
+</nav>
+  
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/stone0117" target="_blank" title="Github" data-toggle="tooltip" data-placement="top"><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="http://weibo.com/cofess" target="_blank" title="Weibo" data-toggle="tooltip" data-placement="top"><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="https://twitter.com/iwebued" target="_blank" title="Twitter" data-toggle="tooltip" data-placement="top"><i class="icon icon-twitter"></i></a></li>
+        
+        <li><a href="https://www.behance.net/cofess" target="_blank" title="Behance" data-toggle="tooltip" data-placement="top"><i class="icon icon-behance"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle="tooltip" data-placement="top"><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+<script src="/js/plugin.min.js"></script>
+<script src="/js/application.js"></script>
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+
+
+
+
+   
+
+
+
+
+   
+    
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/valine"></script>
+  <script type="text/javascript">
+  var GUEST = ['nick', 'mail', 'link'];
+  var meta = 'nick,mail,link';
+  meta = meta.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#vcomments',
+    verify: false,
+    notify: false,
+    appId: '',
+    appKey: '',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: meta,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+  </script>
+
+     
+
+
+
+
+
+
+
+</body>
+</html>

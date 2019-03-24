@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000">
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top">
+  
+  
+  <!--<title>解析JSON并且字典转模型以及如何在项目内用 | Hexo</title>-->
+  <title>解析JSON并且字典转模型以及如何在项目内用</title>
+  <meta name="description" content="1、SwiftyJSON+Alam导入到项目内 2、由于Alam发送POST请求是异步的不能及时返回数据，要把Alam简单封装下,让他能够及时返回数据1234567891011121314func httpsPost(success:((json:AnyObject)-&amp;gt;Void)?,failure:((error:NSError)-&amp;gt;Void)?)&amp;#123;    Alamofir">
+<meta property="og:type" content="article">
+<meta property="og:title" content="解析JSON并且字典转模型以及如何在项目内用">
+<meta property="og:url" content="http://pro.stonepark.fun/2016/05/27/解析JSON并且字典转模型以及如何在项目内用/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="1、SwiftyJSON+Alam导入到项目内 2、由于Alam发送POST请求是异步的不能及时返回数据，要把Alam简单封装下,让他能够及时返回数据1234567891011121314func httpsPost(success:((json:AnyObject)-&amp;gt;Void)?,failure:((error:NSError)-&amp;gt;Void)?)&amp;#123;    Alamofir">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://img.voidcn.com/vcimg/000/002/708/951_c15_809.jpg">
+<meta property="og:updated_time" content="2016-05-28T17:48:32.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="解析JSON并且字典转模型以及如何在项目内用">
+<meta name="twitter:description" content="1、SwiftyJSON+Alam导入到项目内 2、由于Alam发送POST请求是异步的不能及时返回数据，要把Alam简单封装下,让他能够及时返回数据1234567891011121314func httpsPost(success:((json:AnyObject)-&amp;gt;Void)?,failure:((error:NSError)-&amp;gt;Void)?)&amp;#123;    Alamofir">
+<meta name="twitter:image" content="http://img.voidcn.com/vcimg/000/002/708/951_c15_809.jpg">
+  <!-- Canonical links -->
+  <link rel="canonical" href="http://pro.stonepark.fun/2016/05/27/解析JSON并且字典转模型以及如何在项目内用/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.jpg" type="image/x-icon">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+  
+  
+  
+</head>
+
+
+<body class="main-center theme-black" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/stone0117" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpeg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">StonePark</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">html node python iOS</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> Beijing, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索">
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech>
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-repository">
+          <a href="/repository">
+            
+            <i class="icon icon-project"></i>
+            
+            <span class="menu-title">项目</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books">
+            
+            <i class="icon icon-book-fill"></i>
+            
+            <span class="menu-title">书单</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links">
+            
+            <i class="icon icon-friendship"></i>
+            
+            <span class="menu-title">友链</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">关于</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/stone0117" target="_blank" title="Github" data-toggle="tooltip" data-placement="top"><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="http://weibo.com/cofess" target="_blank" title="Weibo" data-toggle="tooltip" data-placement="top"><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="https://twitter.com/iwebued" target="_blank" title="Twitter" data-toggle="tooltip" data-placement="top"><i class="icon icon-twitter"></i></a></li>
+        
+        <li><a href="https://www.behance.net/cofess" target="_blank" title="Behance" data-toggle="tooltip" data-placement="top"><i class="icon icon-behance"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle="tooltip" data-placement="top"><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>coding!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/IntelliJ-IDEA/">IntelliJ IDEA</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/apache/">apache</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/chrome/">chrome</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/freemarker/">freemarker</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/iOS/">iOS</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/javascript/">javascript</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/links/">links</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/macos/">macos</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/mysql/">mysql</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/node/">node</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/shell/">shell</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/其他/">其他</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/搜索/">搜索</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget-body">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ActiveMQ/">ActiveMQ</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AppCode/">AppCode</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/FastDFS/">FastDFS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IntelliJ-IDEA/">IntelliJ IDEA</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Redis/">Redis</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/apache/">apache</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/awk/">awk</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/chrome/">chrome</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/">docker</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dubbo/">dubbo</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/fastDFS-nginx综合/">fastDFS & nginx综合</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/find/">find</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/freemarker/">freemarker</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/google/">google</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/grep/">grep</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/idea坑/">idea坑</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/">javascript</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/links/">links</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nginx/">nginx</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/node/">node</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/regex/">regex</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sed/">sed</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/shell/">shell</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/solr/">solr</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sso/">sso</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/svn/">svn</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tomcat/">tomcat</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tr/">tr</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/xargs/">xargs</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/字符串操作/">字符串操作</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tags/ActiveMQ/" style="font-size: 13px;">ActiveMQ</a> <a href="/tags/AppCode/" style="font-size: 13px;">AppCode</a> <a href="/tags/FastDFS/" style="font-size: 13px;">FastDFS</a> <a href="/tags/IntelliJ-IDEA/" style="font-size: 13px;">IntelliJ IDEA</a> <a href="/tags/Linux/" style="font-size: 13.5px;">Linux</a> <a href="/tags/Redis/" style="font-size: 13px;">Redis</a> <a href="/tags/apache/" style="font-size: 13px;">apache</a> <a href="/tags/awk/" style="font-size: 13px;">awk</a> <a href="/tags/chrome/" style="font-size: 13px;">chrome</a> <a href="/tags/docker/" style="font-size: 13px;">docker</a> <a href="/tags/dubbo/" style="font-size: 13px;">dubbo</a> <a href="/tags/fastDFS-nginx综合/" style="font-size: 13px;">fastDFS & nginx综合</a> <a href="/tags/find/" style="font-size: 13px;">find</a> <a href="/tags/freemarker/" style="font-size: 13px;">freemarker</a> <a href="/tags/google/" style="font-size: 13px;">google</a> <a href="/tags/grep/" style="font-size: 13px;">grep</a> <a href="/tags/idea坑/" style="font-size: 13px;">idea坑</a> <a href="/tags/javascript/" style="font-size: 14px;">javascript</a> <a href="/tags/links/" style="font-size: 13px;">links</a> <a href="/tags/mysql/" style="font-size: 13px;">mysql</a> <a href="/tags/nginx/" style="font-size: 13px;">nginx</a> <a href="/tags/node/" style="font-size: 13px;">node</a> <a href="/tags/regex/" style="font-size: 13px;">regex</a> <a href="/tags/sed/" style="font-size: 14px;">sed</a> <a href="/tags/shell/" style="font-size: 13px;">shell</a> <a href="/tags/solr/" style="font-size: 13px;">solr</a> <a href="/tags/sso/" style="font-size: 13px;">sso</a> <a href="/tags/svn/" style="font-size: 13.5px;">svn</a> <a href="/tags/tomcat/" style="font-size: 13px;">tomcat</a> <a href="/tags/tr/" style="font-size: 13px;">tr</a> <a href="/tags/xargs/" style="font-size: 13px;">xargs</a> <a href="/tags/字符串操作/" style="font-size: 13px;">字符串操作</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">二月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">一月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">二月 2018</a><span class="archive-list-count">30</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">八月 2016</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">七月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">六月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">九月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/06/">六月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">三月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/12/">十二月 2014</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/javascript/">javascript</a>
+              </p>
+              <p class="item-title">
+                <a href="/2019/02/22/String-prototype-split/" class="title">String.prototype.split()</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2019-02-21T20:16:48.000Z" itemprop="datePublished">2019-02-22</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/node/">node</a>
+              </p>
+              <p class="item-title">
+                <a href="/2019/01/04/module-exports与exports，export与export-default之间的关系和区别/" class="title">module.exports与exports，export与export default之间的关系和区别</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2019-01-04T09:44:16.000Z" itemprop="datePublished">2019-01-04</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/javascript/">javascript</a>
+              </p>
+              <p class="item-title">
+                <a href="/2018/04/05/javascript-内存管理-循环引用处理/" class="title">javascript-内存管理-循环引用处理</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2018-04-05T02:18:29.000Z" itemprop="datePublished">2018-04-05</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/javascript/">javascript</a>
+              </p>
+              <p class="item-title">
+                <a href="/2018/04/04/javascript的命名代码块/" class="title">javascript的命名代码块</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2018-04-04T05:24:26.000Z" itemprop="datePublished">2018-04-04</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/shell/">shell</a>
+              </p>
+              <p class="item-title">
+                <a href="/2018/04/03/find用法解析-macos环境BSD-shell/" class="title">find用法解析(macos环境BSD shell)</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2018-04-03T08:44:33.000Z" itemprop="datePublished">2018-04-03</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<main class="main" role="main">
+  <div class="content">
+  <article id="swiftyjson+alam发送网络请求-解析JSON并且字典转模型以及如何在项目内用" class="article article-type-swiftyjson+alam发送网络请求" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      解析JSON并且字典转模型以及如何在项目内用
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2016/05/27/解析JSON并且字典转模型以及如何在项目内用/" class="article-date">
+	  <time datetime="2016-05-27T08:55:07.000Z" itemprop="datePublished">2016-05-27</time>
+	</a>
+</span>
+        
+        
+
+        
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2016/05/27/解析JSON并且字典转模型以及如何在项目内用/#comments" class="article-comment-link">评论</a></span>
+        
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <p>1、SwiftyJSON+Alam导入到项目内</p>
+<p>2、由于Alam发送POST请求是异步的不能及时返回数据，要把Alam简单封装下,让他能够及时返回数据<br><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">httpsPost</span><span class="params">(success:<span class="params">(<span class="params">(json:AnyObject)</span></span></span></span>-&gt;<span class="type">Void</span>)?,failure:((error:<span class="type">NSError</span>)-&gt;<span class="type">Void</span>)?)&#123;</span><br><span class="line">    <span class="type">Alamofire</span>.request(.<span class="type">POST</span>).responseJSON(options: <span class="type">NSJSONReadingOptions</span>.<span class="type">MutableContainers</span>) &#123; (request, response, json, error) -&gt; <span class="type">Void</span> <span class="keyword">in</span></span><br><span class="line">        <span class="keyword">if</span> error == <span class="literal">nil</span> &#123;</span><br><span class="line">            <span class="keyword">if</span> success != <span class="literal">nil</span> &#123;</span><br><span class="line">                <span class="built_in">println</span>(json)</span><br><span class="line">                success!(json: json!)</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">if</span> failure != <span class="literal">nil</span> &#123;</span><br><span class="line">                failure!(error: error!)</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>第一个参数url为网络地址，后面success为请求成功的闭包，第二个failure为请求失败的闭包</p>
+<p>第一行为Alam自带的request封装好的发送网络请求的方法，POST请求以及url。后面的responesJSON这个并不是Alam自带的，而是依靠SwiftyJSON的一个解析返回数据的JSON方法，options那个没太注意是干嘛的而且我也没用到过，后面request,response,json,error，前两个对数据来说没啥用，json就是咱要取的发送post请求以后后台返回的数据，如果返回失败（譬如url请求错误、或者参数不对又或者哪里有错误）error为一个错误信息。</p>
+<a id="more"></a>
+<p>Void in后面为咱们要处理的</p>
+<p>①首先判断error是不是为nil 注：如果发送POST请求返回数据OK的话 error是为nil的</p>
+<p>②其次判断success是否为nil 这个就是一个闭包的保险写法 我也有点蒙为啥那么写，但是我感觉会比较保险点</p>
+<p>③正题来了json就是咱们要的东东，success要加! ，json:json !为返回的闭包参数son:AnyObject （具体代码怎么用后面会说）</p>
+<p>④else 就是肯定error非nil了，非nil得话肯定报错，那么failure闭包就有作用了，返回erro错误信息</p>
+<p><strong>注：这个的封装不加任何参数，如果加参数可以这样</strong></p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">requestMethod3</span><span class="params">(method:Alamofire.Method,url:String,model:String,params:[NSObject:AnyObject],success:<span class="params">(<span class="params">(Json:[String:AnyObject]?)</span></span></span></span>-&gt;<span class="type">Void</span>)?,failure:((error:<span class="type">NSError</span>)-&gt;<span class="type">Void</span>)?)</span><br></pre></td></tr></table></figure>
+<p><strong>参数 Alamofire.Method.POST or Alamofire.Method.GET、url可以传地址，model也是一个String参数，params为一个字典</strong></p>
+<p>下面介绍如何去运用自己封装好的网络请求<br><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> easyRequest = <span class="type">EasyRequest</span>()</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">easyRequestNormalAndProduct</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="type">EasyRequest</span>.httpsPost(<span class="type">Alamofire</span>.<span class="type">Method</span>.<span class="type">POST</span>, url: <span class="type">FAVORITE_FAVORITE_FAVCOUNT_URL</span>, model: <span class="type">FAVORITE_MODEL</span>, params: parameters, success: &#123; (<span class="type">Json</span>) -&gt; <span class="type">Void</span> <span class="keyword">in</span></span><br><span class="line">        <span class="built_in">println</span>(<span class="type">Json</span>)</span><br><span class="line">        &#125;, failure: &#123; (error) -&gt; <span class="type">Void</span> <span class="keyword">in</span></span><br><span class="line">            <span class="built_in">println</span>(error)</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>在第五行输出的Json就可以提取数据了（参数按照自己的需求自己拼接去）</p>
+<p>OK 如果这个时候Json可以println 那么恭喜你 你已经会Alam发送网络请求以及接收到Alam返回的数据了</p>
+<p>那么next咱得把数据解析出来~</p>
+<p>我这边输出的Json如下<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Optional([&quot;code&quot;: 0, &quot;list&quot;: &lt;4,6,0x7f9b13263db0&gt;,[0x7f9b1322e1d0--8] [0x7f9b132447b0--8] [0x7f9b13230ff0--8] [0x7f9b10d71710--8] [0x7f9b13260a20--8] [0x7f9b13222960--8] ])</span><br></pre></td></tr></table></figure></p>
+<p><img src="http://img.voidcn.com/vcimg/000/002/708/951_c15_809.jpg" alt="image"><br>是的 你TMD在逗我？后面那一坨一坨是个蛋蛋啊？</p>
+<p>聪明又帅气的二挠哥告诉你正常，只要返回数据了就正常~表急</p>
+<p>下面来个一行代码轻松搞定</p>
+<p>var channel  = JSON(Json!)</p>
+<p>那么再输出下就是如下信息了<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="string">"code"</span> : 0,</span><br><span class="line">  <span class="string">"list"</span> : [</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="string">"normal_video_play_count"</span> : 1,</span><br><span class="line">      <span class="string">"normal_video_id"</span> : <span class="string">"1284"</span>,</span><br><span class="line">      <span class="string">"publish_date"</span> : <span class="string">"1435218376"</span>,</span><br><span class="line">      <span class="string">"fav_date"</span> : <span class="string">"1435634888"</span>,</span><br><span class="line">      <span class="string">"type"</span> : 2,</span><br><span class="line">      <span class="string">"normal_video_title"</span> : <span class="string">"9999 ooooo i"</span>,</span><br><span class="line">      <span class="string">"normal_video"</span> : <span class="string">"http:\/\/testqiniu.xiudou.net\/VvPiEDnTp1FVcfW6FrWJX-nJnbU=\/Fm8IAWT2B9MrFTqrnEn_ZABLagIJ?pm3u8\/0\/expires\/86400&amp;e=1435769541&amp;token=TS8CH53g7f8gjytpyRGRwG4MFOua4FSwZ5g1O_L7:-Yy2m0OyxN4NVux7xUuiqV6h5nc="</span>,</span><br><span class="line">      <span class="string">"normal_video_head_image"</span> : <span class="string">"http:\/\/testqiniu.xiudou.net\/videos\/shop\/1429777564_1435218364.jpg?e=1435769541&amp;token=TS8CH53g7f8gjytpyRGRwG4MFOua4FSwZ5g1O_L7:ufP9NHZy-9ChMkpzFNN_8Jfdt6s="</span></span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="string">"normal_video_play_count"</span> : 1,</span><br><span class="line">      <span class="string">"normal_video_id"</span> : <span class="string">"1285"</span>,</span><br><span class="line">      <span class="string">"publish_date"</span> : <span class="string">"1435219543"</span>,</span><br><span class="line">      <span class="string">"fav_date"</span> : <span class="string">"1435634831"</span>,</span><br><span class="line">      <span class="string">"type"</span> : 2,</span><br><span class="line">      <span class="string">"normal_video_title"</span> : <span class="string">"sdfasdfdsaf"</span>,</span><br><span class="line">      <span class="string">"normal_video"</span> : <span class="string">"http:\/\/testqiniu.xiudou.net\/VvPiEDnTp1FVcfW6FrWJX-nJnbU=\/Fm8IAWT2B9MrFTqrnEn_ZABLagIJ?pm3u8\/0\/expires\/86400&amp;e=1435769541&amp;token=TS8CH53g7f8gjytpyRGRwG4MFOua4FSwZ5g1O_L7:-Yy2m0OyxN4NVux7xUuiqV6h5nc="</span>,</span><br><span class="line">      <span class="string">"normal_video_head_image"</span> : <span class="string">"http:\/\/testqiniu.xiudou.net\/videos\/shop\/1429777564_1435219536.jpg?e=1435769541&amp;token=TS8CH53g7f8gjytpyRGRwG4MFOua4FSwZ5g1O_L7:XPCR5XTwQ8oeDGLuNFdtwrucsGQ="</span></span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="string">"normal_video_play_count"</span> : 4,</span><br><span class="line">      <span class="string">"normal_video_id"</span> : <span class="string">"1282"</span>,</span><br><span class="line">      <span class="string">"publish_date"</span> : <span class="string">"1435218102"</span>,</span><br><span class="line">      <span class="string">"fav_date"</span> : <span class="string">"1435634819"</span>,</span><br><span class="line">      <span class="string">"type"</span> : 2,</span><br><span class="line">      <span class="string">"normal_video_title"</span> : <span class="string">"呵呵"</span>,</span><br><span class="line">      <span class="string">"normal_video"</span> : <span class="string">"http:\/\/testqiniu.xiudou.net\/VvPiEDnTp1FVcfW6FrWJX-nJnbU=\/FiHtlkir3PNQbVK8JD5w5U96EpU4?pm3u8\/0\/expires\/86400&amp;e=1435769541&amp;token=TS8CH53g7f8gjytpyRGRwG4MFOua4FSwZ5g1O_L7:OgSLxsJIbcTNSZMl40HXJKd5zO4="</span>,</span><br><span class="line">      <span class="string">"normal_video_head_image"</span> : <span class="string">"http:\/\/7xjo8a.com2.z0.glb.qiniucdn.com\/normal\/1434427831_1435218100.jpg?e=1435769541&amp;token=TS8CH53g7f8gjytpyRGRwG4MFOua4FSwZ5g1O_L7:9TkEBtRvF2DHaGyDKDtHv7ryqu8="</span></span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="string">"normal_video_play_count"</span> : 4,</span><br><span class="line">      <span class="string">"normal_video_id"</span> : <span class="string">"1224"</span>,</span><br><span class="line">      <span class="string">"publish_date"</span> : <span class="string">"1434020670"</span>,</span><br><span class="line">      <span class="string">"fav_date"</span> : <span class="string">"1435564145"</span>,</span><br><span class="line">      <span class="string">"type"</span> : 2,</span><br><span class="line">      <span class="string">"normal_video_title"</span> : <span class="string">""</span>,</span><br><span class="line">      <span class="string">"normal_video"</span> : <span class="string">"http:\/\/testqiniu.xiudou.net\/PjhrU4kwRDaU1YNTE_8kapZMa4o=\/Fm8IAWT2B9MrFTqrnEn_ZABLagIJ?pm3u8\/0\/expires\/86400&amp;e=1435769541&amp;token=TS8CH53g7f8gjytpyRGRwG4MFOua4FSwZ5g1O_L7:rQ8KIr5og7apuD4LGNtFvb30Ooo="</span>,</span><br><span class="line">      <span class="string">"normal_video_head_image"</span> : <span class="string">"http:\/\/testqiniu.xiudou.net\/shop_videos\/shop\/1429777564_1434020650.jpg?e=1435769541&amp;token=TS8CH53g7f8gjytpyRGRwG4MFOua4FSwZ5g1O_L7:e004eIn52ZY68IFmN9ZvhNMHptM="</span></span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="string">"normal_video_play_count"</span> : 7,</span><br><span class="line">      <span class="string">"normal_video_id"</span> : <span class="string">"1263"</span>,</span><br><span class="line">      <span class="string">"publish_date"</span> : <span class="string">"1434443695"</span>,</span><br><span class="line">      <span class="string">"fav_date"</span> : <span class="string">"1434542812"</span>,</span><br><span class="line">      <span class="string">"type"</span> : 2,</span><br><span class="line">      <span class="string">"normal_video_title"</span> : <span class="string">"也要好好和"</span>,</span><br><span class="line">      <span class="string">"normal_video"</span> : <span class="string">"http:\/\/testqiniu.xiudou.net\/VvPiEDnTp1FVcfW6FrWJX-nJnbU=\/FrvIsJaH3xCJQ8a7TlMwRvVyCph8?pm3u8\/0\/expires\/86400&amp;e=1435769541&amp;token=TS8CH53g7f8gjytpyRGRwG4MFOua4FSwZ5g1O_L7:_FQOC8YioYREAuRG1oPJOfGmu4U="</span>,</span><br><span class="line">      <span class="string">"normal_video_head_image"</span> : <span class="string">"http:\/\/7xjo8a.com2.z0.glb.qiniucdn.com\/normal\/1433837202_1434443640125.jpg?e=1435769541&amp;token=TS8CH53g7f8gjytpyRGRwG4MFOua4FSwZ5g1O_L7:CngLb_rPEYvuAouMbP0iJbKbqUI="</span></span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="string">"normal_video_play_count"</span> : 14,</span><br><span class="line">      <span class="string">"normal_video_id"</span> : <span class="string">"1254"</span>,</span><br><span class="line">      <span class="string">"publish_date"</span> : <span class="string">"1434438070"</span>,</span><br><span class="line">      <span class="string">"fav_date"</span> : <span class="string">"1434542808"</span>,</span><br><span class="line">      <span class="string">"type"</span> : 2,</span><br><span class="line">      <span class="string">"normal_video_title"</span> : <span class="string">"vbjj"</span>,</span><br><span class="line">      <span class="string">"normal_video"</span> : <span class="string">"http:\/\/testqiniu.xiudou.net\/VvPiEDnTp1FVcfW6FrWJX-nJnbU=\/FtfIY7z-FAShdNiuBnmG0kpwefjk?pm3u8\/0\/expires\/86400&amp;e=1435769541&amp;token=TS8CH53g7f8gjytpyRGRwG4MFOua4FSwZ5g1O_L7:hcVZdnu1riz88z_AWlAqIRFIzns="</span>,</span><br><span class="line">      <span class="string">"normal_video_head_image"</span> : <span class="string">"http:\/\/7xjo8a.com2.z0.glb.qiniucdn.com\/normal\/1428903622_1434438045781.jpg?e=1435769541&amp;token=TS8CH53g7f8gjytpyRGRwG4MFOua4FSwZ5g1O_L7:uVk6IxqL0ARWzIIEzphhN4LKORY="</span></span><br><span class="line">    &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>OK看到这里你就算是认识了把，简单的JSON，你理解为键值对也行~！反正我总是理解成键值对~！。。。。。</p>
+<p>OK那么下一步取出具体的数据</p>
+<p>首先提取</p>
+<p>提取的话其实SwiftyJSON都给大家封装的很好了直接调用即可</p>
+<p>如上图我如果想取code和list</p>
+<p>那么直接<br><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> code = channel[<span class="string">"code"</span>].int</span><br><span class="line">    <span class="comment">//此时输出code 为0 因为返回的数据就为0</span></span><br><span class="line"><span class="keyword">var</span> array = channel[<span class="string">"list"</span>].array</span><br><span class="line">    <span class="comment">//此时的list是包含了list：后面那些很多数据的数组</span></span><br></pre></td></tr></table></figure></p>
+<p>到此OK了JSON数据提取OK了，能正常的println了</p>
+<hr>
+<p>那么这里咱先做点别的~！什么呢？建立Model（不懂model得自己百度MVC去）</p>
+<p>首先建立对应返回数组也就是上面的array。我的对应的如下<br><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">//  NormalModel.swift</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">//  Created by 二挠 on 15/6/26.</span></span><br><span class="line"><span class="comment">//  Copyright (c) 2015年 . All rights reserved.</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> Foundation</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">NormalModel</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> publish_date:<span class="type">String!</span></span><br><span class="line">    <span class="keyword">var</span> normal_video_id:<span class="type">Int!</span></span><br><span class="line">    <span class="keyword">var</span> normal_video_title:<span class="type">String!</span></span><br><span class="line">    <span class="keyword">var</span> normal_video:<span class="type">String!</span></span><br><span class="line">    <span class="keyword">var</span> normal_video_head_image:<span class="type">String!</span></span><br><span class="line">    <span class="keyword">var</span> video_play_count:<span class="type">Int!</span></span><br><span class="line">    <span class="keyword">var</span> fav_date: <span class="type">String!</span></span><br><span class="line">    <span class="keyword">var</span> fav_type:<span class="type">Int!</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">func</span> <span class="title">initModel</span><span class="params">(dict:NSDictionary)</span></span>-&gt;<span class="type">AnyObject</span>&#123;</span><br><span class="line">        publish_date = dict.valueForKey(<span class="string">"publish_date"</span>) <span class="keyword">as</span>! <span class="type">String</span></span><br><span class="line">        normal_video_id = dict.valueForKey(<span class="string">"normal_video_id"</span>) <span class="keyword">as</span>! <span class="type">Int</span></span><br><span class="line">        normal_video_title = dict.valueForKey(<span class="string">"normal_video_title"</span>) <span class="keyword">as</span>! <span class="type">String</span></span><br><span class="line">        normal_video = dict.valueForKey(<span class="string">"normal_video"</span>) <span class="keyword">as</span>! <span class="type">String</span></span><br><span class="line">        normal_video_head_image = dict.valueForKey(<span class="string">"normal_video_head_image"</span>) <span class="keyword">as</span>! <span class="type">String</span></span><br><span class="line">        video_play_count = dict.valueForKey(<span class="string">"normal_video_play_count"</span>) <span class="keyword">as</span>! <span class="type">Int</span></span><br><span class="line">        fav_date = dict.valueForKey(<span class="string">"fav_date"</span>) <span class="keyword">as</span>! <span class="type">String</span></span><br><span class="line">        fav_type = dict.valueForKey(<span class="string">"type"</span>) <span class="keyword">as</span>! <span class="type">Int</span></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">self</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>那么对应返回JSON的实体类就建立好了。</p>
+<p>解释下 很简单一个名字为NormalModel的实体类，里面一个方法名字为initModel的带NSDictionary参数的方法，方法内部去把接收的字典取Key对应的value然后赋值给属性。</p>
+<p>对象建完了那么下面就该是如何给对象赋值了，还记得上面已经获取到array了么？what？你TMD忘了 么事 二挠哥带你装逼带你飞 再来复习下<br><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">println</span>(<span class="type">Json</span>)</span><br><span class="line">    <span class="comment">//Json为闭包返回的json变量，JSON为SwiftyJSON自带的</span></span><br><span class="line"><span class="keyword">var</span> channel = <span class="type">JSON</span>(<span class="type">Json!</span>)</span><br><span class="line"><span class="built_in">println</span>(channel)</span><br><span class="line"><span class="keyword">var</span> code = channel[<span class="string">"code"</span>].int</span><br><span class="line">    <span class="comment">//此时输出code 为0 因为返回的数据就为0</span></span><br><span class="line"><span class="keyword">var</span> array = channel[<span class="string">"list"</span>].array</span><br><span class="line">    <span class="comment">//此时的list是包含了list：后面那些很多数据的数组</span></span><br><span class="line">    <span class="comment">//新建一个可变数组来添加数据</span></span><br><span class="line"><span class="keyword">var</span> tempArray = <span class="type">NSMutableArray</span>()</span><br></pre></td></tr></table></figure></p>
+<p>然后去循环array给这个类传一个NSDictionary即可。具体做法<br><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> e <span class="keyword">in</span> array! &#123;</span><br><span class="line">    <span class="keyword">var</span> cc = <span class="type">NormalModel</span>().initModel(<span class="type">NSDictionary</span>(dictionary:e.dictionaryObject!) <span class="keyword">as</span> [<span class="type">NSObject</span> : <span class="type">AnyObject</span>])</span><br><span class="line">    tempArray.addObject(cc)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>貌似到这里就完了 其实还有一个尾巴~~~啥？闭包有两个，一个success就是咱们要处理这个、还一个failure木有处理直接如下<br><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">failure: &#123; (error) -&gt; <span class="type">Void</span> <span class="keyword">in</span></span><br><span class="line">    <span class="built_in">println</span>(error)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>那么现在基本就完成 90%了<br>到此为止了？NONO</p>
+<p>下面介绍如何运用，既然都存到Model里了总得用吧？</p>
+<p>拿UICollectionView来说吧在</p>
+<p>cellForItemAtIndexPath方法内<br><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">collectionView</span><span class="params">(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath)</span></span> -&gt; <span class="type">UICollectionViewCell</span> &#123;</span><br><span class="line">    <span class="keyword">var</span> nor = <span class="type">NormalModel</span>()</span><br><span class="line">    nor = swiftMultiPage.dataArray[indexPath.row] <span class="keyword">as</span>! <span class="type">NormalModel</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>这时候的nor就已经存了第一条数据了 不信你po nor.favDate来爽爽？</p>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <span>link：</span>
+      <a href="http://pro.stonepark.fun/2016/05/27/解析JSON并且字典转模型以及如何在项目内用/" title="解析JSON并且字典转模型以及如何在项目内用" target="_blank" rel="external">http://pro.stonepark.fun/2016/05/27/解析JSON并且字典转模型以及如何在项目内用/</a>
+    </li>
+    
+  </ul>
+</blockquote>
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+      <div id="vcomments"></div>
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2016/05/28/在Swift中检查API的可用性/" title="在Swift中检查API的可用性"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2016/05/27/MVVM-0/" title="MVVM"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+  </ul>
+  
+  
+  
+  <div class="bar-right">
+    
+  </div>
+  </div>
+</nav>
+  
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/stone0117" target="_blank" title="Github" data-toggle="tooltip" data-placement="top"><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="http://weibo.com/cofess" target="_blank" title="Weibo" data-toggle="tooltip" data-placement="top"><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="https://twitter.com/iwebued" target="_blank" title="Twitter" data-toggle="tooltip" data-placement="top"><i class="icon icon-twitter"></i></a></li>
+        
+        <li><a href="https://www.behance.net/cofess" target="_blank" title="Behance" data-toggle="tooltip" data-placement="top"><i class="icon icon-behance"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle="tooltip" data-placement="top"><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+<script src="/js/plugin.min.js"></script>
+<script src="/js/application.js"></script>
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+
+
+
+
+   
+
+
+
+
+   
+    
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/valine"></script>
+  <script type="text/javascript">
+  var GUEST = ['nick', 'mail', 'link'];
+  var meta = 'nick,mail,link';
+  meta = meta.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#vcomments',
+    verify: false,
+    notify: false,
+    appId: '',
+    appKey: '',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: meta,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+  </script>
+
+     
+
+
+
+
+
+
+
+</body>
+</html>

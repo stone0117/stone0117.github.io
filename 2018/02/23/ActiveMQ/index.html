@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000">
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top">
+  
+  
+  <!--<title>ActiveMQ | Hexo</title>-->
+  <title>ActiveMQ</title>
+  <meta name="description" content="安装&amp;amp;配置12345678910111213141516171819202122#!/bin/bashwget -P ~/soft/ &quot;http://ou0y29lb2.bkt.clouddn.com/apache-activemq-5.12.0-bin.tar.gz&quot;if [ ! -d &quot;/usr/local/activemq&quot; ]; then	mkdir /usr/local/acti">
+<meta name="keywords" content="ActiveMQ">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ActiveMQ">
+<meta property="og:url" content="http://pro.stonepark.fun/2018/02/23/ActiveMQ/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="安装&amp;amp;配置12345678910111213141516171819202122#!/bin/bashwget -P ~/soft/ &quot;http://ou0y29lb2.bkt.clouddn.com/apache-activemq-5.12.0-bin.tar.gz&quot;if [ ! -d &quot;/usr/local/activemq&quot; ]; then	mkdir /usr/local/acti">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://pro.stonepark.fun/2018/02/23/ActiveMQ/download.png">
+<meta property="og:image" content="http://pro.stonepark.fun/2018/02/23/ActiveMQ/download-1.png">
+<meta property="og:image" content="http://pro.stonepark.fun/2018/02/23/ActiveMQ/download-2.png">
+<meta property="og:image" content="http://pro.stonepark.fun/2018/02/23/ActiveMQ/download-3.png">
+<meta property="og:updated_time" content="2018-02-22T18:22:28.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ActiveMQ">
+<meta name="twitter:description" content="安装&amp;amp;配置12345678910111213141516171819202122#!/bin/bashwget -P ~/soft/ &quot;http://ou0y29lb2.bkt.clouddn.com/apache-activemq-5.12.0-bin.tar.gz&quot;if [ ! -d &quot;/usr/local/activemq&quot; ]; then	mkdir /usr/local/acti">
+<meta name="twitter:image" content="http://pro.stonepark.fun/2018/02/23/ActiveMQ/download.png">
+  <!-- Canonical links -->
+  <link rel="canonical" href="http://pro.stonepark.fun/2018/02/23/ActiveMQ/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.jpg" type="image/x-icon">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+  
+  
+  
+</head>
+
+
+<body class="main-center theme-black" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/stone0117" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpeg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">StonePark</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">html node python iOS</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> Beijing, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索">
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech>
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-repository">
+          <a href="/repository">
+            
+            <i class="icon icon-project"></i>
+            
+            <span class="menu-title">项目</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books">
+            
+            <i class="icon icon-book-fill"></i>
+            
+            <span class="menu-title">书单</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links">
+            
+            <i class="icon icon-friendship"></i>
+            
+            <span class="menu-title">友链</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">关于</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/stone0117" target="_blank" title="Github" data-toggle="tooltip" data-placement="top"><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="http://weibo.com/cofess" target="_blank" title="Weibo" data-toggle="tooltip" data-placement="top"><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="https://twitter.com/iwebued" target="_blank" title="Twitter" data-toggle="tooltip" data-placement="top"><i class="icon icon-twitter"></i></a></li>
+        
+        <li><a href="https://www.behance.net/cofess" target="_blank" title="Behance" data-toggle="tooltip" data-placement="top"><i class="icon icon-behance"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle="tooltip" data-placement="top"><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>coding!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/IntelliJ-IDEA/">IntelliJ IDEA</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/apache/">apache</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/chrome/">chrome</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/freemarker/">freemarker</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/iOS/">iOS</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/javascript/">javascript</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/links/">links</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/macos/">macos</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/mysql/">mysql</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/node/">node</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/shell/">shell</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/其他/">其他</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/搜索/">搜索</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget-body">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ActiveMQ/">ActiveMQ</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AppCode/">AppCode</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/FastDFS/">FastDFS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IntelliJ-IDEA/">IntelliJ IDEA</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Redis/">Redis</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/apache/">apache</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/awk/">awk</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/chrome/">chrome</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/">docker</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dubbo/">dubbo</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/fastDFS-nginx综合/">fastDFS & nginx综合</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/find/">find</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/freemarker/">freemarker</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/google/">google</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/grep/">grep</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/idea坑/">idea坑</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/">javascript</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/links/">links</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nginx/">nginx</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/node/">node</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/regex/">regex</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sed/">sed</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/shell/">shell</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/solr/">solr</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sso/">sso</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/svn/">svn</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tomcat/">tomcat</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tr/">tr</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/xargs/">xargs</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/字符串操作/">字符串操作</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tags/ActiveMQ/" style="font-size: 13px;">ActiveMQ</a> <a href="/tags/AppCode/" style="font-size: 13px;">AppCode</a> <a href="/tags/FastDFS/" style="font-size: 13px;">FastDFS</a> <a href="/tags/IntelliJ-IDEA/" style="font-size: 13px;">IntelliJ IDEA</a> <a href="/tags/Linux/" style="font-size: 13.5px;">Linux</a> <a href="/tags/Redis/" style="font-size: 13px;">Redis</a> <a href="/tags/apache/" style="font-size: 13px;">apache</a> <a href="/tags/awk/" style="font-size: 13px;">awk</a> <a href="/tags/chrome/" style="font-size: 13px;">chrome</a> <a href="/tags/docker/" style="font-size: 13px;">docker</a> <a href="/tags/dubbo/" style="font-size: 13px;">dubbo</a> <a href="/tags/fastDFS-nginx综合/" style="font-size: 13px;">fastDFS & nginx综合</a> <a href="/tags/find/" style="font-size: 13px;">find</a> <a href="/tags/freemarker/" style="font-size: 13px;">freemarker</a> <a href="/tags/google/" style="font-size: 13px;">google</a> <a href="/tags/grep/" style="font-size: 13px;">grep</a> <a href="/tags/idea坑/" style="font-size: 13px;">idea坑</a> <a href="/tags/javascript/" style="font-size: 14px;">javascript</a> <a href="/tags/links/" style="font-size: 13px;">links</a> <a href="/tags/mysql/" style="font-size: 13px;">mysql</a> <a href="/tags/nginx/" style="font-size: 13px;">nginx</a> <a href="/tags/node/" style="font-size: 13px;">node</a> <a href="/tags/regex/" style="font-size: 13px;">regex</a> <a href="/tags/sed/" style="font-size: 14px;">sed</a> <a href="/tags/shell/" style="font-size: 13px;">shell</a> <a href="/tags/solr/" style="font-size: 13px;">solr</a> <a href="/tags/sso/" style="font-size: 13px;">sso</a> <a href="/tags/svn/" style="font-size: 13.5px;">svn</a> <a href="/tags/tomcat/" style="font-size: 13px;">tomcat</a> <a href="/tags/tr/" style="font-size: 13px;">tr</a> <a href="/tags/xargs/" style="font-size: 13px;">xargs</a> <a href="/tags/字符串操作/" style="font-size: 13px;">字符串操作</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">二月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">一月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">二月 2018</a><span class="archive-list-count">30</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">八月 2016</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">七月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">六月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">九月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/06/">六月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">三月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/12/">十二月 2014</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/javascript/">javascript</a>
+              </p>
+              <p class="item-title">
+                <a href="/2019/02/22/String-prototype-split/" class="title">String.prototype.split()</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2019-02-21T20:16:48.000Z" itemprop="datePublished">2019-02-22</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/node/">node</a>
+              </p>
+              <p class="item-title">
+                <a href="/2019/01/04/module-exports与exports，export与export-default之间的关系和区别/" class="title">module.exports与exports，export与export default之间的关系和区别</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2019-01-04T09:44:16.000Z" itemprop="datePublished">2019-01-04</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/javascript/">javascript</a>
+              </p>
+              <p class="item-title">
+                <a href="/2018/04/05/javascript-内存管理-循环引用处理/" class="title">javascript-内存管理-循环引用处理</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2018-04-05T02:18:29.000Z" itemprop="datePublished">2018-04-05</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/javascript/">javascript</a>
+              </p>
+              <p class="item-title">
+                <a href="/2018/04/04/javascript的命名代码块/" class="title">javascript的命名代码块</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2018-04-04T05:24:26.000Z" itemprop="datePublished">2018-04-04</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/shell/">shell</a>
+              </p>
+              <p class="item-title">
+                <a href="/2018/04/03/find用法解析-macos环境BSD-shell/" class="title">find用法解析(macos环境BSD shell)</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2018-04-03T08:44:33.000Z" itemprop="datePublished">2018-04-03</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-ActiveMQ" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      ActiveMQ
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2018/02/23/ActiveMQ/" class="article-date">
+	  <time datetime="2018-02-22T18:17:47.000Z" itemprop="datePublished">2018-02-23</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/Linux/">Linux</a>
+  </span>
+
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link" href="/tags/ActiveMQ/">ActiveMQ</a>
+  </span>
+
+
+        
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2018/02/23/ActiveMQ/#comments" class="article-comment-link">评论</a></span>
+        
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <h2 id="安装-amp-配置"><a href="#安装-amp-配置" class="headerlink" title="安装&amp;配置"></a>安装&amp;配置</h2><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line">wget -P ~/soft/ <span class="string">"http://ou0y29lb2.bkt.clouddn.com/apache-activemq-5.12.0-bin.tar.gz"</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> [ ! -d <span class="string">"/usr/local/activemq"</span> ]; then</span><br><span class="line">	mkdir /usr/local/activemq</span><br><span class="line">fi</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">cp <span class="variable">$HOME</span>/soft/apache-activemq-<span class="number">5.12</span>.<span class="number">0</span>-bin.tar.gz /usr/local/activemq</span><br><span class="line"></span><br><span class="line">cd /usr/local/activemq</span><br><span class="line"></span><br><span class="line">tar -zxvf apache-activemq-<span class="number">5.12</span>.<span class="number">0</span>-bin.tar.gz</span><br><span class="line"></span><br><span class="line">/usr/local/activemq/apache-activemq-<span class="number">5.12</span>.<span class="number">0</span>/bin/activemq start</span><br><span class="line"></span><br><span class="line"><span class="comment"># 默认端口 8161</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># http://172.16.124.134:8161/admin</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 默认账号密码 admin admin</span></span><br></pre></td></tr></table></figure>
+<h3 id="访问出错问题解决"><a href="#访问出错问题解决" class="headerlink" title="访问出错问题解决"></a>访问出错问题解决</h3><p>访问ActiveMQ后台管理系统出现Service Unavailable，解决步骤如下：</p>
+<p>第一步：停止ActiveMQ<br><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/root/apache-activemq-<span class="number">5.12</span>.<span class="number">0</span>/bin/activemq stop</span><br></pre></td></tr></table></figure></p>
+<p>第二步：查看ActiveMQ后台<br><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/root/apache-activemq-<span class="number">5.12</span>.<span class="number">0</span>/bin/activemq console</span><br></pre></td></tr></table></figure></p>
+<p>找出错误：主机名未能正确解析<br><img src="download.png" alt="Alt text"></p>
+<p>第三步：修改hosts文件，将主机名称添加hosts文件中。<br><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/hosts</span><br></pre></td></tr></table></figure></p>
+<p><img src="download-1.png" alt="Alt text"></p>
+<p>第四步：重启虚拟机。</p>
+<hr>
+<h3 id="activeMQ的两个默认端口8161和61616的区别"><a href="#activeMQ的两个默认端口8161和61616的区别" class="headerlink" title="activeMQ的两个默认端口8161和61616的区别"></a>activeMQ的两个默认端口8161和61616的区别</h3><p><a href="http://ask.csdn.net/questions/672298" target="_blank" rel="noopener">http://ask.csdn.net/questions/672298</a></p>
+<p>8161是后台管理系统，61616是给java用的tcp端口</p>
+<p>一般是没关联，只是面向不同的服务而已。</p>
+<p>就跟一个Linux开启的21和22端口一样。</p>
+<h2 id="ActiveMQ问题分析"><a href="#ActiveMQ问题分析" class="headerlink" title="ActiveMQ问题分析"></a>ActiveMQ问题分析</h2><ol>
+<li>生产者发送消息到broker失败了，怎么办？</li>
+</ol>
+<ul>
+<li>在生产者本身业务逻辑中，添加日志记录（要记录消息目的地以及发送的信息内容）</li>
+<li>开发一段代码或者一个功能点，去实现重新发送消息的功能。</li>
+</ul>
+<ol start="2">
+<li>broker接收消息之后，服务器挂掉，怎么办？</li>
+</ol>
+<ul>
+<li>搭建ActiveMQ集群</li>
+<li>对消息持久化</li>
+</ul>
+<ol start="3">
+<li>消费者从broker，将消息接收到之后，业务处理失败怎么办？</li>
+</ol>
+<ul>
+<li>在消费者本身业务逻辑中，添加日志记录（要记录接收到的消息以及信息目的地）</li>
+<li>要分析业务处理失败的原因，并改正</li>
+<li>重新编写消息处理代码，去重新处理。</li>
+</ul>
+<ol start="4">
+<li>消费者从broker，没有成功消费消息？</li>
+</ol>
+<ul>
+<li>重新执行单元测试代码或者功能去接收指定消息。</li>
+</ul>
+<h2 id="ActiveMQ集群-安装-amp-配置"><a href="#ActiveMQ集群-安装-amp-配置" class="headerlink" title="ActiveMQ集群 安装&amp;配置"></a>ActiveMQ集群 安装&amp;配置</h2><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#wget -P ~/soft/ "http://ou0y29lb2.bkt.clouddn.com/apache-activemq-5.12.0-bin.tar.gz"</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> [ ! -d <span class="string">"/usr/local/activemq-cluster"</span> ]; then</span><br><span class="line">	mkdir /usr/local/activemq-cluster</span><br><span class="line">fi</span><br><span class="line"></span><br><span class="line">cp <span class="variable">$HOME</span>/soft/apache-activemq-<span class="number">5.12</span>.<span class="number">0</span>-bin.tar.gz /usr/local/activemq-cluster</span><br><span class="line"></span><br><span class="line">cd /usr/local/activemq-cluster</span><br><span class="line"></span><br><span class="line">tar -zxvf apache-activemq-<span class="number">5.12</span>.<span class="number">0</span>-bin.tar.gz</span><br><span class="line"></span><br><span class="line">mv apache-activemq-<span class="number">5.12</span>.<span class="number">0</span> mq-<span class="number">01</span></span><br><span class="line"></span><br><span class="line">sed -E -i -e <span class="string">'s/&lt;property name="port" value="[0-9]&#123;4&#125;"\/&gt;/&lt;property name="port" value="8162"\/&gt;/g'</span> /usr/local/activemq-cluster/mq-<span class="number">01</span>/conf/jetty.xml</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">sed -i -e <span class="string">'/&lt;transportConnector .*\/&gt;/d'</span> /usr/local/activemq-cluster/mq-<span class="number">01</span>/conf/activemq.xml</span><br><span class="line"></span><br><span class="line">sed -i -e <span class="string">'/&lt;transportConnectors&gt;/a\'</span>$<span class="string">'\n&lt;transportConnector name="openwire" uri="tcp:\/\/0.0.0.0:61617?maximumConnections=1000&amp;amp;wireFormat.maxFrameSize=104857600"\/&gt;'</span> /usr/local/activemq-cluster/mq-<span class="number">01</span>/conf/activemq.xml</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">sed -i -e <span class="string">'/&lt;broker xmlns/a\\&lt;networkConnectors&gt;\                                                                                </span></span><br><span class="line"><span class="string">&lt;networkConnector uri="static:(tcp:\/\/127.0.0.1:61618)" duplex="true"\/&gt;\</span></span><br><span class="line"><span class="string">&lt;\/networkConnectors&gt;'</span> /usr/local/activemq-cluster/mq-<span class="number">01</span>/conf/activemq.xml</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">cd /usr/local/activemq-cluster</span><br><span class="line"></span><br><span class="line">cp mq-<span class="number">01</span> mq-<span class="number">02</span> -r</span><br><span class="line"></span><br><span class="line">sed -i -e <span class="string">'/networkConnector/d'</span> /usr/local/activemq-cluster/mq-<span class="number">02</span>/conf/activemq.xml</span><br><span class="line"></span><br><span class="line">sed -E -i -e <span class="string">'/transportConnector name/s/0.0.0.0:[0-9]&#123;5&#125;/0.0.0.0:61618/'</span> /usr/local/activemq-cluster/mq-<span class="number">02</span>/conf/activemq.xml</span><br><span class="line"></span><br><span class="line">sed -E -i -e <span class="string">'s/&lt;property name="port" value="[0-9]&#123;4&#125;"\/&gt;/&lt;property name="port" value="8163"\/&gt;/g'</span> /usr/local/activemq-cluster/mq-<span class="number">02</span>/conf/jetty.xml</span><br><span class="line"></span><br><span class="line"><span class="comment"># 启动</span></span><br><span class="line">/usr/local/activemq-cluster/mq-<span class="number">01</span>/bin/activemq start </span><br><span class="line">/usr/local/activemq-cluster/mq-<span class="number">02</span>/bin/activemq start</span><br></pre></td></tr></table></figure>
+<h2 id="col命令"><a href="#col命令" class="headerlink" title="col命令"></a>col命令</h2><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Linux col命令用于过滤控制字符。</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#在许多UNIX说明文件里，都有RLF控制字符。当我们运用shell特殊字符"&gt;"和"&gt;&gt;"，把说明文件的内容输出成纯文本文件时，控制字符会变成乱码，col指令则能有效滤除这些控制字符。</span></span><br><span class="line"></span><br><span class="line">man grep  | col -b</span><br><span class="line"></span><br><span class="line"><span class="comment"># -b 过滤掉所有的控制字符，包括RLF和HRLF。</span></span><br></pre></td></tr></table></figure>
+<h2 id="坑"><a href="#坑" class="headerlink" title="坑"></a>坑</h2><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sed -ie <span class="string">'/networkConnector/d'</span> activemq.xml</span><br><span class="line"><span class="comment"># 写成这样和GNU shell 一样了...BSD shell</span></span><br></pre></td></tr></table></figure>
+<h2 id="maven工程用-Favorites管理…"><a href="#maven工程用-Favorites管理…" class="headerlink" title="maven工程用 Favorites管理…"></a>maven工程用 Favorites管理…</h2><p>配合快捷键 ⌥F1 快速定位<br><img src="download-2.png" alt="Alt text"></p>
+<h2 id="awk-gsub-amp-sub使用-着色"><a href="#awk-gsub-amp-sub使用-着色" class="headerlink" title="awk gsub &amp; sub使用, 着色"></a>awk gsub &amp; sub使用, 着色</h2><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">awk <span class="string">'/\$&#123;.*&#125;/&#123;gsub(/\$&#123;[a-z.= 0-9]+&#125;/,"\033[0;31;1m&amp;\033[0m");print&#125;'</span> ./e3-item-web/src/main/webapp/WEB-INF/jsp/item.jsp</span><br></pre></td></tr></table></figure>
+<h2 id="reids-ttl命令查看对象生命剩余时间"><a href="#reids-ttl命令查看对象生命剩余时间" class="headerlink" title="reids ttl命令查看对象生命剩余时间"></a>reids ttl命令查看对象生命剩余时间</h2><p><img src="download-3.png" alt="Alt text"></p>
+<h2 id="redis查询中文"><a href="#redis查询中文" class="headerlink" title="redis查询中文"></a>redis查询中文</h2><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./redis-cli -p <span class="number">7003</span> -c --raw get item:<span class="number">151931160828312</span> | sed <span class="string">'s/[a-zA-Z0-9[:punct:]]//g'</span> | grep -v <span class="string">'^$'</span></span><br></pre></td></tr></table></figure>
+<p>参考:<br><a href="http://blog.csdn.net/u010627840/article/details/41863395" target="_blank" rel="noopener">http://blog.csdn.net/u010627840/article/details/41863395</a></p>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <span>link：</span>
+      <a href="http://pro.stonepark.fun/2018/02/23/ActiveMQ/" title="ActiveMQ" target="_blank" rel="external">http://pro.stonepark.fun/2018/02/23/ActiveMQ/</a>
+    </li>
+    
+  </ul>
+</blockquote>
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+      <div id="vcomments"></div>
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2018/02/23/Freemarker-★★★★★/" title="Freemarker ★★★★★"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2018/02/21/solr/" title="solr"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+  </ul>
+  
+  
+  
+  <div class="bar-right">
+    
+  </div>
+  </div>
+</nav>
+  
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/stone0117" target="_blank" title="Github" data-toggle="tooltip" data-placement="top"><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="http://weibo.com/cofess" target="_blank" title="Weibo" data-toggle="tooltip" data-placement="top"><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="https://twitter.com/iwebued" target="_blank" title="Twitter" data-toggle="tooltip" data-placement="top"><i class="icon icon-twitter"></i></a></li>
+        
+        <li><a href="https://www.behance.net/cofess" target="_blank" title="Behance" data-toggle="tooltip" data-placement="top"><i class="icon icon-behance"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle="tooltip" data-placement="top"><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+<script src="/js/plugin.min.js"></script>
+<script src="/js/application.js"></script>
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+
+
+
+
+   
+
+
+
+
+   
+    
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/valine"></script>
+  <script type="text/javascript">
+  var GUEST = ['nick', 'mail', 'link'];
+  var meta = 'nick,mail,link';
+  meta = meta.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#vcomments',
+    verify: false,
+    notify: false,
+    appId: '',
+    appKey: '',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: meta,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+  </script>
+
+     
+
+
+
+
+
+
+
+</body>
+</html>

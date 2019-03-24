@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000">
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top">
+  
+  
+  <!--<title>solr | Hexo</title>-->
+  <title>solr</title>
+  <meta name="description" content="安装&amp;amp;配置 (提前安装JDK&amp;amp;tomcat)12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364656667686970717273747576777879808182838485868788899">
+<meta name="keywords" content="solr">
+<meta property="og:type" content="article">
+<meta property="og:title" content="solr">
+<meta property="og:url" content="http://pro.stonepark.fun/2018/02/21/solr/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="安装&amp;amp;配置 (提前安装JDK&amp;amp;tomcat)12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364656667686970717273747576777879808182838485868788899">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://pro.stonepark.fun/2018/02/21/solr/download.png">
+<meta property="og:image" content="http://pro.stonepark.fun/2018/02/21/solr/download-1.png">
+<meta property="og:image" content="http://pro.stonepark.fun/2018/02/21/solr/download-2.png">
+<meta property="og:updated_time" content="2018-02-21T12:00:41.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="solr">
+<meta name="twitter:description" content="安装&amp;amp;配置 (提前安装JDK&amp;amp;tomcat)12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364656667686970717273747576777879808182838485868788899">
+<meta name="twitter:image" content="http://pro.stonepark.fun/2018/02/21/solr/download.png">
+  <!-- Canonical links -->
+  <link rel="canonical" href="http://pro.stonepark.fun/2018/02/21/solr/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.jpg" type="image/x-icon">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+  
+  
+  
+</head>
+
+
+<body class="main-center theme-black" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/stone0117" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpeg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">StonePark</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">html node python iOS</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> Beijing, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索">
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech>
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-repository">
+          <a href="/repository">
+            
+            <i class="icon icon-project"></i>
+            
+            <span class="menu-title">项目</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books">
+            
+            <i class="icon icon-book-fill"></i>
+            
+            <span class="menu-title">书单</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links">
+            
+            <i class="icon icon-friendship"></i>
+            
+            <span class="menu-title">友链</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">关于</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/stone0117" target="_blank" title="Github" data-toggle="tooltip" data-placement="top"><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="http://weibo.com/cofess" target="_blank" title="Weibo" data-toggle="tooltip" data-placement="top"><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="https://twitter.com/iwebued" target="_blank" title="Twitter" data-toggle="tooltip" data-placement="top"><i class="icon icon-twitter"></i></a></li>
+        
+        <li><a href="https://www.behance.net/cofess" target="_blank" title="Behance" data-toggle="tooltip" data-placement="top"><i class="icon icon-behance"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle="tooltip" data-placement="top"><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>coding!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/IntelliJ-IDEA/">IntelliJ IDEA</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/apache/">apache</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/chrome/">chrome</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/freemarker/">freemarker</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/iOS/">iOS</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/javascript/">javascript</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/links/">links</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/macos/">macos</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/mysql/">mysql</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/node/">node</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/shell/">shell</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/其他/">其他</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/搜索/">搜索</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget-body">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ActiveMQ/">ActiveMQ</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AppCode/">AppCode</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/FastDFS/">FastDFS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IntelliJ-IDEA/">IntelliJ IDEA</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Redis/">Redis</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/apache/">apache</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/awk/">awk</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/chrome/">chrome</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/">docker</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dubbo/">dubbo</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/fastDFS-nginx综合/">fastDFS & nginx综合</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/find/">find</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/freemarker/">freemarker</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/google/">google</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/grep/">grep</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/idea坑/">idea坑</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/">javascript</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/links/">links</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nginx/">nginx</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/node/">node</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/regex/">regex</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sed/">sed</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/shell/">shell</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/solr/">solr</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sso/">sso</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/svn/">svn</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tomcat/">tomcat</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tr/">tr</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/xargs/">xargs</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/字符串操作/">字符串操作</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tags/ActiveMQ/" style="font-size: 13px;">ActiveMQ</a> <a href="/tags/AppCode/" style="font-size: 13px;">AppCode</a> <a href="/tags/FastDFS/" style="font-size: 13px;">FastDFS</a> <a href="/tags/IntelliJ-IDEA/" style="font-size: 13px;">IntelliJ IDEA</a> <a href="/tags/Linux/" style="font-size: 13.5px;">Linux</a> <a href="/tags/Redis/" style="font-size: 13px;">Redis</a> <a href="/tags/apache/" style="font-size: 13px;">apache</a> <a href="/tags/awk/" style="font-size: 13px;">awk</a> <a href="/tags/chrome/" style="font-size: 13px;">chrome</a> <a href="/tags/docker/" style="font-size: 13px;">docker</a> <a href="/tags/dubbo/" style="font-size: 13px;">dubbo</a> <a href="/tags/fastDFS-nginx综合/" style="font-size: 13px;">fastDFS & nginx综合</a> <a href="/tags/find/" style="font-size: 13px;">find</a> <a href="/tags/freemarker/" style="font-size: 13px;">freemarker</a> <a href="/tags/google/" style="font-size: 13px;">google</a> <a href="/tags/grep/" style="font-size: 13px;">grep</a> <a href="/tags/idea坑/" style="font-size: 13px;">idea坑</a> <a href="/tags/javascript/" style="font-size: 14px;">javascript</a> <a href="/tags/links/" style="font-size: 13px;">links</a> <a href="/tags/mysql/" style="font-size: 13px;">mysql</a> <a href="/tags/nginx/" style="font-size: 13px;">nginx</a> <a href="/tags/node/" style="font-size: 13px;">node</a> <a href="/tags/regex/" style="font-size: 13px;">regex</a> <a href="/tags/sed/" style="font-size: 14px;">sed</a> <a href="/tags/shell/" style="font-size: 13px;">shell</a> <a href="/tags/solr/" style="font-size: 13px;">solr</a> <a href="/tags/sso/" style="font-size: 13px;">sso</a> <a href="/tags/svn/" style="font-size: 13.5px;">svn</a> <a href="/tags/tomcat/" style="font-size: 13px;">tomcat</a> <a href="/tags/tr/" style="font-size: 13px;">tr</a> <a href="/tags/xargs/" style="font-size: 13px;">xargs</a> <a href="/tags/字符串操作/" style="font-size: 13px;">字符串操作</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">二月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">一月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">二月 2018</a><span class="archive-list-count">30</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">八月 2016</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">七月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">六月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">九月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/06/">六月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">三月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/12/">十二月 2014</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/javascript/">javascript</a>
+              </p>
+              <p class="item-title">
+                <a href="/2019/02/22/String-prototype-split/" class="title">String.prototype.split()</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2019-02-21T20:16:48.000Z" itemprop="datePublished">2019-02-22</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/node/">node</a>
+              </p>
+              <p class="item-title">
+                <a href="/2019/01/04/module-exports与exports，export与export-default之间的关系和区别/" class="title">module.exports与exports，export与export default之间的关系和区别</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2019-01-04T09:44:16.000Z" itemprop="datePublished">2019-01-04</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/javascript/">javascript</a>
+              </p>
+              <p class="item-title">
+                <a href="/2018/04/05/javascript-内存管理-循环引用处理/" class="title">javascript-内存管理-循环引用处理</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2018-04-05T02:18:29.000Z" itemprop="datePublished">2018-04-05</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/javascript/">javascript</a>
+              </p>
+              <p class="item-title">
+                <a href="/2018/04/04/javascript的命名代码块/" class="title">javascript的命名代码块</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2018-04-04T05:24:26.000Z" itemprop="datePublished">2018-04-04</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/shell/">shell</a>
+              </p>
+              <p class="item-title">
+                <a href="/2018/04/03/find用法解析-macos环境BSD-shell/" class="title">find用法解析(macos环境BSD shell)</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2018-04-03T08:44:33.000Z" itemprop="datePublished">2018-04-03</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-solr" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      solr
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2018/02/21/solr/" class="article-date">
+	  <time datetime="2018-02-21T11:57:37.000Z" itemprop="datePublished">2018-02-21</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/Linux/">Linux</a>
+  </span>
+
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link" href="/tags/solr/">solr</a>
+  </span>
+
+
+        
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2018/02/21/solr/#comments" class="article-comment-link">评论</a></span>
+        
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <h2 id="安装-amp-配置-提前安装JDK-amp-tomcat"><a href="#安装-amp-配置-提前安装JDK-amp-tomcat" class="headerlink" title="安装&amp;配置 (提前安装JDK&amp;tomcat)"></a>安装&amp;配置 (提前安装JDK&amp;tomcat)</h2><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line">wget -P ~/soft/ <span class="string">"http://ou0y29lb2.bkt.clouddn.com/solr-4.10.3.tgz.tgz"</span></span><br><span class="line"></span><br><span class="line">cd ~/soft</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> [ ! -d <span class="string">"/usr/local/solr"</span> ]; then</span><br><span class="line">        mkdir /usr/local/solr</span><br><span class="line">fi</span><br><span class="line"></span><br><span class="line">cp apache-tomcat-<span class="number">7.0</span>.<span class="number">79</span>.tar.gz /usr/local/solr </span><br><span class="line">cp solr-<span class="number">4.10</span>.<span class="number">3</span>.tgz.tgz /usr/local/solr</span><br><span class="line"></span><br><span class="line">tar -zxvf apache-tomcat-<span class="number">7.0</span>.<span class="number">79</span>.tar.gz</span><br><span class="line">tar -zxvf solr-<span class="number">4.10</span>.<span class="number">3</span>.tgz.tgz</span><br><span class="line"></span><br><span class="line">cp solr-<span class="number">4.10</span>.<span class="number">3</span>/example/solr /usr/local/solr/solrhome -r</span><br><span class="line"></span><br><span class="line">cp solr-<span class="number">4.10</span>.<span class="number">3</span>/example/webapps/solr.war /usr/local/solr/apache-tomcat-<span class="number">7.0</span>.<span class="number">79</span>/webapps/ </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># ================ 解压war包 ================</span></span><br><span class="line">var=/usr/local/solr/apache-tomcat-<span class="number">7.0</span>.<span class="number">79</span>/webapps/solr.war</span><br><span class="line">tmp=$&#123;var<span class="comment">##*/&#125;</span></span><br><span class="line">path=$&#123;tmp%.*&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> [ ! -d <span class="string">"/usr/local/solr/apache-tomcat-7.0.79/webapps/<span class="variable">$path</span>"</span> ]; then</span><br><span class="line">	mkdir /usr/local/solr/apache-tomcat-<span class="number">7.0</span>.<span class="number">79</span>/webapps/<span class="variable">$path</span></span><br><span class="line">fi</span><br><span class="line">unzip -oq <span class="variable">$var</span> -d /usr/local/solr/apache-tomcat-<span class="number">7.0</span>.<span class="number">79</span>/webapps/<span class="variable">$path</span></span><br><span class="line"></span><br><span class="line">rm -f <span class="variable">$var</span></span><br><span class="line"><span class="comment"># ============================================</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> [ ! -d <span class="string">"/usr/local/solr/apache-tomcat-7.0.79/webapps/solr/WEB-INF/classes"</span> ]; then</span><br><span class="line">	mkdir /usr/local/solr/apache-tomcat-<span class="number">7.0</span>.<span class="number">79</span>/webapps/solr/WEB-INF/classes</span><br><span class="line">fi</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">cp solr-<span class="number">4.10</span>.<span class="number">3</span>/example/resources/log4j.properties /usr/local/solr/apache-tomcat-<span class="number">7.0</span>.<span class="number">79</span>/webapps/solr/WEB-INF/classes/</span><br><span class="line"></span><br><span class="line">cp solr-<span class="number">4.10</span>.<span class="number">3</span>/example/lib/ext/* /usr/local/solr/apache-tomcat-<span class="number">7.0</span>.<span class="number">79</span>/webapps/solr/WEB-INF/lib/</span><br><span class="line"></span><br><span class="line">sed -i -e <span class="string">'/&lt;\/env-entry&gt;/&#123;n;d;&#125;'</span> /usr/local/solr/apache-tomcat-<span class="number">7.0</span>.<span class="number">79</span>/webapps/solr/WEB-INF/web.xml <span class="comment"># 后一行</span></span><br><span class="line">sed -i -e <span class="string">'$!N;s/.*\n\(.*&lt;env-entry&gt;\)/\1/'</span> -e <span class="string">'P;D;'</span> /usr/local/solr/apache-tomcat-<span class="number">7.0</span>.<span class="number">79</span>/webapps/solr/WEB-INF/web.xml <span class="comment">#前一行</span></span><br><span class="line">sed -i -e <span class="string">'s/\/put\/your\/solr\/home\/here/\/usr\/local\/solr\/solrhome/g'</span> /usr/local/solr/apache-tomcat-<span class="number">7.0</span>.<span class="number">79</span>/webapps/solr/WEB-INF/web.xml</span><br><span class="line"></span><br><span class="line"><span class="comment">########################</span></span><br><span class="line"></span><br><span class="line">serverpath=<span class="string">"/usr/local/solr/apache-tomcat-7.0.79/conf/server.xml"</span></span><br><span class="line">val=<span class="string">"1"</span></span><br><span class="line"></span><br><span class="line">sed -i <span class="string">"s/&lt;Server port=\"</span><span class="number">8005</span>\<span class="string">"/&lt;Server port=\"</span><span class="number">80</span>`echo <span class="variable">$val</span>`5\<span class="string">"/g"</span> <span class="variable">$serverpath</span></span><br><span class="line">sed -i <span class="string">"s/&lt;Connector port=\"</span><span class="number">8080</span>\<span class="string">"/&lt;Connector port=\"</span><span class="number">808</span>`echo <span class="variable">$val</span>`\<span class="string">"/g"</span> <span class="variable">$serverpath</span></span><br><span class="line">sed -i <span class="string">"s/&lt;Connector port=\"</span><span class="number">8009</span>\<span class="string">"/&lt;Connector port=\"</span><span class="number">80</span>`echo <span class="variable">$val</span>`9\<span class="string">"/g"</span> <span class="variable">$serverpath</span></span><br><span class="line"></span><br><span class="line">wget -P ~/soft/ <span class="string">"http://ou0y29lb2.bkt.clouddn.com/IK%20Analyzer%202012FF_hf1.zip"</span></span><br><span class="line"></span><br><span class="line">cp <span class="variable">$HOME</span>/soft/IK\ Analyzer\ <span class="number">2012</span>FF_hf1.zip /usr/local/solr/</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">cd /usr/local/solr</span><br><span class="line"></span><br><span class="line">unzip IK\ Analyzer\ <span class="number">2012</span>FF_hf1.zip</span><br><span class="line"></span><br><span class="line">cd IK\ Analyzer\ <span class="number">2012</span>FF_hf1</span><br><span class="line"></span><br><span class="line">cp IKAnalyzer2012FF_u1.jar /usr/local/solr/apache-tomcat-<span class="number">7.0</span>.<span class="number">79</span>/webapps/solr/WEB-INF/lib</span><br><span class="line">cp IKAnalyzer.cfg.xml /usr/local/solr/apache-tomcat-<span class="number">7.0</span>.<span class="number">79</span>/webapps/solr/WEB-INF/classes</span><br><span class="line">cp *.dic /usr/local/solr/apache-tomcat-<span class="number">7.0</span>.<span class="number">79</span>/webapps/solr/WEB-INF/classes</span><br><span class="line"></span><br><span class="line">schemafile=<span class="string">"/usr/local/solr/solrhome/collection1/conf/schema.xml"</span></span><br><span class="line"></span><br><span class="line">sed -i -e <span class="string">'s/^&lt;\/schema&gt;//'</span> <span class="variable">$schemafile</span></span><br><span class="line">printf <span class="string">'&lt;!-- IKAnalyzer--&gt;</span></span><br><span class="line"><span class="string">&lt;fieldType name="text_ik" class="solr.TextField"&gt;</span></span><br><span class="line"><span class="string">	&lt;analyzer class="org.wltea.analyzer.lucene.IKAnalyzer"/&gt;</span></span><br><span class="line"><span class="string">&lt;/fieldType&gt;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">### 不同项目得修改...</span></span><br><span class="line"><span class="string">&lt;!-- 商品名称 --&gt;</span></span><br><span class="line"><span class="string">&lt;field name="item_title" type="text_ik" indexed="true" stored="true"/&gt; </span></span><br><span class="line"><span class="string">&lt;!-- 商品卖点 --&gt;</span></span><br><span class="line"><span class="string">&lt;field name="item_sell_point" type="text_ik" indexed="true" stored="false"/&gt;</span></span><br><span class="line"><span class="string">&lt;!-- 商品分类名称 --&gt;</span></span><br><span class="line"><span class="string">&lt;field name="item_category_name" type="string" indexed="true" stored="false"/&gt; </span></span><br><span class="line"><span class="string">&lt;!-- 商品价格 --&gt;</span></span><br><span class="line"><span class="string">&lt;field name="item_price" type="long" indexed="true" stored="true"/&gt; </span></span><br><span class="line"><span class="string">&lt;!-- 商品描述 --&gt;</span></span><br><span class="line"><span class="string">&lt;field name="item_description" type="text_ik" indexed="true" stored="false"/&gt; </span></span><br><span class="line"><span class="string">&lt;!-- 商品图片地址 --&gt;</span></span><br><span class="line"><span class="string">&lt;field name="item_image" type="string" indexed="false" stored="true"/&gt; </span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">&lt;!-- 目标域--&gt;</span></span><br><span class="line"><span class="string">&lt;field name="item_keywords" type="text_ik" indexed="true" stored="false" multiValued="true"/&gt; </span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">&lt;!-- 将商品名称添加到目标域--&gt;</span></span><br><span class="line"><span class="string">&lt;copyField source="item_title" dest="item_keywords"/&gt;</span></span><br><span class="line"><span class="string">&lt;!-- 将商品卖点添加到目标域--&gt;</span></span><br><span class="line"><span class="string">&lt;copyField source="item_sell_point" dest="item_keywords"/&gt;</span></span><br><span class="line"><span class="string">&lt;!-- 将商品描述添加到目标域--&gt;</span></span><br><span class="line"><span class="string">&lt;copyField source="item_description" dest="item_keywords"/&gt;'</span> &gt;&gt; <span class="variable">$schemafile</span></span><br><span class="line"></span><br><span class="line">echo -e <span class="string">"\n\n&lt;/schema&gt;"</span> &gt;&gt; <span class="variable">$schemafile</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">/usr/local/solr/apache-tomcat-<span class="number">7.0</span>.<span class="number">79</span>/bin/startup.sh</span><br></pre></td></tr></table></figure>
+<hr>
+<h2 id="Solrcloud-安装-amp-配置"><a href="#Solrcloud-安装-amp-配置" class="headerlink" title="Solrcloud 安装&amp;配置"></a>Solrcloud 安装&amp;配置</h2><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line">wget -P ~/soft/ <span class="string">"http://ou0y29lb2.bkt.clouddn.com/zookeeper-3.4.6.tar.gz"</span></span><br><span class="line"></span><br><span class="line">wget -P ~/soft/ <span class="string">"http://ou0y29lb2.bkt.clouddn.com/apache-tomcat-7.0.79.tar.gz"</span></span><br><span class="line"></span><br><span class="line">wget -P ~/soft/ <span class="string">"http://ou0y29lb2.bkt.clouddn.com/solr-4.10.3.tgz.tgz"</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># zookeepr 集群搭建</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> [ ! -d <span class="string">"/usr/local/solrcloud"</span> ]; then</span><br><span class="line">	mkdir /usr/local/solrcloud</span><br><span class="line">fi</span><br><span class="line"></span><br><span class="line">cd ~/soft</span><br><span class="line"></span><br><span class="line">cp zookeeper-<span class="number">3.4</span>.<span class="number">6</span>.tar.gz /usr/local/solrcloud</span><br><span class="line"></span><br><span class="line">cd /usr/local/solrcloud</span><br><span class="line">tar -zxvf zookeeper-<span class="number">3.4</span>.<span class="number">6</span>.tar.gz </span><br><span class="line"></span><br><span class="line">mv zookeeper-<span class="number">3.4</span>.<span class="number">6</span> zk1</span><br><span class="line"></span><br><span class="line">cd zk1/conf</span><br><span class="line"></span><br><span class="line">cp zoo_sample.cfg zoo.cfg</span><br><span class="line"></span><br><span class="line">sed -i -e <span class="string">'s/^dataDir=.*/dataDir=\/usr\/local\/solrcloud\/zk1\/data/g'</span> zoo.cfg</span><br><span class="line"></span><br><span class="line">sed -i -e <span class="string">'s/^clientPort=.*/clientPort=2281/g'</span> zoo.cfg</span><br><span class="line"></span><br><span class="line">ipaddr=`ifconfig -a|grep inet|grep -v <span class="number">127.0</span>.<span class="number">0.1</span>|grep -v inet6|awk <span class="string">'&#123;print $2&#125;'</span>|tr -d <span class="string">"addr:"</span> | head -n <span class="number">1</span>`</span><br><span class="line"></span><br><span class="line">echo -e <span class="string">"\n\n#集群中每台机器都是以下配置</span></span><br><span class="line"><span class="string">#2881系列端口是zookeeper通信端口</span></span><br><span class="line"><span class="string">#3881系列端口是zookeeper投票选举端口</span></span><br><span class="line"><span class="string">server.1=$&#123;ipaddr&#125;:2881:3881</span></span><br><span class="line"><span class="string">server.2=$&#123;ipaddr&#125;:2882:3882</span></span><br><span class="line"><span class="string">server.3=$&#123;ipaddr&#125;:2883:3883"</span> &gt;&gt; zoo.cfg</span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建data目录</span></span><br><span class="line"><span class="keyword">if</span> [ ! -d <span class="string">"/usr/local/solrcloud/zk1/data"</span> ]; then</span><br><span class="line">	mkdir /usr/local/solrcloud/zk1/<span class="keyword">data</span></span><br><span class="line">fi</span><br><span class="line"></span><br><span class="line">echo <span class="string">"1"</span> &gt; /usr/local/solrcloud/zk1/<span class="keyword">data</span>/myid</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 复制</span></span><br><span class="line">cd /usr/local/solrcloud</span><br><span class="line"></span><br><span class="line">cp -r zk1 zk2</span><br><span class="line">cp -r zk1 zk3 </span><br><span class="line"></span><br><span class="line">sed -i -e <span class="string">'s/^dataDir=.*/dataDir=\/usr\/local\/solrcloud\/zk2\/data/g'</span> -e <span class="string">'s/^clientPort=.*/clientPort=2282/g'</span> /usr/local/solrcloud/zk2/conf/zoo.cfg</span><br><span class="line"></span><br><span class="line">echo <span class="string">"2"</span> &gt; /usr/local/solrcloud/zk2/<span class="keyword">data</span>/myid</span><br><span class="line"></span><br><span class="line">sed -i -e <span class="string">'s/^dataDir=.*/dataDir=\/usr\/local\/solrcloud\/zk3\/data/g'</span> -e <span class="string">'s/^clientPort=.*/clientPort=2283/g'</span> /usr/local/solrcloud/zk3/conf/zoo.cfg</span><br><span class="line"></span><br><span class="line">echo <span class="string">"3"</span> &gt; /usr/local/solrcloud/zk3/<span class="keyword">data</span>/myid</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">/usr/local/solrcloud/zk1/bin/zkServer.sh restart</span><br><span class="line">/usr/local/solrcloud/zk2/bin/zkServer.sh restart</span><br><span class="line">/usr/local/solrcloud/zk3/bin/zkServer.sh restart</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看是否启动成功</span></span><br><span class="line">ps -ef | grep zook | grep solr | grep -e <span class="string">'zk[0-9]/bin'</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看状态</span></span><br><span class="line">/usr/local/solrcloud/zk1/bin/zkServer.sh status</span><br><span class="line">/usr/local/solrcloud/zk2/bin/zkServer.sh status</span><br><span class="line">/usr/local/solrcloud/zk3/bin/zkServer.sh status</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># solr 集群搭建</span></span><br><span class="line"><span class="comment"># solrcloud启动之前, 需要先启动 zookeeper集群.</span></span><br><span class="line"></span><br><span class="line">cd /usr/local/solrcloud</span><br><span class="line"></span><br><span class="line"><span class="comment"># 如果没有安装单机版的solr就下载配置好的solr</span></span><br><span class="line"><span class="comment">#wget -P ~/soft/ "http://ou0y29lb2.bkt.clouddn.com/solr_tomcat.zip"</span></span><br><span class="line"></span><br><span class="line">cp /usr/local/solr/apache-tomcat-<span class="number">7.0</span>.<span class="number">79</span> ./tomcat8280 -r</span><br><span class="line">cp /usr/local/solr/apache-tomcat-<span class="number">7.0</span>.<span class="number">79</span> ./tomcat8380 -r</span><br><span class="line">cp /usr/local/solr/apache-tomcat-<span class="number">7.0</span>.<span class="number">79</span> ./tomcat8480 -r</span><br><span class="line">cp /usr/local/solr/apache-tomcat-<span class="number">7.0</span>.<span class="number">79</span> ./tomcat8580 -r</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 修改 server.xml</span></span><br><span class="line">path=<span class="string">"/usr/local/solrcloud"</span></span><br><span class="line">names=(<span class="string">"2"</span> <span class="string">"3"</span> <span class="string">"4"</span> <span class="string">"5"</span>)</span><br><span class="line">count=$&#123;<span class="comment">#names[*]&#125;</span></span><br><span class="line"><span class="keyword">for</span> (( i=<span class="number">0</span>; i&lt;<span class="string">"<span class="variable">$count</span>"</span>; i=i+<span class="number">1</span> ))</span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">             file=$&#123;path&#125;/tomcat8$&#123;names[<span class="variable">$i</span>]&#125;<span class="number">80</span>/conf/server.xml</span><br><span class="line">        echo <span class="variable">$file</span></span><br><span class="line">        sed -i -e <span class="string">"/&lt;Server port=\"</span>.*\<span class="string">" shutdown=\"</span>SHUTDOWN\<span class="string">"&gt;/s/[0-9]\&#123;4\&#125;/8$&#123;names[<span class="variable">$i</span>]&#125;05/g"</span> \</span><br><span class="line">          -e <span class="string">"/&lt;Connector port=\"</span>.*\<span class="string">" protocol=\"</span>AJP\/<span class="number">1.3</span>\<span class="string">" redirectPort=\"</span><span class="number">8443</span>\<span class="string">" \/&gt;/s/[0-9]\&#123;4\&#125;/8$&#123;names[<span class="variable">$i</span>]&#125;09/g"</span> \</span><br><span class="line">          -e <span class="string">"/&lt;Connector port=\"</span>.*\<span class="string">" protocol=\"</span>HTTP\/<span class="number">1.1</span>\<span class="string">"/s/[0-9]\&#123;4\&#125;/8$&#123;names[<span class="variable">$i</span>]&#125;80/g"</span> <span class="variable">$file</span></span><br><span class="line">done</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">cd /usr/local/solrcloud</span><br><span class="line"></span><br><span class="line">cp -r /usr/local/solr/solrhome ./solrhome8280</span><br><span class="line">cp -r /usr/local/solr/solrhome ./solrhome8380</span><br><span class="line">cp -r /usr/local/solr/solrhome ./solrhome8480</span><br><span class="line">cp -r /usr/local/solr/solrhome ./solrhome8580</span><br><span class="line"></span><br><span class="line"><span class="comment"># 修改web.xml</span></span><br><span class="line">path=<span class="string">"/usr/local/solrcloud"</span></span><br><span class="line">names=(<span class="string">"2"</span> <span class="string">"3"</span> <span class="string">"4"</span> <span class="string">"5"</span>)</span><br><span class="line">count=$&#123;<span class="comment">#names[*]&#125;</span></span><br><span class="line"><span class="keyword">for</span> (( i=<span class="number">0</span>; i&lt;<span class="string">"<span class="variable">$count</span>"</span>; i=i+<span class="number">1</span> ))</span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">	file=$&#123;path&#125;/tomcat8$&#123;names[<span class="variable">$i</span>]&#125;<span class="number">80</span>/webapps/solr/WEB-INF/web.xml</span><br><span class="line">	echo <span class="variable">$file</span></span><br><span class="line">	sed -i -e <span class="string">"/&lt;env-entry-value&gt;.*&lt;\/env-entry-value&gt;/s/&lt;env-entry-value&gt;.*&lt;\/env-entry-value&gt;/&lt;env-entry-value&gt;\/usr\/local\/solrcloud\/solrhome8$&#123;names[<span class="variable">$i</span>]&#125;80&lt;\/env-entry-value&gt;/g"</span> <span class="variable">$file</span></span><br><span class="line">done</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 修改solrhome下的 solr.xml</span></span><br><span class="line">ipaddr=`ifconfig -a|grep inet|grep -v <span class="number">127.0</span>.<span class="number">0.1</span>|grep -v inet6|awk <span class="string">'&#123;print $2&#125;'</span>|tr -d <span class="string">"addr:"</span> | head -n <span class="number">1</span>`</span><br><span class="line">path=<span class="string">"/usr/local/solrcloud"</span></span><br><span class="line">names=(<span class="string">"2"</span> <span class="string">"3"</span> <span class="string">"4"</span> <span class="string">"5"</span>)</span><br><span class="line">count=$&#123;<span class="comment">#names[*]&#125;</span></span><br><span class="line"><span class="keyword">for</span> (( i=<span class="number">0</span>; i&lt;<span class="string">"<span class="variable">$count</span>"</span>; i=i+<span class="number">1</span> ))</span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">	file=$&#123;path&#125;/solrhome8$&#123;names[<span class="variable">$i</span>]&#125;<span class="number">80</span>/solr.xml</span><br><span class="line">	echo <span class="variable">$file</span></span><br><span class="line">	sed -i -e <span class="string">"s/&lt;str name=\"</span>host\<span class="string">"&gt;.*&lt;\/str&gt;/&lt;str name=\"</span>host\<span class="string">"&gt;<span class="variable">$ipaddr</span>&lt;\/str&gt;/g"</span> \</span><br><span class="line">	-e <span class="string">"s/&lt;int name=\"</span>hostPort\<span class="string">"&gt;.*&lt;\/int&gt;/&lt;int name=\"</span>hostPort\<span class="string">"&gt;8$&#123;names[<span class="variable">$i</span>]&#125;80&lt;\/int&gt;/g"</span> <span class="variable">$file</span></span><br><span class="line">done</span><br><span class="line"></span><br><span class="line"><span class="comment"># 修改 catalina.sh</span></span><br><span class="line"></span><br><span class="line">ipaddr=`ifconfig -a|grep inet|grep -v <span class="number">127.0</span>.<span class="number">0.1</span>|grep -v inet6|awk <span class="string">'&#123;print $2&#125;'</span>|tr -d <span class="string">"addr:"</span> | head -n <span class="number">1</span>`</span><br><span class="line">path=<span class="string">"/usr/local/solrcloud"</span></span><br><span class="line">names=(<span class="string">"2"</span> <span class="string">"3"</span> <span class="string">"4"</span> <span class="string">"5"</span>)</span><br><span class="line">count=$&#123;<span class="comment">#names[*]&#125;</span></span><br><span class="line"><span class="keyword">for</span> (( i=<span class="number">0</span>; i&lt;<span class="string">"<span class="variable">$count</span>"</span>; i=i+<span class="number">1</span> ))</span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">	file=$&#123;path&#125;/tomcat8$&#123;names[<span class="variable">$i</span>]&#125;<span class="number">80</span>/bin/catalina.sh</span><br><span class="line">	echo <span class="variable">$file</span></span><br><span class="line">	sed -i -e <span class="string">"/^#JAVA_OPTS/a\\JAVA_OPTS=\"</span>-DzkHost=$&#123;ipaddr&#125;:<span class="number">2281</span>,$&#123;ipaddr&#125;:<span class="number">2282</span>,$&#123;ipaddr&#125;:<span class="number">2283</span>\<span class="string">""</span> <span class="variable">$file</span></span><br><span class="line">done</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 上传配置文件</span></span><br><span class="line">ipaddr=`ifconfig -a|grep inet|grep -v <span class="number">127.0</span>.<span class="number">0.1</span>|grep -v inet6|awk <span class="string">'&#123;print $2&#125;'</span>|tr -d <span class="string">"addr:"</span> | head -n <span class="number">1</span>`</span><br><span class="line"></span><br><span class="line">/usr/local/solr/solr-<span class="number">4.10</span>.<span class="number">3</span>/example/scripts/cloud-scripts/zkcli.sh -zkhost $&#123;ipaddr&#125;:<span class="number">2281</span>,$&#123;ipaddr&#125;:<span class="number">2282</span>,$&#123;ipaddr&#125;:<span class="number">2283</span> -cmd upconfig -confdir /usr/local/solrcloud/solrhome8280/collection1/conf -confname myconf</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看是否成功</span></span><br><span class="line"><span class="comment"># /usr/local/solrcloud/zk1/bin/zkCli.sh -server $&#123;ipaddr&#125;:2281</span></span><br><span class="line"><span class="comment"># ls / </span></span><br><span class="line"><span class="comment"># ls /configs/myconf</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 启动tomcat</span></span><br><span class="line"></span><br><span class="line">/usr/local/solrcloud/tomcat8280/bin/startup.sh</span><br><span class="line">/usr/local/solrcloud/tomcat8380/bin/startup.sh</span><br><span class="line">/usr/local/solrcloud/tomcat8480/bin/startup.sh</span><br><span class="line">/usr/local/solrcloud/tomcat8580/bin/startup.sh</span><br></pre></td></tr></table></figure>
+<h2 id="集群分片"><a href="#集群分片" class="headerlink" title="集群分片"></a>集群分片</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://172.16.124.134:8280/solr/admin/collections?action=CREATE&amp;name=collection2&amp;numShards=2&amp;replicationFactor=2</span><br></pre></td></tr></table></figure>
+<p><img src="download.png" alt="Alt text"><br><img src="download-1.png" alt="Alt text"></p>
+<h2 id="删除collection"><a href="#删除collection" class="headerlink" title="删除collection"></a>删除collection</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://172.16.124.134:8280/solr/admin/collections?action=DELETE&amp;name=collection1</span><br></pre></td></tr></table></figure>
+<p><img src="download-2.png" alt="Alt text"></p>
+<hr>
+<h3 id="删除-匹配行的-前一行-amp-后一行"><a href="#删除-匹配行的-前一行-amp-后一行" class="headerlink" title="删除 匹配行的 前一行 &amp; 后一行"></a>删除 匹配行的 前一行 &amp; 后一行</h3><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sed -i <span class="string">""</span> -e <span class="string">'/&lt;\/env-entry&gt;/&#123;n;d;&#125;'</span> web.xml <span class="comment"># 后一行</span></span><br><span class="line">sed -i <span class="string">""</span> -e :a -e <span class="string">'$!N;s/.*\n\(.*&lt;env-entry&gt;\)/\1/;ta'</span> -e <span class="string">'P;D'</span> web.xml <span class="comment">#前一行</span></span><br></pre></td></tr></table></figure>
+<p>参考:<br><a href="https://unix.stackexchange.com/questions/152312/remove-multiple-lines-after-a-pattern-match-but-only-after-pattern-match" target="_blank" rel="noopener">https://unix.stackexchange.com/questions/152312/remove-multiple-lines-after-a-pattern-match-but-only-after-pattern-match</a><br><a href="https://www.zhihu.com/question/26122927" target="_blank" rel="noopener">https://www.zhihu.com/question/26122927</a></p>
+<h3 id="python写的sed调试工具"><a href="#python写的sed调试工具" class="headerlink" title="python写的sed调试工具"></a>python写的sed调试工具</h3><p><a href="https://www.cnblogs.com/lemon-le/p/6061189.html" target="_blank" rel="noopener">https://www.cnblogs.com/lemon-le/p/6061189.html</a></p>
+<h3 id="shell-脚本中怎样将字符串转化为命令"><a href="#shell-脚本中怎样将字符串转化为命令" class="headerlink" title="shell 脚本中怎样将字符串转化为命令"></a>shell 脚本中怎样将字符串转化为命令</h3><p>可以使用eval命令。eval命令，如同熟悉的其他脚本语言，会将它的参数做为命令执行。eval命令将会首先扫描命令行进行所有的替换，然后再执行命令。该命令使用于那些一次扫描无法实现其功能的变量。该命令对变量进行两次扫描。这些需要进行两次扫描的变量有时候被称为复杂变量。<br>命令格式：eval [参数]<br>补充说明：eval可读取一连串的参数，然后再依参数本身的特性来执行。参数不限数目，彼此之间用分号分开。<br>用法示例：<br>将字符串变量s的值作为命令执行<br>s=”ls”<br>eval $s</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">grep --color=auto --exclude-dir=&#123;.bzr,CVS,.git,.hg,.svn&#125; -r -I $* .</span><br><span class="line"></span><br><span class="line">$*	以一个单字符串显示所有向脚本传递的参数。</span><br><span class="line">如<span class="string">"$*"</span>用「<span class="string">"」括起来的情况、以"</span><span class="variable">$1</span> <span class="variable">$2</span> … <span class="variable">$n</span><span class="string">"的形式输出所有参数。</span></span><br></pre></td></tr></table></figure>
+<p>参考:<br><a href="http://www.runoob.com/linux/linux-shell-passing-arguments.html" target="_blank" rel="noopener">http://www.runoob.com/linux/linux-shell-passing-arguments.html</a></p>
+<hr>
+<h3 id="查看图片尺寸的命令"><a href="#查看图片尺寸的命令" class="headerlink" title="查看图片尺寸的命令"></a>查看图片尺寸的命令</h3><p>参考:<br><a href="http://blog.csdn.net/u014295667/article/details/46876265" target="_blank" rel="noopener">http://blog.csdn.net/u014295667/article/details/46876265</a><br><a href="http://www.webhek.com/post/get-image-dimensions-from-command-line.html" target="_blank" rel="noopener">http://www.webhek.com/post/get-image-dimensions-from-command-line.html</a></p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew install imagemagick</span><br></pre></td></tr></table></figure>
+<h3 id="maven项目下的-所有target目录大小的总和"><a href="#maven项目下的-所有target目录大小的总和" class="headerlink" title="maven项目下的 所有target目录大小的总和"></a>maven项目下的 所有target目录大小的总和</h3><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">find . -type d -name <span class="string">"target"</span> | xargs -I &#123;&#125; du -s -k &#123;&#125; | awk <span class="string">'&#123;size=size+$1&#125;END&#123;print size&#125;'</span></span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <span>link：</span>
+      <a href="http://pro.stonepark.fun/2018/02/21/solr/" title="solr" target="_blank" rel="external">http://pro.stonepark.fun/2018/02/21/solr/</a>
+    </li>
+    
+  </ul>
+</blockquote>
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+      <div id="vcomments"></div>
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2018/02/23/ActiveMQ/" title="ActiveMQ"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2018/02/20/sed高级用法-GHDNPD/" title="sed高级用法(GHDNPD)"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+  </ul>
+  
+  
+  
+  <div class="bar-right">
+    
+  </div>
+  </div>
+</nav>
+  
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/stone0117" target="_blank" title="Github" data-toggle="tooltip" data-placement="top"><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="http://weibo.com/cofess" target="_blank" title="Weibo" data-toggle="tooltip" data-placement="top"><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="https://twitter.com/iwebued" target="_blank" title="Twitter" data-toggle="tooltip" data-placement="top"><i class="icon icon-twitter"></i></a></li>
+        
+        <li><a href="https://www.behance.net/cofess" target="_blank" title="Behance" data-toggle="tooltip" data-placement="top"><i class="icon icon-behance"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle="tooltip" data-placement="top"><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+<script src="/js/plugin.min.js"></script>
+<script src="/js/application.js"></script>
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+
+
+
+
+   
+
+
+
+
+   
+    
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/valine"></script>
+  <script type="text/javascript">
+  var GUEST = ['nick', 'mail', 'link'];
+  var meta = 'nick,mail,link';
+  meta = meta.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#vcomments',
+    verify: false,
+    notify: false,
+    appId: '',
+    appKey: '',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: meta,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+  </script>
+
+     
+
+
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000">
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top">
+  
+  
+  <!--<title>Swift Runtime分析：还像OC Runtime一样吗？ | Hexo</title>-->
+  <title>Swift Runtime分析：还像OC Runtime一样吗？</title>
+  <meta name="description" content="Swift是苹果2014年发布的编程开发语言，可与Objective-C共同运行于Mac OS和iOS平台，用于搭建基于苹果平台的应用程序。Swift已经开源，目前最新版本为2.2。我们知道Objective-C是具有动态性的，能够通过runtime API调用和替换任意方法，那Swift也具有这些动态性吗？">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Swift Runtime分析：还像OC Runtime一样吗？">
+<meta property="og:url" content="http://pro.stonepark.fun/2016/05/08/Swift-Runtime分析：还像OC-Runtime一样吗？/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="Swift是苹果2014年发布的编程开发语言，可与Objective-C共同运行于Mac OS和iOS平台，用于搭建基于苹果平台的应用程序。Swift已经开源，目前最新版本为2.2。我们知道Objective-C是具有动态性的，能够通过runtime API调用和替换任意方法，那Swift也具有这些动态性吗？">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://upload.chinaz.com/2016/0408/1460105613566.jpg">
+<meta property="og:image" content="http://upload.chinaz.com/2016/0408/1460105613748.jpg">
+<meta property="og:image" content="http://upload.chinaz.com/2016/0408/1460105613950.png">
+<meta property="og:image" content="http://upload.chinaz.com/2016/0408/1460105613667.jpg">
+<meta property="og:image" content="http://upload.chinaz.com/2016/0408/1460105613111.jpg">
+<meta property="og:image" content="http://upload.chinaz.com/2016/0408/1460105613179.jpg">
+<meta property="og:image" content="http://upload.chinaz.com/2016/0408/1460105613889.jpg">
+<meta property="og:image" content="http://upload.chinaz.com/2016/0408/1460105613429.jpg">
+<meta property="og:image" content="http://upload.chinaz.com/2016/0408/1460105613795.jpg">
+<meta property="og:image" content="http://upload.chinaz.com/2016/0408/1460105613389.jpg">
+<meta property="og:image" content="http://upload.chinaz.com/2016/0408/1460105613461.jpg">
+<meta property="og:image" content="http://upload.chinaz.com/2016/0408/1460105613854.jpg">
+<meta property="og:image" content="http://upload.chinaz.com/2016/0408/1460105613353.png">
+<meta property="og:image" content="http://upload.chinaz.com/2016/0408/1460105613224.jpg">
+<meta property="og:updated_time" content="2016-07-08T17:35:16.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Swift Runtime分析：还像OC Runtime一样吗？">
+<meta name="twitter:description" content="Swift是苹果2014年发布的编程开发语言，可与Objective-C共同运行于Mac OS和iOS平台，用于搭建基于苹果平台的应用程序。Swift已经开源，目前最新版本为2.2。我们知道Objective-C是具有动态性的，能够通过runtime API调用和替换任意方法，那Swift也具有这些动态性吗？">
+<meta name="twitter:image" content="http://upload.chinaz.com/2016/0408/1460105613566.jpg">
+  <!-- Canonical links -->
+  <link rel="canonical" href="http://pro.stonepark.fun/2016/05/08/Swift-Runtime分析：还像OC-Runtime一样吗？/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.jpg" type="image/x-icon">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+  
+  
+  
+</head>
+
+
+<body class="main-center theme-black" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/stone0117" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpeg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">StonePark</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">html node python iOS</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> Beijing, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索">
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech>
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-repository">
+          <a href="/repository">
+            
+            <i class="icon icon-project"></i>
+            
+            <span class="menu-title">项目</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books">
+            
+            <i class="icon icon-book-fill"></i>
+            
+            <span class="menu-title">书单</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links">
+            
+            <i class="icon icon-friendship"></i>
+            
+            <span class="menu-title">友链</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">关于</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/stone0117" target="_blank" title="Github" data-toggle="tooltip" data-placement="top"><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="http://weibo.com/cofess" target="_blank" title="Weibo" data-toggle="tooltip" data-placement="top"><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="https://twitter.com/iwebued" target="_blank" title="Twitter" data-toggle="tooltip" data-placement="top"><i class="icon icon-twitter"></i></a></li>
+        
+        <li><a href="https://www.behance.net/cofess" target="_blank" title="Behance" data-toggle="tooltip" data-placement="top"><i class="icon icon-behance"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle="tooltip" data-placement="top"><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>coding!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/IntelliJ-IDEA/">IntelliJ IDEA</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/apache/">apache</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/chrome/">chrome</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/freemarker/">freemarker</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/iOS/">iOS</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/javascript/">javascript</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/links/">links</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/macos/">macos</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/mysql/">mysql</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/node/">node</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/shell/">shell</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/其他/">其他</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/搜索/">搜索</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget-body">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ActiveMQ/">ActiveMQ</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/AppCode/">AppCode</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/FastDFS/">FastDFS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/IntelliJ-IDEA/">IntelliJ IDEA</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/">Linux</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Redis/">Redis</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/apache/">apache</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/awk/">awk</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/chrome/">chrome</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/">docker</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dubbo/">dubbo</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/fastDFS-nginx综合/">fastDFS & nginx综合</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/find/">find</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/freemarker/">freemarker</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/google/">google</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/grep/">grep</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/idea坑/">idea坑</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/javascript/">javascript</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/links/">links</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/">mysql</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/nginx/">nginx</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/node/">node</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/regex/">regex</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sed/">sed</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/shell/">shell</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/solr/">solr</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/sso/">sso</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/svn/">svn</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tomcat/">tomcat</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tr/">tr</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/xargs/">xargs</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/字符串操作/">字符串操作</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tags/ActiveMQ/" style="font-size: 13px;">ActiveMQ</a> <a href="/tags/AppCode/" style="font-size: 13px;">AppCode</a> <a href="/tags/FastDFS/" style="font-size: 13px;">FastDFS</a> <a href="/tags/IntelliJ-IDEA/" style="font-size: 13px;">IntelliJ IDEA</a> <a href="/tags/Linux/" style="font-size: 13.5px;">Linux</a> <a href="/tags/Redis/" style="font-size: 13px;">Redis</a> <a href="/tags/apache/" style="font-size: 13px;">apache</a> <a href="/tags/awk/" style="font-size: 13px;">awk</a> <a href="/tags/chrome/" style="font-size: 13px;">chrome</a> <a href="/tags/docker/" style="font-size: 13px;">docker</a> <a href="/tags/dubbo/" style="font-size: 13px;">dubbo</a> <a href="/tags/fastDFS-nginx综合/" style="font-size: 13px;">fastDFS & nginx综合</a> <a href="/tags/find/" style="font-size: 13px;">find</a> <a href="/tags/freemarker/" style="font-size: 13px;">freemarker</a> <a href="/tags/google/" style="font-size: 13px;">google</a> <a href="/tags/grep/" style="font-size: 13px;">grep</a> <a href="/tags/idea坑/" style="font-size: 13px;">idea坑</a> <a href="/tags/javascript/" style="font-size: 14px;">javascript</a> <a href="/tags/links/" style="font-size: 13px;">links</a> <a href="/tags/mysql/" style="font-size: 13px;">mysql</a> <a href="/tags/nginx/" style="font-size: 13px;">nginx</a> <a href="/tags/node/" style="font-size: 13px;">node</a> <a href="/tags/regex/" style="font-size: 13px;">regex</a> <a href="/tags/sed/" style="font-size: 14px;">sed</a> <a href="/tags/shell/" style="font-size: 13px;">shell</a> <a href="/tags/solr/" style="font-size: 13px;">solr</a> <a href="/tags/sso/" style="font-size: 13px;">sso</a> <a href="/tags/svn/" style="font-size: 13.5px;">svn</a> <a href="/tags/tomcat/" style="font-size: 13px;">tomcat</a> <a href="/tags/tr/" style="font-size: 13px;">tr</a> <a href="/tags/xargs/" style="font-size: 13px;">xargs</a> <a href="/tags/字符串操作/" style="font-size: 13px;">字符串操作</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/02/">二月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">一月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">四月 2018</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">三月 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">二月 2018</a><span class="archive-list-count">30</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">八月 2016</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">七月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">六月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/09/">九月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/06/">六月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">三月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/12/">十二月 2014</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/javascript/">javascript</a>
+              </p>
+              <p class="item-title">
+                <a href="/2019/02/22/String-prototype-split/" class="title">String.prototype.split()</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2019-02-21T20:16:48.000Z" itemprop="datePublished">2019-02-22</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/node/">node</a>
+              </p>
+              <p class="item-title">
+                <a href="/2019/01/04/module-exports与exports，export与export-default之间的关系和区别/" class="title">module.exports与exports，export与export default之间的关系和区别</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2019-01-04T09:44:16.000Z" itemprop="datePublished">2019-01-04</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/javascript/">javascript</a>
+              </p>
+              <p class="item-title">
+                <a href="/2018/04/05/javascript-内存管理-循环引用处理/" class="title">javascript-内存管理-循环引用处理</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2018-04-05T02:18:29.000Z" itemprop="datePublished">2018-04-05</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/javascript/">javascript</a>
+              </p>
+              <p class="item-title">
+                <a href="/2018/04/04/javascript的命名代码块/" class="title">javascript的命名代码块</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2018-04-04T05:24:26.000Z" itemprop="datePublished">2018-04-04</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/shell/">shell</a>
+              </p>
+              <p class="item-title">
+                <a href="/2018/04/03/find用法解析-macos环境BSD-shell/" class="title">find用法解析(macos环境BSD shell)</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2018-04-03T08:44:33.000Z" itemprop="datePublished">2018-04-03</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-Swift-Runtime分析：还像OC-Runtime一样吗？" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Swift Runtime分析：还像OC Runtime一样吗？
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2016/05/08/Swift-Runtime分析：还像OC-Runtime一样吗？/" class="article-date">
+	  <time datetime="2016-05-07T17:24:38.000Z" itemprop="datePublished">2016-05-08</time>
+	</a>
+</span>
+        
+        
+
+        
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2016/05/08/Swift-Runtime分析：还像OC-Runtime一样吗？/#comments" class="article-comment-link">评论</a></span>
+        
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <p>Swift是苹果2014年发布的编程开发语言，可与Objective-C共同运行于Mac OS和iOS平台，用于搭建基于苹果平台的应用程序。Swift已经开源，目前最新版本为2.2。我们知道Objective-C是具有动态性的，能够通过runtime API调用和替换任意方法，那Swift也具有这些动态性吗？</p>
+<a id="more"></a>
+<h1 id="分析用例"><a href="#分析用例" class="headerlink" title="分析用例"></a>分析用例</h1><p>我们拿一个纯Swift类和一个继承自NSObject的类的类来做分析，这两个类里包含尽量多的Swift的类型比如Character、String、AnyObject、Tuple。 </p>
+<p>代码如下： </p>
+<p><img src="http://upload.chinaz.com/2016/0408/1460105613566.jpg" alt="image"></p>
+<h1 id="方法、属性"><a href="#方法、属性" class="headerlink" title="方法、属性"></a>方法、属性</h1><p>动态性比较重要的一点就是能够拿到某个类所有的方法、属性，我们使用如下代码来打印方法和属性列表。</p>
+<p><img src="http://upload.chinaz.com/2016/0408/1460105613748.jpg" alt="image"></p>
+<p>调用showClsRuntime的代码如下：</p>
+<p><img src="http://upload.chinaz.com/2016/0408/1460105613950.png" alt="image"></p>
+<p>看看我们得到什么结果？</p>
+<p><img src="http://upload.chinaz.com/2016/0408/1460105613667.jpg" alt="image"></p>
+<p>对于纯Swift的TestASwiftClass来说任何方法、属性都未获取到。</p>
+<p>对于TestSwiftVC来说除testReturnTuple、testReturnVoidWithaCharacter两个方法外，其他的都获取成功了。</p>
+<h1 id="这是为什么？"><a href="#这是为什么？" class="headerlink" title="这是为什么？"></a>这是为什么？</h1><p>纯Swift类的函数调用已经不再是Objective-c的运行时发消息，而是类似C++的vtable，在编译时就确定了调用哪个函数，所以没法通过runtime获取方法、属性。</p>
+<p>TestSwiftVC继承自UIViewController，基类NSObject，而Swift为了兼容Objective-C，凡是继承自NSObject的类都会保留其动态性，所以我们能通过runtime拿到他的方法。</p>
+<p>但为什么testReturnTuple testReturnVoidWithaCharacter却又获取不到呢？</p>
+<p>从Objective-c的runtime 特性可以知道，所有运行时方法都依赖TypeEncoding，也就是method_getTypeEncoding返回的结果，他指定了方法的参数类型以及在函数调用时参数入栈所要的内存空间，没有这个标识就无法动态的压入参数（比如testReturnVoidWithaId: Optional(“v24@0:8@16”) Optional(“v”)，表示此方法参数共需24个字节，返回值为void，第一个参数为id，第二个为selector，第三个为id），而Character和Tuple是Swift特有的，无法映射到OC的类型，更无法用OC的typeEncoding表示，也就没法通过runtime获取了。</p>
+<h1 id="Method-Swizzling"><a href="#Method-Swizzling" class="headerlink" title="Method Swizzling"></a>Method Swizzling</h1><p>动态性最常用的就是方法替换（Method Swizzling），将类的某个方法替换成自定义的方法，从而达到hook的作用。</p>
+<p>对于纯Swift类（如TestASwiftClass）来说，无法通过objc runtime替换方法，因为由上面的测试可知拿不到这些方法、属性</p>
+<p>对于继承自NSObject类（如TestSwiftVC）来说，无法通过runtime获取到的方法肯定没法替换了。那能通过runtime获取到的方法就都能被替换吗？我们测一把。 </p>
+<p>Method Swizzling的代码如下</p>
+<p><img src="http://upload.chinaz.com/2016/0408/1460105613111.jpg" alt="image"></p>
+<p>我们替换两个可以被runtime获取到的方法：viewDidAppear和testReturnVoidWithaId</p>
+<p><img src="http://upload.chinaz.com/2016/0408/1460105613179.jpg" alt="image"></p>
+<p>打印的日志为</p>
+<p><code>F:testReturnVoidWithaId L:50</code></p>
+<p><code>F:sz_viewDidAppear L:46</code></p>
+<p>说明viewDidAppear已经被替换，但是testReturnVoidWithaId却没有被替换，这是为何?</p>
+<p>我们在方法里打个断点看看，如图: </p>
+<p><img src="http://upload.chinaz.com/2016/0408/1460105613889.jpg" alt="image"></p>
+<p>可以看到区别，调用sz_viewDidAppear栈的前一帧为@objc TestSwiftVC.sz_viewDidAppear(Bool) -&gt; ()有个@objc标识，而调用testReturnVoidWithaId则没有此标识。</p>
+<p>@objc用来做什么的？与动态性有关吗？</p>
+<h1 id="objc"><a href="#objc" class="headerlink" title="@objc"></a>@objc</h1><p>找到官方文档读读。</p>
+<p>可以知道@objc是用来将Swift的API导出给Objective-C和Objective-C runtime使用的，如果你的类继承自Objective-c的类（如NSObject）将会自动被编译器插入@objc标识。</p>
+<p>我们在把TestASwiftClass（纯Swift类）的方法、属性前都加个@objc 试试，如图： </p>
+<p><img src="http://upload.chinaz.com/2016/0408/1460105613429.jpg" alt="image"></p>
+<p>查看日志可以发现加了@objc的方法、属性均可以被runtime获取到了。</p>
+<p><img src="http://upload.chinaz.com/2016/0408/1460105613795.jpg" alt="image"></p>
+<h1 id="dynamic"><a href="#dynamic" class="headerlink" title="dynamic"></a>dynamic</h1><p>文档里还有一句说明： </p>
+<p>加了@objc标识的方法、属性无法保证都会被运行时调用，因为Swift会做静态优化。要想完全被动态调用，必须使用dynamic修饰。使用dynamic修饰将会隐式的加上@objc标识。</p>
+<p>这也就解释了为什么testReturnVoidWithaId无法被替换，因为写在Swift里的代码直接被编译优化成静态调用了。</p>
+<p>而viewDidAppear是继承Objective-C类获得的方法，本身就被修饰为dynamic，所以能被动态替换。</p>
+<p>我们把TestSwiftVC方法前加上dynamic再测一把，如图： </p>
+<p><img src="http://upload.chinaz.com/2016/0408/1460105613389.jpg" alt="image"></p>
+<p>从堆栈也可以看出，方法的调用前增加了@objc标识，testReturnVoidWithaId方法被替换成功了。</p>
+<p>同样的做法，我们把TestASwiftClass的方法和属性也都加上dynamic修饰，做Method Swizzling，同样获得成功，如图 </p>
+<p><img src="http://upload.chinaz.com/2016/0408/1460105613461.jpg" alt="image"></p>
+<h1 id="Objective-C获取Swift-runtime信息"><a href="#Objective-C获取Swift-runtime信息" class="headerlink" title="Objective-C获取Swift runtime信息"></a>Objective-C获取Swift runtime信息</h1><p>在Objective-c代码里使用objc_getClass(“TestSwiftVC”);会发现返回值为空，这是为什么？Swift代码中的TestSwiftVC类，在OC中还是这个名字吗？</p>
+<p>我们初始化一个对象，并断点和打印看看，如下图：</p>
+<p><img src="http://upload.chinaz.com/2016/0408/1460105613854.jpg" alt="image"></p>
+<p>可以看到Swift中的TestSwiftVC类在OC中的类名已经变成TestSwift.TestSwiftVC，即规则为SWIFT_MODULE_NAME.类名称，在普通源码项目里SWIFT_MODULE_NAME即为ProductName，在打好的Cocoa Touch Framework里为则为导出的包名。</p>
+<p>所以要想从Objective-c中获取Swift类的runtime信息得这样写：</p>
+<p><img src="http://upload.chinaz.com/2016/0408/1460105613353.png" alt="image"></p>
+<h1 id="Objective-C替换Swift函数"><a href="#Objective-C替换Swift函数" class="headerlink" title="Objective-C替换Swift函数"></a>Objective-C替换Swift函数</h1><p>给TestSwiftVC和TestASwiftClass的testReturnVoidWithaId函数加上dynamic修饰，然后我们在Objective-C代码里替换为testReturnVoidWithaIdImp函数：</p>
+<p><img src="http://upload.chinaz.com/2016/0408/1460105613224.jpg" alt="image"></p>
+<p>运行之后我们得到结果</p>
+<p>F:void testReturnVoidWithaIdImp(<strong>strong id, SEL, </strong>strong id) L:20 self=&lt;TestSwift.TestSwiftVC: 0x7fb4e1d148f0&gt;</p>
+<p>F:void testReturnVoidWithaIdImp(<strong>strong id, SEL, </strong>strong id) L:20 self=TestSwift.TestASwiftClass</p>
+<p>说明两者的方法在加上dynamic修饰后，均能在Objective-c里被替换。(TestSwiftVC的testReturnVoidWithaId不加dynamic也会打印日志，为什么？留给读者思考)</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>纯Swift类没有动态性，但在方法、属性前添加dynamic修饰可以获得动态性。<br>继承自NSObject的Swift类，其继承自父类的方法具有动态性，其他自定义方法、属性需要加dynamic修饰才可以获得动态性。</p>
+<p>若方法的参数、属性类型为Swift特有、无法映射到Objective-C的类型(如Character、Tuple)，则此方法、属性无法添加dynamic修饰（会编译错误）</p>
+<p>Swift类在Objective-C中会有模块前缀</p>
+<p>关于本文</p>
+<p>本文作者尹峥伟（花名君展），手机淘宝技术团队的资深无线开发工程师，主要负责手机淘宝基础架构研发，Github开源库Wax的维护者，微博@君展。本文已投稿至InfoQ。</p>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <span>link：</span>
+      <a href="http://pro.stonepark.fun/2016/05/08/Swift-Runtime分析：还像OC-Runtime一样吗？/" title="Swift Runtime分析：还像OC Runtime一样吗？" target="_blank" rel="external">http://pro.stonepark.fun/2016/05/08/Swift-Runtime分析：还像OC-Runtime一样吗？/</a>
+    </li>
+    
+  </ul>
+</blockquote>
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+      <div id="vcomments"></div>
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2016/05/27/Swift-Objc的Runtime运行时机制/" title="Swift/Objc的Runtime运行时机制"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2015/09/06/调用objc-msgSend方法在64位下崩溃解决方法/" title="调用objc_msgSend方法在64位下崩溃解决方法"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+  </ul>
+  
+  
+  
+  <div class="bar-right">
+    
+  </div>
+  </div>
+</nav>
+  
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/stone0117" target="_blank" title="Github" data-toggle="tooltip" data-placement="top"><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="http://weibo.com/cofess" target="_blank" title="Weibo" data-toggle="tooltip" data-placement="top"><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="https://twitter.com/iwebued" target="_blank" title="Twitter" data-toggle="tooltip" data-placement="top"><i class="icon icon-twitter"></i></a></li>
+        
+        <li><a href="https://www.behance.net/cofess" target="_blank" title="Behance" data-toggle="tooltip" data-placement="top"><i class="icon icon-behance"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle="tooltip" data-placement="top"><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+<script src="/js/plugin.min.js"></script>
+<script src="/js/application.js"></script>
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+
+
+
+
+   
+
+
+
+
+   
+    
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/valine"></script>
+  <script type="text/javascript">
+  var GUEST = ['nick', 'mail', 'link'];
+  var meta = 'nick,mail,link';
+  meta = meta.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#vcomments',
+    verify: false,
+    notify: false,
+    appId: '',
+    appKey: '',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: meta,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+  </script>
+
+     
+
+
+
+
+
+
+
+</body>
+</html>
